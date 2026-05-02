@@ -1,0 +1,64 @@
+name: Build & Release WordPress theme
+
+# Auto-builds wordpress/linkone-theme.zip whenever the LP source changes on
+# main, and publishes it as a downloadable asset on the moving "latest"
+# GitHub Release. End users grab the zip from
+# https://github.com/<owner>/<repo>/releases/latest and upload it via WP admin.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'styles.css'
+      - 'script.js'
+      - 'favicon.svg'
+      - 'wordpress/**'
+      - '.github/workflows/build-theme.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-theme
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Build theme zip
+        run: |
+          chmod +x ./wordpress/build-theme.sh
+          ./wordpress/build-theme.sh
+          ls -la wordpress/linkone-theme.zip
+
+      - name: Refresh 'latest' release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # Idempotent: drop any prior 'latest' release + tag, then recreate.
+          gh release delete latest --yes --cleanup-tag --repo "$GITHUB_REPOSITORY" || true
+
+          NOTES=$(cat <<EOF
+          Latest WordPress theme build from \`main\` (commit ${GITHUB_SHA::7}).
+
+          ## Install
+          1. Download \`linkone-theme.zip\` from the **Assets** below
+          2. In WordPress: **外観 → テーマ → 新規追加 → テーマのアップロード**
+          3. Select the zip → **今すぐインストール** → **有効化**
+
+          Built automatically by GitHub Actions on every push to \`main\`.
+          EOF
+          )
+
+          gh release create latest \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "Latest theme build" \
+            --notes "$NOTES" \
+            wordpress/linkone-theme.zip
