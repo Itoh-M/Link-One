@@ -382,6 +382,137 @@ a { color: inherit; }
 .footer-links a:hover { color: var(--c-yellow); }
 .footer-bottom { padding-top: 32px; margin-top: 32px; border-top: 1px solid #2c3037; color: #6a6e76; }
 
+/* ===== Origins (World Map) ===== */
+.section--map {
+  background: linear-gradient(180deg, #0e1722 0%, #0a0f17 100%);
+  color: #f5f6f8;
+}
+.section--map .section-eyebrow { color: var(--c-yellow); }
+.section--map .section-title,
+.section--map .lead { color: #f5f6f8; }
+
+.world-map {
+  position: relative;
+  margin: 48px auto 0;
+  max-width: 980px;
+  aspect-ratio: 2 / 1;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--r-md);
+  overflow: visible;
+}
+.world-map-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+.world-map-svg .continents path {
+  fill: #1c2e47;
+  stroke: #2c4566;
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+.origin-dots {
+  position: absolute;
+  inset: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.origin-dot {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+.origin-dot a,
+.origin-dot > .origin-pulse {
+  position: relative;
+  display: block;
+}
+.origin-dot a {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  outline: none;
+}
+.origin-dot a:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255,255,255,.7);
+}
+.origin-pulse {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 0 0 var(--c);
+  animation: origin-pulse 1.8s ease-out infinite;
+}
+@keyframes origin-pulse {
+  0%   { box-shadow: 0 0 0 0 var(--c); opacity: 1; }
+  70%  { box-shadow: 0 0 0 16px rgba(0,0,0,0); opacity: .9; }
+  100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); opacity: 1; }
+}
+.origin-label {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 999px;
+  opacity: 0;
+  transition: opacity .2s ease;
+  pointer-events: none;
+}
+.origin-label small { font-weight: 500; opacity: .8; margin-left: 4px; }
+.origin-dot:hover .origin-label,
+.origin-dot:focus-within .origin-label { opacity: 1; }
+
+/* Colombia (reference): bottom layer, dimmer, non-interactive so neighbors take clicks */
+.origin-dot--ref {
+  z-index: 1;
+  pointer-events: none;
+}
+.origin-dot--ref .origin-pulse {
+  width: 9px;
+  height: 9px;
+  opacity: .55;
+  animation-duration: 2.6s;
+}
+.origin-dot--ref .origin-label {
+  opacity: .7;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.world-map-note {
+  position: absolute;
+  bottom: -36px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: .85rem;
+  color: var(--c-mute);
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .origin-pulse { animation: none; box-shadow: 0 0 0 6px rgba(255,255,255,.15); }
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 860px) {
   .site-nav { display: none; position: absolute; top: 68px; right: 0; left: 0; background: #fff; border-bottom: 1px solid var(--c-line); flex-direction: column; padding: 16px; gap: 12px; }
@@ -395,6 +526,10 @@ a { color: inherit; }
   .footer-inner { grid-template-columns: 1fr 1fr; }
   .hero { padding: 64px 0 80px; }
   .section { padding: 64px 0; }
+  .world-map { margin-top: 32px; }
+  .origin-dot a { width: 36px; height: 36px; }
+  .origin-pulse { width: 10px; height: 10px; }
+  .origin-label { font-size: 10px; padding: 2px 8px; }
 }
 @media (max-width: 520px) {
   .footer-inner { grid-template-columns: 1fr; }
