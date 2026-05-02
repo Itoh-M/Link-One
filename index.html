@@ -158,53 +158,74 @@
           </g>
         </svg>
 
-        <ul class="origin-dots" aria-label="コーヒー産地マップ">
-          <!-- Colombia: bottom layer / non-interactive (近すぎる隣国へのクリックを優先するため) -->
-          <li class="origin-dot origin-dot--ref" style="--x:30%; --y:50%; --c:var(--c-yellow);" data-country="Colombia">
-            <span class="origin-pulse" aria-hidden="true"></span>
-            <span class="origin-label">Colombia <small>準備中</small></span>
-          </li>
-          <!-- Costa Rica (西へずらす) -->
-          <li class="origin-dot" style="--x:21%; --y:44%; --c:var(--c-teal);">
-            <a href="#members" data-country="コスタリカ">
-              <span class="origin-pulse" aria-hidden="true"></span>
-              <span class="origin-label">Costa Rica</span>
-            </a>
-          </li>
-          <!-- Panama (中間に配置) -->
-          <li class="origin-dot" style="--x:25.5%; --y:47%; --c:var(--c-red);">
-            <a href="#members" data-country="パナマ">
-              <span class="origin-pulse" aria-hidden="true"></span>
-              <span class="origin-label">Panama</span>
-            </a>
-          </li>
-          <!-- Brazil -->
-          <li class="origin-dot" style="--x:36%; --y:60%; --c:var(--c-green);">
-            <a href="#members" data-country="ブラジル">
-              <span class="origin-pulse" aria-hidden="true"></span>
-              <span class="origin-label">Brazil</span>
-            </a>
-          </li>
-          <!-- Taiwan -->
-          <li class="origin-dot" style="--x:83.5%; --y:37%; --c:var(--c-yellow);">
-            <a href="#members" data-country="台湾">
-              <span class="origin-pulse" aria-hidden="true"></span>
-              <span class="origin-label">Taiwan</span>
-            </a>
-          </li>
-          <!-- Indonesia -->
-          <li class="origin-dot" style="--x:81%; --y:53%; --c:var(--c-teal);">
-            <a href="#members" data-country="インドネシア">
-              <span class="origin-pulse" aria-hidden="true"></span>
-              <span class="origin-label">Indonesia</span>
-            </a>
-          </li>
-        </ul>
+        <ul class="origin-dots" data-origin-dots aria-label="コーヒー産地マップ"></ul>
 
-        <p class="world-map-note">点滅ドットをクリックすると、参加企業情報へ移動します。</p>
+        <div class="map-edit-toolbar" data-edit-toolbar hidden>
+          <span class="map-edit-mode">EDIT MODE</span>
+          <button type="button" class="map-edit-btn" data-add>＋ ドット追加</button>
+          <button type="button" class="map-edit-btn" data-export>JSONエクスポート</button>
+          <button type="button" class="map-edit-btn" data-import>JSONインポート</button>
+          <button type="button" class="map-edit-btn map-edit-btn--danger" data-reset>初期化</button>
+          <a class="map-edit-btn map-edit-btn--exit" href="?">編集終了</a>
+        </div>
+
+        <p class="world-map-note" data-map-note>点滅ドットをクリックすると詳細が表示されます。</p>
       </div>
     </div>
+
+    <!-- Edit form (sidebar panel, only used in edit mode) -->
+    <aside class="map-edit-form" data-edit-form hidden aria-label="ドット編集">
+      <header class="map-edit-form__head">
+        <h4>ドットを編集</h4>
+        <button type="button" class="map-edit-form__close" data-close aria-label="閉じる">×</button>
+      </header>
+      <div class="map-edit-form__body">
+        <label>ラベル(マップ上hover表示)
+          <input name="label" type="text" />
+        </label>
+        <label>タイトル(モーダル見出し)
+          <input name="title" type="text" />
+        </label>
+        <label>説明(モーダル本文)
+          <textarea name="description" rows="4"></textarea>
+        </label>
+        <label>リンクURL(任意 — 「詳細を見る」ボタン)
+          <input name="linkUrl" type="text" placeholder="https://… または #members" />
+        </label>
+        <label>画像URL(任意)
+          <input name="imageUrl" type="url" placeholder="https://…" />
+        </label>
+        <div class="map-edit-form__grid">
+          <label>色
+            <input name="color" type="color" />
+          </label>
+          <label>X (%)
+            <input name="x" type="number" min="0" max="100" step="0.1" />
+          </label>
+          <label>Y (%)
+            <input name="y" type="number" min="0" max="100" step="0.1" />
+          </label>
+        </div>
+        <label class="map-edit-form__check">
+          <input name="bottomLayer" type="checkbox" />
+          <span>最背面レイヤー(クリック透過 / 隣接ドットを優先)</span>
+        </label>
+        <button type="button" class="map-edit-form__delete" data-delete>このドットを削除</button>
+      </div>
+    </aside>
   </section>
+
+  <!-- Origin click modal -->
+  <div class="origin-modal" data-origin-modal hidden role="dialog" aria-modal="true" aria-labelledby="originModalTitle">
+    <div class="origin-modal__backdrop" data-modal-close></div>
+    <div class="origin-modal__content">
+      <button type="button" class="origin-modal__close" data-modal-close aria-label="閉じる">×</button>
+      <img class="origin-modal__image" data-modal-image alt="" hidden />
+      <h3 id="originModalTitle" class="origin-modal__title" data-modal-title></h3>
+      <p class="origin-modal__desc" data-modal-desc></p>
+      <a class="btn btn--primary origin-modal__link" data-modal-link href="#" hidden>詳細を見る</a>
+    </div>
+  </div>
 
   <!-- ===== Members ===== -->
   <section id="members" class="section">
