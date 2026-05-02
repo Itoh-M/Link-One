@@ -1,0 +1,10 @@
+# Generated WordPress theme bundle
+wordpress/linkone-theme.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
