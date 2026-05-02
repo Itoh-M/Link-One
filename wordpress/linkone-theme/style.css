@@ -1,0 +1,18 @@
+/*
+Theme Name: LinkOne
+Theme URI: https://github.com/Itoh-M/Link-One
+Author: LinkOne
+Author URI: https://link-one.co.jp/
+Description: LinkOne — Specialty Coffee Importers Alliance LP. Specialty coffee importers alliance landing page packaged as a single-template WordPress theme. Bilingual (JP/EN), interactive world map editor, and a sample-request demo form.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.9
+Requires PHP: 7.4
+License: MIT
+License URI: https://opensource.org/licenses/MIT
+Text Domain: linkone
+Tags: one-column, custom-colors, full-width-template, translation-ready
+*/
+
+/* All visual styles are loaded from assets/styles.css via functions.php.
+   This file exists primarily for the WordPress theme metadata header above. */
