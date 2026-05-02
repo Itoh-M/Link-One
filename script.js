@@ -2,6 +2,27 @@
 (() => {
   'use strict';
 
+  // ---------- Language toggle (JP / EN) ----------
+  const LANG_KEY = 'linkone:lang';
+  const setLang = (lang) => {
+    if (lang !== 'jp' && lang !== 'en') return;
+    document.body.dataset.lang = lang;
+    document.documentElement.lang = lang === 'jp' ? 'ja' : 'en';
+    document.querySelectorAll('[data-lang-set]').forEach(btn => {
+      const active = btn.dataset.langSet === lang;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    });
+    try { localStorage.setItem(LANG_KEY, lang); } catch {}
+  };
+  const initialLang = (() => {
+    try { return localStorage.getItem(LANG_KEY) || 'jp'; } catch { return 'jp'; }
+  })();
+  setLang(initialLang);
+  document.querySelectorAll('[data-lang-set]').forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.dataset.langSet));
+  });
+
   // ---------- Mobile nav toggle ----------
   const navToggle = document.querySelector('.nav-toggle');
   const siteNav = document.querySelector('.site-nav');
@@ -80,26 +101,30 @@
     const editForm = document.querySelector('[data-edit-form]');
     const modal   = document.querySelector('[data-origin-modal]');
 
-    const STORAGE = 'linkone:origin-dots';
+    const STORAGE = 'linkone:origin-dots-v2';
+    // Drop any pre-v2 cache (which contained Colombia)
+    try { localStorage.removeItem('linkone:origin-dots'); } catch {}
     const DEFAULTS = [
-      { id: 'colombia',  x: 30,   y: 50, color: '#F4B836', label: 'Colombia',   bottomLayer: true,
-        title: 'コロンビア', description: '対応準備中。お問い合わせは Sample Request よりご連絡ください。',
-        linkUrl: '#sample', imageUrl: '' },
       { id: 'costarica', x: 21,   y: 44, color: '#2DA890', label: 'Costa Rica', bottomLayer: false,
-        title: 'コスタリカ', description: 'PuraVida — コスタリカ専門商社が扱う産地です。',
-        linkUrl: '#members', imageUrl: '' },
+        title: 'コスタリカ — PuraVida',
+        description: 'PuraVida は、コスタリカのスペシャルティコーヒー生豆を専門的に取り扱う商社です。マイクロミルや単一農園の限定ロットを直接取引でお届けします。',
+        linkUrl: '#origins', imageUrl: '' },
       { id: 'panama',    x: 25.5, y: 47, color: '#E94E2D', label: 'Panama',     bottomLayer: false,
-        title: 'パナマ', description: 'Brisa and Tierra — パナマ専門商社が扱う産地です。',
-        linkUrl: '#members', imageUrl: '' },
+        title: 'パナマ — Brisa and Tierra',
+        description: 'Brisa and Tierra は、パナマ専門の輸入商社。ボケテ・ボルカン地区を中心に、希少なゲイシャや高地ロットを扱います。',
+        linkUrl: '#origins', imageUrl: '' },
       { id: 'brazil',    x: 36,   y: 60, color: '#8AC53F', label: 'Brazil',     bottomLayer: false,
-        title: 'ブラジル', description: 'Mirai Seeds — グアリロバ農園オフィシャルパートナーが扱う産地です。',
-        linkUrl: '#members', imageUrl: '' },
+        title: 'ブラジル — Mirai Seeds',
+        description: 'Mirai Seeds は、グアリロバ農園(セラード地区)オフィシャルパートナー。多彩な品種と精製方法のシグネチャーロットをご提供します。',
+        linkUrl: '#origins', imageUrl: '' },
       { id: 'taiwan',    x: 83.5, y: 37, color: '#F4B836', label: 'Taiwan',     bottomLayer: false,
-        title: '台湾', description: 'ORIOWL 株式会社 — 台湾珈琲専門商社が扱う産地です。',
-        linkUrl: '#members', imageUrl: '' },
+        title: '台湾 — ORIOWL',
+        description: 'ORIOWL 株式会社は台湾珈琲専門商社。阿里山・卓武山などの高地産小ロットを、フレッシュな状態で輸入しています。',
+        linkUrl: '#origins', imageUrl: '' },
       { id: 'indonesia', x: 81,   y: 53, color: '#2DA890', label: 'Indonesia',  bottomLayer: false,
-        title: 'インドネシア', description: 'Rational Idea — Asosiasi Kopi Indonesia 日本総代理店が扱う産地です。',
-        linkUrl: '#members', imageUrl: '' },
+        title: 'インドネシア — Rational Idea',
+        description: 'Rational Idea は Asosiasi Kopi Indonesia 日本総代理店。スマトラ・ジャワなど多島の個性豊かな生豆を取り扱います。',
+        linkUrl: '#origins', imageUrl: '' },
     ];
 
     const editMode = new URLSearchParams(location.search).has('edit');
