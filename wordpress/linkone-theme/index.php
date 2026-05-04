@@ -131,6 +131,8 @@ if (!defined('ABSPATH')) { exit; }
       <p class="lead" data-jp>現在は5社で構成し、ブラジル・パナマ・台湾・コスタリカ・インドネシアを擁します。今後、世界各国の専門商社の参加を予定しており、グローバルなネットワークへと拡大していきます。</p>
       <p class="lead" data-en>Today, five member companies cover Brazil, Panama, Taiwan, Costa Rica, and Indonesia. Specialists from additional origins will join as the network grows globally.</p>
 
+      <div class="origins-network" data-origins-network aria-label="LinkOne origins network — 5産地のスター型ネットワーク図"></div>
+
       <dl class="concept-pills">
         <div class="concept-pill"><dt data-jp>直接取引</dt><dt data-en>Direct Trade</dt><dd data-jp>すべて加盟各社が現地と直接取引するロットのみ。</dd><dd data-en>All lots are sourced through each member's direct relationships.</dd></div>
         <div class="concept-pill"><dt data-jp>専門性と希少性</dt><dt data-en>Specialty &amp; Scarcity</dt><dd data-jp>特定産地に特化した専門性と、限定ロットの希少性。</dd><dd data-en>Origin-focused expertise and access to limited, scarce lots.</dd></div>
