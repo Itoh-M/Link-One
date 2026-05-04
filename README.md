@@ -116,11 +116,19 @@ zip化までを自動で行います(`zip` コマンドが必要)。
 - PHP 7.4 以上
 - 外部CDN: Google Fonts(Noto Sans JP / Playfair Display)— ネット接続が必要
 
-### 編集モードについて
+### 編集モードについて(WordPress 管理者専用)
 
-本テーマでも `?edit=1` を付けてアクセスすると世界地図エディタが起動します(完全クライアントサイドのため、WordPress の権限と無関係)。
-公開サイトでも有効になるため、編集モードを **管理者のみ** に絞りたい場合は `assets/script.js` の編集モード判定箇所
-(`new URLSearchParams(location.search).has('edit')`)を `is_user_logged_in()` のサーバー側判定に書き換えるか、`?edit=1` の代わりにシークレット文字列を使う改修をご検討ください。
+世界地図エディタは **WordPress の管理者(`edit_theme_options` 権限保持者)が `?edit=1` を付けてアクセスした場合のみ** 起動します。一般ユーザー・未ログインユーザー・静的版(GitHub Pages / Vercel)では編集 UI そのものが DOM に出力されないため、ツールバーや編集パネルは表示されません。
+
+仕組み:
+
+- `index.php` で `current_user_can('edit_theme_options')` を判定し、ツールバー・編集フォームを管理者ログイン時のみレンダリング
+- 同じ判定結果を `<body data-admin="true|false">` に出力
+- `assets/script.js` の `editMode` は `data-admin === 'true'` **かつ** `?edit=1` **かつ** ツールバー要素の存在をすべて満たすときのみ true
+
+### 静的版(GitHub Pages / Vercel)の編集について
+
+`index.html`(静的版)には編集 UI を含めていません。ドット内容を変更したい場合は、WordPress 環境で編集 → JSON エクスポート → `script.js` の `DEFAULTS` を差し替え、というワークフローを利用してください。
 
 ## カスタマイズポイント
 
