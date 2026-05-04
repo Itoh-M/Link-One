@@ -72,6 +72,21 @@ if (!function_exists('linkone_enqueue_assets')) {
                 'strategy'  => 'defer',
             ]
         );
+
+        // Concept-section origins network graphic (SVG renderer)
+        $network_path = get_theme_file_path('/assets/js/origins-network.js');
+        if (file_exists($network_path)) {
+            wp_enqueue_script(
+                'linkone-origins-network',
+                get_theme_file_uri('/assets/js/origins-network.js'),
+                [],
+                $version,
+                [
+                    'in_footer' => true,
+                    'strategy'  => 'defer',
+                ]
+            );
+        }
     }
 }
 add_action('wp_enqueue_scripts', 'linkone_enqueue_assets');

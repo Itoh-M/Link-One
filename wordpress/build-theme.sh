@@ -21,10 +21,14 @@ if [[ ! -d "${THEME_DIR}" ]]; then
 fi
 
 # Sync assets from the repo root so the theme always packages the latest LP.
-mkdir -p "${ASSETS_DIR}"
+mkdir -p "${ASSETS_DIR}" "${ASSETS_DIR}/js"
 cp "${REPO_ROOT}/styles.css"  "${ASSETS_DIR}/styles.css"
 cp "${REPO_ROOT}/script.js"   "${ASSETS_DIR}/script.js"
 cp "${REPO_ROOT}/favicon.svg" "${ASSETS_DIR}/favicon.svg"
+# Optional sub-modules under js/
+if [[ -d "${REPO_ROOT}/js" ]]; then
+  cp "${REPO_ROOT}/js/"*.js "${ASSETS_DIR}/js/" 2>/dev/null || true
+fi
 
 # Build the zip.
 rm -f "${OUT}"
