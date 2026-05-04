@@ -127,7 +127,14 @@
         linkUrl: '#origins', imageUrl: '' },
     ];
 
-    const editMode = new URLSearchParams(location.search).has('edit');
+    // Edit mode requires BOTH `?edit=1` in URL AND admin flag on body.
+    // WordPress sets `data-admin="true"` only for users with `edit_theme_options`;
+    // the static site (Vercel / GitHub Pages) has no auth so the toolbar is
+    // also stripped from `index.html`, which keeps editMode false even if
+    // someone hand-crafts the URL.
+    const isAdmin   = document.body.dataset.admin === 'true';
+    const hasEdit   = new URLSearchParams(location.search).has('edit');
+    const editMode  = isAdmin && hasEdit && !!toolbar;
     let dots = loadDots();
     let editingId = null;
     let addMode = false;

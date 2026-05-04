@@ -692,7 +692,7 @@ a { color: inherit; }
   .origin-pulse { animation: none; box-shadow: 0 0 0 6px rgba(255,255,255,.15); }
 }
 
-/* Edit-mode toolbar (only visible with ?edit=1) */
+/* Edit-mode toolbar (only visible with ?edit=1, admin-only on WP) */
 .map-edit-toolbar {
   position: absolute;
   top: -52px;
@@ -707,6 +707,7 @@ a { color: inherit; }
   border: 1px solid rgba(255,255,255,.08);
   border-radius: var(--r-sm);
 }
+.map-edit-toolbar[hidden] { display: none !important; }
 .map-edit-toolbar.is-active { display: flex; }
 .map-edit-mode {
   font-family: var(--font-display); letter-spacing: .15em;
