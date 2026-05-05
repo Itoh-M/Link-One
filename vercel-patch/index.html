@@ -166,12 +166,19 @@ d.addEventListener('click',e=>{e.stopPropagation();if(!d.dataset.dragged)showPop
 if(isAdmin){enableDrag(d,o);d.addEventListener('dblclick',()=>openEdit(o.id));}
 layer.appendChild(d);
 if(japan&&o.id!==japan.id){
+// Pull endpoint back from Japan so the arrowhead does not hide under the flag.
 const dx=japan.x-o.x,dy=japan.y-o.y,len=Math.hypot(dx,dy)||1,shrink=2.5;
 const x2=japan.x-(dx/len)*shrink,y2=japan.y-(dy/len)*shrink;
-const ln=document.createElementNS('http://www.w3.org/2000/svg','line');
-ln.setAttribute('x1',o.x);ln.setAttribute('y1',o.y);
-ln.setAttribute('x2',x2);ln.setAttribute('y2',y2);
+// Quadratic Bezier control point: offset perpendicular to chord, flipped
+// so the curve always bows upward (toward y=0). Curvature = 18% of chord.
+const cdx=x2-o.x,cdy=y2-o.y;
+let px=-cdy,py=cdx;
+if(py>0){px=-px;py=-py;}
+const k=0.18,cx=(o.x+x2)/2+px*k,cy=(o.y+y2)/2+py*k;
+const ln=document.createElementNS('http://www.w3.org/2000/svg','path');
+ln.setAttribute('d','M '+o.x+' '+o.y+' Q '+cx+' '+cy+' '+x2+' '+y2);
 ln.setAttribute('stroke',o.color||'#e85a3c');
+ln.setAttribute('fill','none');
 ln.setAttribute('class','flow-line');
 ln.setAttribute('marker-end','url(#flow-arrow)');
 flowLayer.appendChild(ln);
