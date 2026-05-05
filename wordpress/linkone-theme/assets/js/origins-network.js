@@ -12,12 +12,14 @@
 
   const NS = 'http://www.w3.org/2000/svg';
 
+  // 6 nodes evenly spaced (60° apart) — starting at -90° (top) and rotating clockwise.
   const NODES = [
     { code: 'BR', label: 'Brazil',     angle: -90, color: '#8AC53F' },
-    { code: 'PA', label: 'Panama',     angle: -18, color: '#E94E2D' },
-    { code: 'TW', label: 'Taiwan',     angle:  54, color: '#F4B836' },
-    { code: 'ID', label: 'Indonesia',  angle: 126, color: '#2DA890' },
-    { code: 'CR', label: 'Costa Rica', angle: 198, color: '#1f7a8c' },
+    { code: 'PA', label: 'Panama',     angle: -30, color: '#E94E2D' },
+    { code: 'TW', label: 'Taiwan',     angle:  30, color: '#F4B836' },
+    { code: 'ID', label: 'Indonesia',  angle:  90, color: '#2DA890' },
+    { code: 'CR', label: 'Costa Rica', angle: 150, color: '#1f7a8c' },
+    { code: 'CO', label: 'Colombia',   angle: 210, color: '#FCD116' },
   ];
 
   const VIEW = 400;
