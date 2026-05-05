@@ -125,10 +125,6 @@
         title: 'インドネシア — Rational Idea',
         description: 'Rational Idea は Asosiasi Kopi Indonesia 日本総代理店。スマトラ・ジャワなど多島の個性豊かな生豆を取り扱います。',
         linkUrl: '#origins', imageUrl: '' },
-      { id: 'colombia',  x: 24,   y: 50, color: '#FCD116', label: 'Colombia',   bottomLayer: true,
-        title: 'コロンビア — Coming Soon',
-        description: '6社目の加盟インポーターとして、コロンビアの専門商社が間もなく加わります。詳細は決定次第、本ページでご案内します。',
-        linkUrl: '#origins', imageUrl: '' },
     ];
 
     // Edit mode requires BOTH:
