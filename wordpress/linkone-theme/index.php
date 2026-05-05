@@ -1,29 +1,28 @@
-<!DOCTYPE html>
-<html lang="ja">
+<?php
+/**
+ * LinkOne — Front page template.
+ *
+ * This file renders the entire single-page LP. WordPress wp_head() and
+ * wp_footer() inject required meta / asset tags. Most static asset URLs are
+ * managed in functions.php via wp_enqueue_style / wp_enqueue_script.
+ *
+ * @package LinkOne
+ */
+
+if (!defined('ABSPATH')) { exit; }
+?><!DOCTYPE html>
+<html <?php language_attributes(); ?>>
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="<?php bloginfo('charset'); ?>" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LinkOne — Specialty Coffee Importers Alliance</title>
   <meta name="description" content="LinkOne(リンクワン)は、特定の国・地域の生豆を専門に扱う輸入商社のアライアンスです。各社が現地で築いた直接取引のルートと専門知識を横につなぎ、自家焙煎事業者の皆さまにトレーサビリティとオリジナリティの確かなロットをお届けします。" />
-
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <meta name="theme-color" content="#0e1722" />
-
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="LinkOne — Specialty Coffee Importers Alliance" />
-  <meta property="og:description" content="つながりで届ける。特定産地の専門商社が横でつながる、スペシャルティコーヒー インポーターズ アライアンス。" />
-  <meta property="og:site_name" content="LinkOne" />
-  <meta property="og:image" content="favicon.svg" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="LinkOne — Specialty Coffee Importers Alliance" />
-  <meta name="twitter:description" content="つながりで届ける。特定産地の専門商社が横でつながる。" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+
+  <?php wp_head(); ?>
 </head>
-<body data-lang="jp">
+<body <?php body_class('linkone-lp'); ?> data-lang="jp">
 
   <!-- ===== Header ===== -->
   <header class="site-header">
@@ -530,7 +529,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
-  <script src="js/origins-network.js" defer></script>
+  <?php wp_footer(); ?>
 </body>
 </html>

@@ -63,6 +63,65 @@ URLの末尾に `?edit=1` を付けて開くと、Origins セクションのド�
 3. `script.js` の `DEFAULTS` 配列(コメント `// ---------- Origins World Map` 内)を、ダウンロードしたJSONの内容で置き換え
 4. コミット・push
 
+## WordPress テーマとしてアップロード
+
+LP は `wordpress/linkone-theme/` 配下に **WordPress テーマ** として梱包しています。
+WordPress サイトに直接アップロードしてアクティベートすれば、本LPがそのまま表示されます。
+
+### ビルド手順
+
+主な選択肢は2つあります。
+
+#### A. GitHub Releases から直接ダウンロード(推奨・コマンド不要)
+
+`main` への push があるたびに GitHub Actions が自動でビルドし、最新の zip を Releases ページに公開します。
+
+🔗 **[最新の linkone-theme.zip をダウンロード](https://github.com/Itoh-M/Link-One/releases/latest)**
+
+ページ下部の **Assets** から `linkone-theme.zip` を選択するだけです。
+
+#### B. ローカルでビルド
+
+ご自身で zip を生成したい場合:
+
+```bash
+./wordpress/build-theme.sh
+# → wordpress/linkone-theme.zip が生成されます
+```
+
+このスクリプトはルートの `styles.css` / `script.js` / `favicon.svg` をテーマ内 `assets/` に同期したうえで、
+zip化までを自動で行います(`zip` コマンドが必要)。
+
+### インストール
+
+1. WordPress 管理画面 → **外観 (Appearance)** → **テーマ (Themes)** → **新規追加 (Add New Theme)** → **テーマのアップロード (Upload Theme)**
+2. `wordpress/linkone-theme.zip` を選択して **今すぐインストール (Install Now)**
+3. インストール後、**有効化 (Activate)** をクリック
+4. 設定 → 表示設定で **ホームページの表示** が「最新の投稿」のままで問題ありません(本テーマは固定の `index.php` で全コンテンツを描画します)
+
+### テーマ構成
+
+| ファイル | 役割 |
+| --- | --- |
+| `style.css` | テーマメタデータ(WordPress 必須ヘッダ) |
+| `index.php` | LP 全体を描画する単一テンプレート |
+| `functions.php` | アセット enqueue / OGP・favicon 出力 / `add_theme_support` |
+| `assets/styles.css` | LP 本体スタイル(ルート `styles.css` のコピー) |
+| `assets/script.js` | LP 本体スクリプト(ルート `script.js` のコピー) |
+| `assets/favicon.svg` | favicon |
+
+### 動作要件
+
+- WordPress 6.0 以上(テストは 6.9)
+- PHP 7.4 以上
+- 外部CDN: Google Fonts(Noto Sans JP / Playfair Display)— ネット接続が必要
+
+### 編集モードについて
+
+本テーマでも `?edit=1` を付けてアクセスすると世界地図エディタが起動します(完全クライアントサイドのため、WordPress の権限と無関係)。
+公開サイトでも有効になるため、編集モードを **管理者のみ** に絞りたい場合は `assets/script.js` の編集モード判定箇所
+(`new URLSearchParams(location.search).has('edit')`)を `is_user_logged_in()` のサーバー側判定に書き換えるか、`?edit=1` の代わりにシークレット文字列を使う改修をご検討ください。
+
 ## カスタマイズポイント
 
 | やりたいこと | 編集箇所 |
