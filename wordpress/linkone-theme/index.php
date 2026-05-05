@@ -245,6 +245,7 @@ if (!defined('ABSPATH')) { exit; }
 
         <ul class="origin-dots" data-origin-dots aria-label="コーヒー産地マップ"></ul>
 
+        <?php if ( current_user_can( 'edit_theme_options' ) ) : ?>
         <div class="map-edit-toolbar" data-edit-toolbar hidden>
           <span class="map-edit-mode">EDIT MODE</span>
           <button type="button" class="map-edit-btn" data-add>＋ ドット追加</button>
@@ -253,11 +254,13 @@ if (!defined('ABSPATH')) { exit; }
           <button type="button" class="map-edit-btn map-edit-btn--danger" data-reset>初期化</button>
           <a class="map-edit-btn map-edit-btn--exit" href="?">編集終了</a>
         </div>
+        <?php endif; ?>
 
         <p class="world-map-note" data-map-note><span data-jp>点滅ドットをクリックすると詳細が表示されます。</span><span data-en>Click any pulsing pin to see origin details.</span></p>
       </div>
     </div>
 
+    <?php if ( current_user_can( 'edit_theme_options' ) ) : ?>
     <aside class="map-edit-form" data-edit-form hidden aria-label="ドット編集">
       <header class="map-edit-form__head">
         <h4>ドットを編集</h4>
@@ -281,6 +284,7 @@ if (!defined('ABSPATH')) { exit; }
         <button type="button" class="map-edit-form__delete" data-delete>このドットを削除</button>
       </div>
     </aside>
+    <?php endif; ?>
   </section>
 
   <div class="origin-modal" data-origin-modal hidden role="dialog" aria-modal="true" aria-labelledby="originModalTitle">

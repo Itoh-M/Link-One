@@ -27,14 +27,27 @@ python -m http.server 8000
 
 `#hero` → `#about` → `#origins`(世界地図) → `#members` → `#activities` → `#events`(スライドショー) → `#gallery` → `#sample`(ログイン+サンプル依頼デモ) → footer
 
-## 編集モード(`?edit=1`)
+## 編集モード(WordPress 管理者専用)
 
-URLの末尾に `?edit=1` を付けて開くと、Origins セクションのドットをブラウザ上で自由に編集できます。
+公開LP(静的 `index.html` / GitHub Pages)には編集UIが**含まれていません**。
+編集機能は **WordPress テーマ版でのみ**、`current_user_can( 'edit_theme_options' )` を満たすユーザー(管理者・編集者など)に対してのみサーバ側で出力されます。
 
-例:
-- `index.html?edit=1`
-- `http://localhost:8000/?edit=1`
-- 公開後 `https://example.com/?edit=1`
+### 使い方(WP管理者として)
+
+1. `wp-admin` にログイン(編集権限のあるアカウント)
+2. 公開ページを開き、URL に `?edit=1` を付けてリロード
+   - 例: `https://link-one.co.jp/?edit=1`
+3. マップ上部に編集ツールバーが表示される
+
+### 多層防御
+
+| レイヤ | 効果 |
+|---|---|
+| サーバ側(`index.php`) | 非管理者にはツールバー/編集フォームの HTML を**一切出力しない** |
+| JS 側(`script.js`) | ツールバー要素が DOM に存在しなければ `?edit=1` を付けても編集モードにならない |
+| CSS 側(`styles.css`) | 仮にツールバー HTML が DOM にあっても `display: none` 既定 + `[hidden] !important` |
+
+→ 一般訪問者は何をしても編集UIに到達できません。
 
 ### できること
 
@@ -52,13 +65,13 @@ URLの末尾に `?edit=1` を付けて開くと、Origins セクションのド�
 - **JSONインポート** — エクスポートしたJSONを読み込んで一括反映
 - **初期化** — `script.js` の `DEFAULTS` に戻す(localStorageの編集内容は破棄)
 
-編集内容は **localStorage** に自動保存されます(同一ブラウザ・同一オリジンでのみ保持)。
+編集内容は **localStorage** に自動保存されます(編集モード時のみ — 一般閲覧時は読み書きされず常に DEFAULTS が表示されます)。
 
 ### 編集内容を恒久的に反映する手順
 
 `localStorage` の内容は別ブラウザや他人のPCには反映されません。確定した内容をリポジトリへ取り込むには:
 
-1. `?edit=1` でドットを編集
+1. WP 管理者として `?edit=1` でドットを編集
 2. **JSONエクスポート** をクリック → `linkone-origins.json` がダウンロード
 3. `script.js` の `DEFAULTS` 配列(コメント `// ---------- Origins World Map` 内)を、ダウンロードしたJSONの内容で置き換え
 4. コミット・push
@@ -118,9 +131,16 @@ zip化までを自動で行います(`zip` コマンドが必要)。
 
 ### 編集モードについて
 
-本テーマでも `?edit=1` を付けてアクセスすると世界地図エディタが起動します(完全クライアントサイドのため、WordPress の権限と無関係)。
-公開サイトでも有効になるため、編集モードを **管理者のみ** に絞りたい場合は `assets/script.js` の編集モード判定箇所
-(`new URLSearchParams(location.search).has('edit')`)を `is_user_logged_in()` のサーバー側判定に書き換えるか、`?edit=1` の代わりにシークレット文字列を使う改修をご検討ください。
+本テーマでは編集ツールバー/フォームの HTML を `current_user_can( 'edit_theme_options' )` でラップしているため、
+**管理者(または編集者)としてログインしている WP ユーザーにのみ**マップ編集UIが表示されます。
+
+ログイン後、URL に `?edit=1` を付けて開くと編集モードに入れます:
+
+```
+https://your-site.example/?edit=1
+```
+
+非管理者(未ログイン含む)は何度 `?edit=1` を付けても編集モードに入れません(HTML レベルでツールバー要素が存在しないため)。詳細は上の「[編集モード(WordPress 管理者専用)](#編集モードwordpress-管理者専用)」を参照。
 
 ## カスタマイズポイント
 

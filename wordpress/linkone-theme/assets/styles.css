@@ -606,11 +606,16 @@ a { color: inherit; }
   position: relative;
   margin: 48px auto 0;
   max-width: 980px;
+  width: 100%;
   aspect-ratio: 2 / 1;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--r-md);
   overflow: visible;
+}
+/* iOS Safari < 15.4 fallback: synthesize the 2:1 box via padding-bottom. */
+@supports not (aspect-ratio: 2 / 1) {
+  .world-map { height: 0; padding-bottom: 50%; }
 }
 .world-map-svg {
   position: absolute;
@@ -724,14 +729,17 @@ a { color: inherit; }
   .origin-pulse { animation: none; box-shadow: 0 0 0 6px rgba(255,255,255,.15); }
 }
 
-/* Edit-mode toolbar (only visible with ?edit=1) */
+/* Edit-mode toolbar (admin only, opt-in with ?edit=1).
+   IMPORTANT: default is `display: none` so the [hidden] attribute is honored
+   even when the author cascade is applied later than the UA stylesheet.
+   The previous `display: flex` base caused the toolbar to leak onto public
+   pages — most visibly on iPhone where the wrapped buttons covered the map. */
 .map-edit-toolbar {
   position: absolute;
   top: -52px;
   left: 0;
   right: 0;
-  display: flex;
-  flex-wrap: wrap;
+  display: none;
   gap: 8px;
   align-items: center;
   padding: 8px 12px;
@@ -739,7 +747,8 @@ a { color: inherit; }
   border: 1px solid rgba(255,255,255,.08);
   border-radius: var(--r-sm);
 }
-.map-edit-toolbar.is-active { display: flex; }
+.map-edit-toolbar.is-active { display: flex; flex-wrap: wrap; }
+.map-edit-toolbar[hidden] { display: none !important; }
 .map-edit-mode {
   font-family: var(--font-display); letter-spacing: .15em;
   font-size: .8rem; color: var(--c-yellow); margin-right: auto;
