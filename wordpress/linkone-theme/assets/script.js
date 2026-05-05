@@ -127,7 +127,12 @@
         linkUrl: '#origins', imageUrl: '' },
     ];
 
-    const editMode = new URLSearchParams(location.search).has('edit');
+    // Edit mode requires BOTH:
+    //   (a) the toolbar markup is present in the DOM — only WP admins receive
+    //       it (rendered server-side via current_user_can()), and
+    //   (b) the visitor explicitly opted in with ?edit=1.
+    // A non-admin appending ?edit=1 hits (a) === false and stays in read-only.
+    const editMode = !!toolbar && new URLSearchParams(location.search).has('edit');
     let dots = loadDots();
     let editingId = null;
     let addMode = false;
@@ -135,6 +140,9 @@
 
     function uid() { return 'dot_' + Math.random().toString(36).slice(2, 9); }
     function loadDots() {
+      // Public viewers always see DEFAULTS — never inherit a previous editor's
+      // localStorage state (which used to leak stale dots across sessions).
+      if (!editMode) return structuredClone(DEFAULTS);
       try {
         const raw = localStorage.getItem(STORAGE);
         if (!raw) return structuredClone(DEFAULTS);
@@ -142,7 +150,10 @@
         return Array.isArray(parsed) && parsed.length ? parsed : structuredClone(DEFAULTS);
       } catch { return structuredClone(DEFAULTS); }
     }
-    function saveDots() { localStorage.setItem(STORAGE, JSON.stringify(dots)); }
+    function saveDots() {
+      if (!editMode) return;
+      localStorage.setItem(STORAGE, JSON.stringify(dots));
+    }
     function findDot(id) { return dots.find(d => d.id === id); }
     function escHtml(s) {
       return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
