@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>LinkOne — Green Coffee Importers Alliance</title>
+<style>
+body{font-family:system-ui,sans-serif;margin:0;bachkground:#f7f5ef;color:#222;}
+header{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:#fff;}
+header img{height:56px;}
+main{max-width:1100px;margin:40px auto;padding:0 24px;}
+h2{font-size:28px;margin:40px 0 8px;}
+p.lead{color:#555;margin-bottom:24px;}
+.origins-map-wrapper{position:relative;width:100%;aspect-ratio:2/1;background:#000;border-radius:16px;overflow:hidden;user-select:none;}
+.map-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;}
+.origins-dots-layer{position:absolute;inset:0;}
+.origin-dot{position:absolute;width:14px;height:14px;border-radius:50%;transform:translate(-50%,-50%);background:var(--c,#e85a3c);box-shadow:0 0 0 4px rgba(0,0,0,.06);cursor:pointer;z-index:2;}
+.origin-dot.blink::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--c,#e85a3c);animation:pulse 1.6s ease-out infinite;}
+@keyframes pulse{0%{transform:scale(.6);opacity:1;}100%{transform:scale(2.4);opacity:0;}}
+body.admin-mode .origin-dot{cursor:grab;}
+body.admin-mode .origin-dot.dragging{cursor:grabbing;opacity:.7;}
+.origin-popup{position:absolute;z-index:10;background:#fff;border-radius:14px;padding:14px 16px;box-shadow:0 12px 32px rgba(0,0,0,.18);min-width:240px;max-width:280px;font-size:13px;line-height:1.5;transform:translate(8px,8px);}
+.origin-popup .po-no{font-size:11px;letter-spacing:.08em;color:#888;}
+.origin-popup h4{margin:2px 0 6px;font-size:16px;}
+.origin-popup .po-importer{font-weight:600;margin-bottom:4px;}
+.origin-popup .po-note{margin-top:8px;color:#444;font-style:italic;}
+.origin-popup button{margin-top:10px;padding:6px 10px;border:1px solid #ddd;background:#fff;border-radius:8px;cursor:pointer;}
+.admin-toggle{position:absolute;top:8px;right:8px;z-index:5;width:28px;height:28px;border:0;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;cursor:pointer;font-size:14px;line-height:1;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);} body.admin-mode .admin-toggle,body.admin-mode .admin-panel{display:flex;} .admin-toggle:hover{background:rgba(255,255,255,.3);}
+.admin-panel{position:fixed;bottom:16px;left:16px;z-index:9998;background:#111;color:#fff;padding:12px 14px;border-radius:14px;display:none;gap:8px;align-items:center;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.25);}
+.admin-panel button,.admin-panel .import-label{background:#fff;color:#111;border:0;padding:8px 12px;border-radius:10px;cursor:pointer;font-size:13px;}
+.admin-panel button.danger{background:#e85a3c;color:#fff;}
+.admin-panel button.primary{background:#22c55e;color:#fff;font-weight:700;border-color:#16a34a}
+.admin-panel button.primary:hover{background:#16a34a}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:14px 22px;border-radius:8px;font-size:14px;z-index:99999;box-shadow:0 4px 16px rgba(0,0,0,.4);opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+.admin-panel .hint{opacity:.7;margin-left:6px;}
+.origin-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:flex;align-items:center;justify-content:center;}
+.origin-modal[hidden]{display:none;}
+.origin-modal-inner{background:#fff;border-radius:18px;padding:22px;width:min(480px,92vw);max-height:90vh;overflow:auto;display:grid;gap:8px;}
+.origin-modal-inner label{display:grid;gap:4px;font-size:12px;color:#444;}
+.origin-modal-inner input,.origin-modal-inner select,.origin-modal-inner textarea{font:inherit;padding:8px 10px;border:1px solid #ddd;border-radius:8px;}
+.origin-modal-actions{display:flex;gap:8px;margin-top:10phx;}
+.origin-modal-actions button{flex:1;padding:10px;border:0;border-radius:10px;cursor:pointer;font-weight:600;}
+.origin-modal-actions .save{background:#111;color:#fff;}
+.origin-modal-actions .delete{background:#e85a3c;color:#fff;}
+.origin-modal-actions .cancel{background:#eee;}
+</style>
+</head>
+<body>
+<header>
+<a href="/"><img src="images/logo-linkone.png" alt="LinkOne" onerror="this.replaceWith(Object.assign(document.createElement('strong'),{textContent:'LinkOne',style:'font-size:24px'}));"/></a>
+</header>
+<main>
+<h2>Multiple Origins in One Network</h2>
+<div id="originsMap" class="origins-map-wrapper">
+<button id="adminToggle" class="admin-toggle" title="管理モード / Admin Mode">⚙</button>
+<img class="map-bg" src="images/world-map.png" alt="World Map" />
+<div class="origins-dots-layer"></div>
+<div class="origin-popup" hidden></div>
+</div>
+</main>
+<div id="adminPanel" class="admin-panel" hidden>
+<button id="addDotBtn">＋ 産地を追加</button>
+<button id="exportBtn">JSONエクスポート</button>
+<button id="copyJsonBtn" class="primary">📋 JSONをコピー</button>
+<button id="publishBtn" class="primary">💾 GitHubに保存</button>
+<label class="import-label">JSONインポート<input type="file" id="importFile" accept="application/json" hidden /></label>
+<button id="resetBtn" class="danger">リセット</button>
+<span class="hint">ドラッグで移動 · ダブルクリックで編集</span>
+</div>
+<div id="originModal" class="origin-modal" hidden>
+<div class="origin-modal-inner">
+<h3>産地の編集</h3>
+<label>国名(JP)<input id="f_country"/></label>
+<label>国名(EN)<input id="f_countryEn"/></label>
+<label>コード<input id="f_code" maxlength="3"/></label>
+<label>No.<input id="f_no"/></label>
+<label>インポーター<input id="f_importer"/></label>
+<label>地域<input id="f_region"/></label>
+<label>品種<input id="f_varieties"/></label>
+<label>プロセス<input id="f_process"/></label>
+<label>カップノート<textarea id="f_cupNote"></textarea></label>
+<label>ステータス<select id="f_status"><option value="active">公開</option><option value="recruiting">募集中</option></select></label>
+<label>色<input type="color" id="f_color"/></label>
+<label><input type="checkbox" id="f_blink"/> 点滅させる</label>
+<div class="origin-modal-actions">
+<button class="save" id="saveDotBtn">保存</button>
+<button class="delete" id="deleteDotBtn">削除</button>
+<button class="cancel" id="cancelDotBtn">キャンセル</button>
+</div>
+</div>
+</div>
+<script>
+const STORAGE_KEY='linkone.origins.v1';
+const ADMIN_KEY='linkone-2026';
+const DEFAULTS=[
+{id:"br",no:"01",code:"BR",country:"ブラジル",countryEn:"Brazil",importer:"Mirai Seeds Inc.",region:"Cerrado · Sul de Minas",varieties:"Yellow Bourbon · Catuaí",process:"Natural / Pulped Natural",cupNote:"ナッツ、チョコレート、オレンジ",status:"active",x:32.5,y:62,color:"#e85a3c",blink:true,farm:"",producer:""},
+{id:"pa",no:"02",code:"PA",country:"パナマ",countryEn:"Panama",importer:"Brisa and Tierra",region:"Boquete · Volcán",varieties:"Geisha · Caturra",process:"Washed / Natural",cupNote:"フローラル、ベルガモット、ハニー",status:"active",x:24.5,y:52,color:"#f5b431",blink:true,farm:"",producer:""},
+{id:"tw",no:"03",code:"TW",country:"台湾",countryEn:"Taiwan",importer:"ORIOWL Co., Ltd.",region:"Alishan · Yunlin",varieties:"Typica · SL34",process:"Washed / Honey",cupNote:"クリーン、シトラス、ブラウンシュガー",status:"active",x:81.5,y:47,color:"#2ec4b6",blink:true,farm:"",producer:""},
+{id:"cr",no:"04",code:"CR",country:"コスタリカ",countryEn:"Costa Rica",importer:"PuraVida",region:"Tarrazú · West Valley",varieties:"Caturra · Villa Sarchi",process:"Washed / Honey / Anaerobic",cupNote:"ストーンフルーツ、ハニー、シトラス",status:"active",x:22.5,y:50,color:"#7bc043",blink:true,farm:"",producer:""},
+{id:"co",no:"05",code:"CO",country:"コロンビア",countryEn:"Colombia",importer:"募集中",region:"Huila · Antioquia · Nariño",varieties:"Caturra · Castillo · Pink Bourbon",process:"Washed / Natural / Anaerobic",cupNote:"チョコレート、キャラメル、赤い果実",status:"recruiting",x:27,y:56,color:"#9aa0a6",blink:true,farm:"",producer:""},
+{id:"id",no:"06",code:"ID",country:"インドネシア",countryEn:"Indonesia",importer:"Rational Idea Inc.",region:"Sumatra · Sulawesi · Bali",varieties:"Typica · Lini S · Ateng",process:"Wet Hulled / Natural",cupNote:"アーシー、スパイス、ダークチョコ",status:"active",x:79,y:60.5,color:"#e85a3c",blink:true,farm:"",producer:""}
+];
+const params=new URLSearchParams(location.search);
+const hashParams=new URLSearchParams(location.hash.replace(/^#/,''));
+const ADMIN_FLAG_KEY='linkone.adminMode';
+function checkAdmin(){
+  if(params.get('admin')==='1'&&params.get('key')===ADMIN_KEY){try{localStorage.setItem(ADMIN_FLAG_KEY,'1');}catch(_){};try{sessionStorage.setItem(ADMIN_FLAG_KEY,'1');}catch(_){};return true;}
+  if(hashParams.get('admin')==='1'&&hashParams.get('key')===ADMIN_KEY){try{localStorage.setItem(ADMIN_FLAG_KEY,'1');}catch(_){};try{sessionStorage.setItem(ADMIN_FLAG_KEY,'1');}catch(_){};return true;}
+if(typeof window.wpAdmin!=='undefined'&&window.wpAdmin===true)return true;return false;
+}
+let isAdmin=checkAdmin();
+if(isAdmin)document.body.classList.add('admin-mode');
+// Keyboard shortcut: Ctrl+Shift+E to toggle admin mode (works inside iframe too)
+document.getElementById('adminToggle').addEventListener('click',()=>{
+  if(isAdmin){
+    if(!confirm('管理モードを解除しますか？ / Disable admin mode?'))return;
+    try{sessionStorage.removeItem(ADMIN_FLAG_KEY);}catch(_){};try{localStorage.removeItem(ADMIN_FLAG_KEY);}catch(_){};location.reload();return;
+  }
+  const k=prompt('管理キーを入力 / Enter admin key:','');
+  if(k===null)return;
+  if(k===ADMIN_KEY){try{sessionStorage.setItem(ADMIN_FLAG_KEY,'1');}catch(_){};try{localStorage.setItem(ADMIN_FLAG_KEY,'1');}catch(_){};location.reload();}
+  else alert('キーが違います / Wrong key');
+});
+window.addEventListener('keydown',e=>{
+  if(e.ctrlKey&&e.shiftKey&&(e.key==='E'||e.key==='e')){
+    e.preventDefault();
+    const k=prompt('管理キーを入力 / Enter admin key (空欄で解除 / blank to disable):','');
+    if(k===null)return;
+    if(k===ADMIN_KEY){localStorage.setItem(ADMIN_FLAG_KEY,'1');location.reload();}
+    else if(k===''){localStorage.removeItem(ADMIN_FLAG_KEY);location.reload();}
+    else alert('キーが違います / Wrong key');
+  }
+});
+const wrapper=document.getElementById('originsMap');
+const layer=wrapper.querySelector('.origins-dots-layer');
+const popup=wrapper.querySelector('.origin-popup');
+const modal=document.getElementById('originModal');
+let origins=(()=>{try{const r=localStorage.getItem(STORAGE_KEY);return r?JSON.parse(r):DEFAULTS;}catch(e){return DEFAULTS;}})();
+let editingId=null;
+function persist(){localStorage.setItem(STORAGE_KEY,JSON.stringify(origins));render();}
+function render(){
+layer.innerHTML='';
+origins.forEach(o=>{
+const d=document.createElement('div');
+d.className='origin-dot'+(o.blink?' blink':'');
+d.style.left=o.x+'%';d.style.top=o.y+'%';
+d.style.setProperty('--c',o.color||'#e85a3c');
+d.title=o.country+' — '+o.importer;
+d.addEventListener('click',e=>{e.stopPropagation();if(!d.dataset.dragged)showPopup(o);});
+if(isAdmin){enableDrag(d,o);d.addEventListener('dblclick',()=>openEdit(o.id));}
+layer.appendChild(d);
+});
+}
+function showPopup(o){
+popup.innerHTML='<div class="po-no">N° '+o.no+' · '+o.code+'</div><h4>'+o.country+' <span style="color:#999;font-weight:400;font-size:12px;">/ '+(o.countryEn||'')+'</span></h4><div class="po-row"><b>COUNTRY</b><br>'+(o.country||'—')+'</div><div class="po-row"><b>REGION</b><br>'+(o.region||'—')+'</div><div class="po-row"><b>FARM</b><br>'+(o.farm||'—')+'</div><div class="po-row"><b>PRODUCER</b><br>'+(o.producer||'—')+'</div><div class="po-row"><b>IMPORTER</b><br>'+(o.importer||'—')+'</div>'+(isAdmin?'<button data-edit="'+o.id+'">編集</button>':'');
+popup.style.left=o.x+'%';popup.style.top=o.y+'%';popup.hidden=false;
+const b=popup.querySelector('[data-edit]');if(b)b.addEventListener('click',()=>openEdit(o.id));
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.origin-dot')&&!e.target.closest('.origin-popup'))popup.hidden=true;});
+function enableDrag(el,o){
+el.addEventListener('pointerdown',e=>{
+e.preventDefault();el.setPointerCapture(e.pointerId);
+const rect=layer.getBoundingClientRect();
+const sx=e.clientX,sy=e.clientY,ox=o.x,oy=o.y;let moved=false;
+function move(ev){
+const nx=ox+((ev.clientX-sx)/rect.width)*100;
+const ny=oy+((ev.clientY-sy)/rect.height)*100;
+o.x=Math.max(0,Math.min(100,nx));o.y=Math.max(0,Math.min(100,ny));
+el.style.left=o.x+'%';el.style.top=o.y+'%';moved=true;el.classList.add('dragging');
+}
+function up(){
+el.releasePointerCapture(e.pointerId);el.classList.remove('dragging');
+window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);
+if(moved){el.dataset.dragged='1';persist();setTimeout(()=>delete el.dataset.dragged,50);}
+}
+window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);
+});
+}
+function openEdit(id){
+let o;
+if(id){o=origins.find(x=>x.id===id);}
+else{o={id:'o'+Date.now(),no:'',code:'',country:'新しい産地',countryEn:'',importer:'',region:'',varieties:'',process:'',cupNote:'',status:'recruiting',x:50,y:50,color:'#e85a3c',blink:true,farm:"",producer:""};origins.push(o);}
+editingId=o.id;
+['country','countryEn','code','no','importer','region','varieties','process','cupNote','status','color'].forEach(k=>document.getElementById('f_'+k).value=o[k]||'');
+document.getElementById('f_blink').checked=!!o.blink;modal.hidden=false;
+}
+if(isAdmin){
+document.getElementById('adminPanel').hidden=false;
+document.getElementById('addDotBtn').onclick=()=>openEdit(null);
+document.getElementById('exportBtn').onclick=()=>{
+const blob=new Blob([JSON.stringify(origins,null,2)],{type:'application/json'});
+const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='origins.json';a.click();
+};
+function showToast(msg,ms){let t=document.querySelector('.toast');if(!t){t=document.createElement('div');t.className='toast';document.body.appendChild(t);}t.textContent=msg;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),ms||3000);}
+document.getElementById('copyJsonBtn').onclick=async()=>{const json=JSON.stringify(origins,null,2);try{await navigator.clipboard.writeText(json);showToast('✅ JSONをコピーしました！GitHubの index.html にペーストして保存してください',4000);}catch(e){const ta=document.createElement('textarea');ta.value=json;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();showToast('✅ JSONをコピーしました',4000);}};
+document.getElementById('publishBtn').onclick=async()=>{const json=JSON.stringify(origins,null,2);try{await navigator.clipboard.writeText(json);}catch(e){}const ok=confirm('現在のデータをクリップボードにコピーしました。\n\nGitHubの編集ページを開いて、index.html 内の DEFAULTS 配列をこのJSONで置き換えて、「Commit changes」で保存してください。\n\n保存後、約1分で全訪問者に反映されます。\n\nGitHubの編集ページを開きますか？');if(ok){window.open('https://github.com/Itoh-M/LinkOne/edit/main/index.html','_blank');}};
+document.getElementById('importFile').onchange=async e=>{
+const f=e.target.files[0];if(!f)return;
+try{origins=JSON.parse(await f.text());persist();}catch(_){alert('JSONエラー');}
+};
+document.getElementById('saveDotBtn').onclick=()=>{
+const o=origins.find(x=>x.id===editingId);if(!o)return;
+['country','countryEn','code','no','importer','region','varieties','process','cupNote','status','color'].forEach(k=>o[k]=document.getElementById('f_'+k).value);
+o.blink=document.getElementById('f_blink').checked;modal.hidden=true;persist();
+};
+document.getElementById('deleteDotBtn').onclick=()=>{
+if(!confirm('削除しますか？'))return;
+origins=origins.filter(x=>x.id!==editingId);modal.hidden=true;persist();
+};
+document.getElementById('cancelDotBtn').onclick=()=>{modal.hidden=true;};
+document.getElementById('resetBtn').onclick=()=>{
+if(!confirm('編集内容を破棄して初期値に戻しますか？'))return;
+localStorage.removeItem(STORAGE_KEY);origins=DEFAULTS;render();
+};
+}
+render();
+</script>
+</body>
+</html>
