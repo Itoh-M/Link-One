@@ -61,11 +61,27 @@ if (!function_exists('linkone_enqueue_assets')) {
             $version
         );
 
+        // Sample-request config (window.LINKONE_SAMPLE_CONFIG). Loads BEFORE
+        // script.js so the sample-form module can read it on init.
+        $config_path = get_theme_file_path('/assets/js/sample-config.js');
+        if (file_exists($config_path)) {
+            wp_enqueue_script(
+                'linkone-sample-config',
+                get_theme_file_uri('/assets/js/sample-config.js'),
+                [],
+                $version,
+                [
+                    'in_footer' => true,
+                    'strategy'  => 'defer',
+                ]
+            );
+        }
+
         // Main LP script (footer + defer)
         wp_enqueue_script(
             'linkone-main',
             get_theme_file_uri('/assets/script.js'),
-            [],
+            file_exists($config_path) ? ['linkone-sample-config'] : [],
             $version,
             [
                 'in_footer' => true,

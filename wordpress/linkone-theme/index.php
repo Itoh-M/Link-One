@@ -37,7 +37,7 @@ if (!defined('ABSPATH')) { exit; }
       <nav class="site-nav">
         <a href="#concept"><span data-jp>コンセプト</span><span data-en>Concept</span></a>
         <a href="#mvv"><span data-jp>ミッション</span><span data-en>Mission</span></a>
-        <a href="#origins"><span data-jp>5つの産地</span><span data-en>Origins</span></a>
+        <a href="#origins"><span data-jp>6つの産地</span><span data-en>Origins</span></a>
         <a href="#activities"><span data-jp>活動</span><span data-en>Activities</span></a>
         <a href="#events"><span data-jp>イベント</span><span data-en>Event</span></a>
         <a href="#sample" class="nav-cta"><span data-jp>サンプル依頼</span><span data-en>Samples</span></a>
@@ -79,7 +79,7 @@ if (!defined('ABSPATH')) { exit; }
   <!-- ===== Members Strip ===== -->
   <section class="members-strip">
     <div class="container">
-      <p class="members-strip-lab"><span data-jp>参加インポーター</span><span data-en>Member Importers</span> · 5 / Growing Globally</p>
+      <p class="members-strip-lab"><span data-jp>参加インポーター</span><span data-en>Member Importers</span> · 6 / Growing Globally</p>
       <div class="members-strip-row">
         <a class="ms-cell" href="#origins" aria-label="Mirai Seeds — Brazil">
           <div class="ms-flag" aria-hidden="true">
@@ -116,6 +116,13 @@ if (!defined('ABSPATH')) { exit; }
           <div class="ms-name">Rational Idea</div>
           <div class="ms-country"><strong data-jp>インドネシア</strong><strong data-en>Indonesia</strong><span>ID · INDONESIA</span></div>
         </a>
+        <a class="ms-cell ms-cell--tba" href="#origins" aria-label="Colombia — Coming soon">
+          <div class="ms-flag" aria-hidden="true">
+            <svg viewBox="0 0 60 42" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="21" fill="#FCD116"/><rect y="21" width="60" height="10.5" fill="#003893"/><rect y="31.5" width="60" height="10.5" fill="#CE1126"/></svg>
+          </div>
+          <div class="ms-name"><span data-jp>準備中</span><span data-en>Coming Soon</span></div>
+          <div class="ms-country"><strong data-jp>コロンビア</strong><strong data-en>Colombia</strong><span>CO · COLOMBIA</span></div>
+        </a>
       </div>
     </div>
   </section>
@@ -128,17 +135,46 @@ if (!defined('ABSPATH')) { exit; }
       <h2 class="section-title" data-en>Origin specialists,<br>linked as one.</h2>
       <p class="lead" data-jp>LinkOne は、特定の国・地域の生豆を専門的に扱う輸入商社が集まったアライアンスです。各社が現地で築いた直接取引のルートを横につなぎ、自家焙煎事業者の皆さまに広い選択肢と高い透明性を提供します。</p>
       <p class="lead" data-en>LinkOne brings together specialty green coffee importers, each focused on a single country or region. By linking their direct-trade routes, we offer roasters a wider selection and unmatched transparency.</p>
-      <p class="lead" data-jp>現在は5社で構成し、ブラジル・パナマ・台湾・コスタリカ・インドネシアを擁します。今後、世界各国の専門商社の参加を予定しており、グローバルなネットワークへと拡大していきます。</p>
-      <p class="lead" data-en>Today, five member companies cover Brazil, Panama, Taiwan, Costa Rica, and Indonesia. Specialists from additional origins will join as the network grows globally.</p>
+      <p class="lead" data-jp>現在は6社で構成し、ブラジル・パナマ・台湾・コスタリカ・インドネシア・コロンビアを擁します。今後、世界各国の専門商社の参加を予定しており、グローバルなネットワークへと拡大していきます。</p>
+      <p class="lead" data-en>Today, six member companies cover Brazil, Panama, Taiwan, Costa Rica, Indonesia, and Colombia. Specialists from additional origins will join as the network grows globally.</p>
 
-      <div class="origins-network" data-origins-network aria-label="LinkOne origins network — 5産地のスター型ネットワーク図"></div>
+      <div class="origins-network" data-origins-network aria-label="LinkOne origins network — 6産地のスター型ネットワーク図"></div>
 
-      <dl class="concept-pills">
-        <div class="concept-pill"><dt data-jp>直接取引</dt><dt data-en>Direct Trade</dt><dd data-jp>すべて加盟各社が現地と直接取引するロットのみ。</dd><dd data-en>All lots are sourced through each member's direct relationships.</dd></div>
-        <div class="concept-pill"><dt data-jp>専門性と希少性</dt><dt data-en>Specialty &amp; Scarcity</dt><dd data-jp>特定産地に特化した専門性と、限定ロットの希少性。</dd><dd data-en>Origin-focused expertise and access to limited, scarce lots.</dd></div>
-        <div class="concept-pill"><dt data-jp>完全なトレーサビリティ</dt><dt data-en>Full Traceability</dt><dd data-jp>農園から焙煎所まで一気通貫で見える流通。</dd><dd data-en>Transparent supply from farm to roastery.</dd></div>
-        <div class="concept-pill"><dt data-jp>豊富なバリエーション</dt><dt data-en>Wide Variety</dt><dd data-jp>5産地 × 多品種・多精製の幅広いラインナップ。</dd><dd data-en>5 origins × diverse cultivars and processes.</dd></div>
-      </dl>
+      <h3 class="concept-pills__title"><span data-jp>LinkOne の 4 つの強み</span><span data-en>Four pillars of LinkOne</span></h3>
+      <ul class="concept-pills" role="list">
+        <li class="concept-pill">
+          <span class="concept-pill__num">01</span>
+          <div class="concept-pill__body">
+            <h4 class="concept-pill__title"><span data-jp>直接取引</span><span data-en>Direct Trade</span></h4>
+            <p class="concept-pill__desc" data-jp>加盟各社が現地と直接取引するロットのみを取り扱います。</p>
+            <p class="concept-pill__desc" data-en>Only lots sourced through each member's direct relationships.</p>
+          </div>
+        </li>
+        <li class="concept-pill">
+          <span class="concept-pill__num">02</span>
+          <div class="concept-pill__body">
+            <h4 class="concept-pill__title"><span data-jp>専門性と希少性</span><span data-en>Specialty &amp; Scarcity</span></h4>
+            <p class="concept-pill__desc" data-jp>特定産地に特化した専門性と、限定ロットの希少性。</p>
+            <p class="concept-pill__desc" data-en>Origin-focused expertise and access to scarce, limited lots.</p>
+          </div>
+        </li>
+        <li class="concept-pill">
+          <span class="concept-pill__num">03</span>
+          <div class="concept-pill__body">
+            <h4 class="concept-pill__title"><span data-jp>完全なトレーサビリティ</span><span data-en>Full Traceability</span></h4>
+            <p class="concept-pill__desc" data-jp>農園から焙煎所まで、一気通貫で見える流通。</p>
+            <p class="concept-pill__desc" data-en>Transparent supply from farm to roastery.</p>
+          </div>
+        </li>
+        <li class="concept-pill">
+          <span class="concept-pill__num">04</span>
+          <div class="concept-pill__body">
+            <h4 class="concept-pill__title"><span data-jp>豊富なバリエーション</span><span data-en>Wide Variety</span></h4>
+            <p class="concept-pill__desc" data-jp>6産地 × 多品種・多精製の幅広いラインナップ。</p>
+            <p class="concept-pill__desc" data-en>6 origins × diverse cultivars and processes.</p>
+          </div>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -146,8 +182,8 @@ if (!defined('ABSPATH')) { exit; }
   <section id="mvv" class="section">
     <div class="container">
       <p class="section-eyebrow">MISSION · VISION · VALUES</p>
-      <h2 class="section-title" data-jp>使命、目指す姿、<br>そして価値観。</h2>
-      <h2 class="section-title" data-en>Mission, vision,<br>and values.</h2>
+      <h2 class="section-title section-title--two-line" data-jp><span class="title-line">使命、目指す姿、</span><span class="title-line">そして価値観。</span></h2>
+      <h2 class="section-title section-title--two-line" data-en><span class="title-line">Mission, vision,</span><span class="title-line">and values.</span></h2>
       <p class="lead" data-jp>「競争から共創へ。」LinkOne の活動は、加盟各社が共有する思想の上に成り立っています。産地から焙煎所までの流通を、誠実に、持続可能に。</p>
       <p class="lead" data-en>"From competition, to co-creation." LinkOne is built on a shared philosophy among its members — an honest, sustainable supply chain from origin to roastery.</p>
 
@@ -217,8 +253,8 @@ if (!defined('ABSPATH')) { exit; }
   <section id="origins" class="section section--map">
     <div class="container">
       <p class="section-eyebrow">ORIGINS</p>
-      <h2 class="section-title" data-jp>5つの産地、ひとつのネットワーク。</h2>
-      <h2 class="section-title" data-en>Five origins, one network.</h2>
+      <h2 class="section-title" data-jp>6つの産地、ひとつのネットワーク。</h2>
+      <h2 class="section-title" data-en>Six origins, one network.</h2>
       <p class="lead" data-jp>地図上のピンをクリックして、各産地の専門商社・取扱品種・主要プロセスをご覧ください。今後、参加インポーターの増加に伴い、産地は世界各国に拡大していきます。</p>
       <p class="lead" data-en>Click any pin to see the importer, varieties, and processes for each origin. As more partners join, our network will continue to expand globally.</p>
 
@@ -414,80 +450,76 @@ if (!defined('ABSPATH')) { exit; }
       <p class="section-eyebrow">SAMPLE REQUEST</p>
       <h2 class="section-title" data-jp>サンプル依頼。</h2>
       <h2 class="section-title" data-en>Request samples.</h2>
-      <p class="lead" data-jp>LinkOne 加盟各社のサンプル豆を、自家焙煎事業者の皆さまへお送りします。<br>初めての方はユーザー登録、登録済みの方はログインの上、サンプルをご依頼ください。</p>
-      <p class="lead" data-en>We send sample lots from LinkOne members to qualified roasters. Register or log in to submit your request.</p>
+      <p class="lead" data-jp>LinkOne 加盟各社のサンプル豆を、自家焙煎事業者の皆さまへお送りします。サンプルをご希望の加盟各社にチェックを入れて、必要事項をご記入の上、ご送信ください。</p>
+      <p class="lead" data-en>Receive sample lots from LinkOne members. Select the members you'd like to receive samples from, fill in your details, and submit.</p>
 
-      <div class="auth-tabs" role="tablist">
-        <button class="auth-tab is-active" data-tab="login" role="tab"><span data-jp>ログイン</span><span data-en>Log in</span></button>
-        <button class="auth-tab" data-tab="register" role="tab"><span data-jp>新規ユーザー登録</span><span data-en>Register</span></button>
-      </div>
-
-      <form class="auth-form is-active" data-form="login" autocomplete="on">
-        <div class="form-row">
-          <label><span data-jp>メールアドレス</span><span data-en>Email</span>
-            <input type="email" name="email" required autocomplete="email" />
-          </label>
-        </div>
-        <div class="form-row">
-          <label><span data-jp>パスワード</span><span data-en>Password</span>
-            <input type="password" name="password" required autocomplete="current-password" />
-          </label>
-        </div>
-        <button type="submit" class="btn btn--primary btn--block"><span data-jp>ログイン</span><span data-en>Log in</span></button>
-      </form>
-
-      <form class="auth-form" data-form="register" autocomplete="on">
-        <div class="form-grid">
-          <label><span data-jp>氏名</span><span data-en>Name</span> <span class="req">*</span>
-            <input type="text" name="name" required autocomplete="name" placeholder="例) 山田 太郎" />
-          </label>
-          <label><span data-jp>会社名 / 店舗名 / 屋号</span><span data-en>Company / Roastery</span> <span class="req">*</span>
-            <input type="text" name="company" required autocomplete="organization" placeholder="例) Mirai Coffee Roasters" />
-          </label>
-          <label class="form-row--full"><span data-jp>住所</span><span data-en>Address</span> <span class="req">*</span>
-            <input type="text" name="address" required autocomplete="street-address" placeholder="例) 東京都千代田区丸の内1-1-1" />
-          </label>
-          <label><span data-jp>電話番号</span><span data-en>Phone</span> <span class="req">*</span>
-            <input type="tel" name="phone" required autocomplete="tel" placeholder="例) 03-1234-5678" />
-          </label>
-          <label><span data-jp>メールアドレス</span><span data-en>Email</span> <span class="req">*</span>
-            <input type="email" name="email" required autocomplete="email" />
-          </label>
-          <label><span data-jp>パスワード</span><span data-en>Password</span> <span class="req">*</span>
-            <input type="password" name="password" required minlength="6" autocomplete="new-password" />
-          </label>
-          <label><span data-jp>パスワード(確認)</span><span data-en>Password (confirm)</span> <span class="req">*</span>
-            <input type="password" name="passwordConfirm" required minlength="6" autocomplete="new-password" />
-          </label>
-        </div>
-        <label class="check">
-          <input type="checkbox" name="agree" required />
-          <span data-jp>個人情報の取扱いに同意します</span><span data-en>I agree to the privacy policy</span>
-        </label>
-        <button type="submit" class="btn btn--primary btn--block"><span data-jp>登録してサンプル依頼へ進む</span><span data-en>Register and continue</span></button>
-      </form>
-
-      <div class="sample-panel" data-sample-panel hidden>
-        <div class="logged-in-bar">
-          <span><span data-jp>ログイン中:</span><span data-en>Logged in as:</span> <strong data-user-name></strong> / <span data-user-company></span></span>
-          <button type="button" class="link-btn" data-logout><span data-jp>ログアウト</span><span data-en>Log out</span></button>
-        </div>
-        <h3 class="sub-title" data-jp>サンプル豆を選択</h3>
-        <h3 class="sub-title" data-en>Select sample origins</h3>
-        <form class="sample-form" data-form="sample">
-          <div class="sample-grid">
-            <label class="sample-pick"><input type="checkbox" name="origins" value="ブラジル / Mirai Seeds" /><span>🇧🇷 ブラジル — Mirai Seeds</span></label>
-            <label class="sample-pick"><input type="checkbox" name="origins" value="パナマ / Brisa and Tierra" /><span>🇵🇦 パナマ — Brisa and Tierra</span></label>
-            <label class="sample-pick"><input type="checkbox" name="origins" value="台湾 / ORIOWL" /><span>🇹🇼 台湾 — ORIOWL</span></label>
-            <label class="sample-pick"><input type="checkbox" name="origins" value="コスタリカ / PuraVida" /><span>🇨🇷 コスタリカ — PuraVida</span></label>
-            <label class="sample-pick"><input type="checkbox" name="origins" value="インドネシア / Rational Idea" /><span>🇮🇩 インドネシア — Rational Idea</span></label>
+      <form class="sample-request-form" data-form="sample-request" autocomplete="on" novalidate>
+        <fieldset class="sample-fieldset">
+          <legend class="sample-legend">
+            <span class="sample-legend__num">1</span>
+            <span class="sample-legend__text"><span data-jp>サンプルを依頼する加盟各社を選択</span><span data-en>Select members to request from</span></span>
+          </legend>
+          <p class="sample-hint" data-jp>複数選択可。チェックされた各社のメールアドレス宛にご依頼が送信されます。</p>
+          <p class="sample-hint" data-en>Select one or more. Your request will be sent to each selected member.</p>
+          <div class="sample-grid" data-sample-origins>
+            <!-- populated from script.js using LINKONE_SAMPLE_CONFIG -->
           </div>
-          <label class="form-row--full"><span data-jp>ご要望・備考</span><span data-en>Notes</span>
-            <textarea name="note" rows="4" placeholder="ご希望のロット、用途、納期など"></textarea>
+        </fieldset>
+
+        <fieldset class="sample-fieldset">
+          <legend class="sample-legend">
+            <span class="sample-legend__num">2</span>
+            <span class="sample-legend__text"><span data-jp>ご連絡先のご記入</span><span data-en>Your contact details</span></span>
+          </legend>
+          <div class="form-grid">
+            <label><span class="lab"><span data-jp>氏名</span><span data-en>Name</span> <span class="req">*</span></span>
+              <input type="text" name="name" required autocomplete="name" placeholder="例) 山田 太郎" />
+            </label>
+            <label><span class="lab"><span data-jp>会社名 / 店舗名 / 屋号</span><span data-en>Company / Roastery</span> <span class="req">*</span></span>
+              <input type="text" name="company" required autocomplete="organization" placeholder="例) Mirai Coffee Roasters" />
+            </label>
+            <label><span class="lab"><span data-jp>電話番号</span><span data-en>Phone</span> <span class="req">*</span></span>
+              <input type="tel" name="phone" required autocomplete="tel" placeholder="例) 03-1234-5678" />
+            </label>
+            <label><span class="lab"><span data-jp>メールアドレス</span><span data-en>Email</span> <span class="req">*</span></span>
+              <input type="email" name="email" required autocomplete="email" placeholder="example@example.com" />
+            </label>
+            <label><span class="lab"><span data-jp>郵便番号</span><span data-en>Postal code</span> <span class="req">*</span></span>
+              <input type="text" name="postal" required autocomplete="postal-code" inputmode="numeric" pattern="[0-9\-]{3,8}" placeholder="例) 100-0001" />
+            </label>
+            <label class="form-row--full"><span class="lab"><span data-jp>住所</span><span data-en>Address</span> <span class="req">*</span></span>
+              <input type="text" name="address" required autocomplete="street-address" placeholder="例) 東京都千代田区丸の内1-1-1" />
+            </label>
+            <label class="form-row--full"><span class="lab"><span data-jp>備考(ご要望・希望ロット・希望納期など)</span><span data-en>Notes (optional)</span></span>
+              <textarea name="note" rows="4" placeholder="ご希望のロット、用途、納期など"></textarea>
+            </label>
+          </div>
+          <label class="check">
+            <input type="checkbox" name="agree" required />
+            <span data-jp>個人情報の取扱いに同意します</span><span data-en>I agree to the privacy policy</span>
           </label>
-          <button type="submit" class="btn btn--primary btn--block"><span data-jp>サンプルを依頼する</span><span data-en>Submit request</span></button>
+        </fieldset>
+
+        <button type="submit" class="btn btn--primary btn--block btn--xl"><span data-jp>サンプル依頼を送信</span><span data-en>Submit request</span></button>
+        <p class="sample-note" data-jp>送信後、お使いのメールアプリが起動し、選択された加盟各社宛のメールが作成されます。 LinkOne 事務局には自動的に BCC されます。</p>
+        <p class="sample-note" data-en>On submit, your mail app will open with a message addressed to the selected members. The LinkOne office is automatically BCC'd.</p>
+      </form>
+
+      <!-- Admin: edit each company's destination email. Reach via ?admin=1 -->
+      <aside class="sample-admin" data-sample-admin hidden>
+        <header class="sample-admin__head">
+          <h3><span data-jp>送信先メールアドレス設定</span><span data-en>Recipient emails (admin)</span></h3>
+          <p data-jp>各社のメールアドレスを編集できます。保存内容はブラウザに保存されます(<code>localStorage</code>)。永続化するには <code>js/sample-config.js</code> を編集してください。</p>
+          <p data-en>Edit each member's destination email. Saved per-browser via <code>localStorage</code>. For permanent values, edit <code>js/sample-config.js</code>.</p>
+        </header>
+        <form class="sample-admin__form" data-sample-admin-form>
+          <!-- rows injected by script -->
         </form>
-      </div>
+        <div class="sample-admin__actions">
+          <button type="button" class="btn btn--ghost" data-admin-export><span data-jp>JSONでダウンロード</span><span data-en>Download JSON</span></button>
+          <button type="button" class="btn btn--ghost" data-admin-reset><span data-jp>初期値に戻す</span><span data-en>Reset to defaults</span></button>
+        </div>
+      </aside>
 
       <div class="form-msg" data-msg role="status" aria-live="polite"></div>
     </div>
@@ -505,7 +537,7 @@ if (!defined('ABSPATH')) { exit; }
         <h4>Navigate</h4>
         <a href="#concept"><span data-jp>コンセプト</span><span data-en>Concept</span></a>
         <a href="#mvv"><span data-jp>ミッション</span><span data-en>Mission</span></a>
-        <a href="#origins"><span data-jp>5つの産地</span><span data-en>Origins</span></a>
+        <a href="#origins"><span data-jp>6つの産地</span><span data-en>Origins</span></a>
         <a href="#activities"><span data-jp>活動</span><span data-en>Activities</span></a>
         <a href="#events"><span data-jp>イベント</span><span data-en>Event</span></a>
       </div>
@@ -516,6 +548,7 @@ if (!defined('ABSPATH')) { exit; }
         <a href="#origins">Taiwan — ORIOWL</a>
         <a href="#origins">Costa Rica — PuraVida</a>
         <a href="#origins">Indonesia — Rational Idea</a>
+        <a href="#origins">Colombia — Coming Soon</a>
       </div>
       <div class="footer-links">
         <h4>Contact</h4>

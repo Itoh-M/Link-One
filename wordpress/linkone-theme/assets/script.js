@@ -125,6 +125,10 @@
         title: 'インドネシア — Rational Idea',
         description: 'Rational Idea は Asosiasi Kopi Indonesia 日本総代理店。スマトラ・ジャワなど多島の個性豊かな生豆を取り扱います。',
         linkUrl: '#origins', imageUrl: '' },
+      { id: 'colombia',  x: 24,   y: 50, color: '#FCD116', label: 'Colombia',   bottomLayer: true,
+        title: 'コロンビア — Coming Soon',
+        description: '6社目の加盟インポーターとして、コロンビアの専門商社が間もなく加わります。詳細は決定次第、本ページでご案内します。',
+        linkUrl: '#origins', imageUrl: '' },
     ];
 
     // Edit mode requires BOTH:
@@ -369,134 +373,195 @@
     render();
   })();
 
-  // ---------- Auth tabs ----------
-  const tabs = document.querySelectorAll('.auth-tab');
-  const forms = document.querySelectorAll('.auth-form');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.toggle('is-active', t === tab));
-      const target = tab.dataset.tab;
-      forms.forEach(f => f.classList.toggle('is-active', f.dataset.form === target));
-    });
-  });
+  // ---------- Sample Request (mailto-based + admin panel) ----------
+  (() => {
+    const cfg = window.LINKONE_SAMPLE_CONFIG;
+    if (!cfg) return;
 
-  // ---------- "User registration" demo (localStorage) ----------
-  const STORAGE_USERS = 'linkone:users';
-  const STORAGE_SESSION = 'linkone:session';
-  const STORAGE_REQUESTS = 'linkone:sample-requests';
-
-  const loadUsers = () => JSON.parse(localStorage.getItem(STORAGE_USERS) || '[]');
-  const saveUsers = u => localStorage.setItem(STORAGE_USERS, JSON.stringify(u));
-  const loadSession = () => JSON.parse(localStorage.getItem(STORAGE_SESSION) || 'null');
-  const saveSession = s => localStorage.setItem(STORAGE_SESSION, JSON.stringify(s));
-  const clearSession = () => localStorage.removeItem(STORAGE_SESSION);
-
-  const msgEl = document.querySelector('[data-msg]');
-  const samplePanel = document.querySelector('[data-sample-panel]');
-  const userNameEl = document.querySelector('[data-user-name]');
-  const userCompanyEl = document.querySelector('[data-user-company]');
-
-  function showMsg(text, type) {
-    if (!msgEl) return;
-    msgEl.textContent = text;
-    msgEl.classList.remove('is-success', 'is-error');
-    msgEl.classList.add(type === 'error' ? 'is-error' : 'is-success');
-    msgEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    clearTimeout(showMsg._t);
-    showMsg._t = setTimeout(() => msgEl.classList.remove('is-success','is-error'), 6000);
-  }
-
-  function reflectSession() {
-    const session = loadSession();
-    const tabsEl = document.querySelector('.auth-tabs');
-    if (session) {
-      tabsEl?.setAttribute('hidden', '');
-      forms.forEach(f => f.classList.remove('is-active'));
-      samplePanel.removeAttribute('hidden');
-      userNameEl.textContent = session.name;
-      userCompanyEl.textContent = session.company;
-    } else {
-      tabsEl?.removeAttribute('hidden');
-      samplePanel.setAttribute('hidden', '');
-    }
-  }
-
-  // Register
-  const registerForm = document.querySelector('[data-form="register"]');
-  registerForm?.addEventListener('submit', e => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(registerForm).entries());
-    if (data.password !== data.passwordConfirm) {
-      showMsg('パスワードが一致しません。', 'error');
-      return;
-    }
-    const users = loadUsers();
-    if (users.some(u => u.email === data.email)) {
-      showMsg('このメールアドレスは既に登録されています。', 'error');
-      return;
-    }
-    // NOTE: This is a demo. In production, hash passwords on a server. Never store plaintext.
-    const user = {
-      name: data.name,
-      company: data.company,
-      address: data.address,
-      phone: data.phone,
-      email: data.email,
-      password: data.password, // demo only
-      createdAt: new Date().toISOString(),
+    const STORAGE_EMAILS = 'linkone:sample-emails-v1';
+    const isJP = () => (document.body.dataset.lang || 'jp') === 'jp';
+    const msgEl = document.querySelector('[data-msg]');
+    const showMsg = (text, type) => {
+      if (!msgEl) return;
+      msgEl.textContent = text;
+      msgEl.classList.remove('is-success', 'is-error');
+      msgEl.classList.add(type === 'error' ? 'is-error' : 'is-success');
+      msgEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      clearTimeout(showMsg._t);
+      showMsg._t = setTimeout(() => msgEl.classList.remove('is-success', 'is-error'), 8000);
     };
-    users.push(user);
-    saveUsers(users);
-    saveSession({ email: user.email, name: user.name, company: user.company });
-    registerForm.reset();
-    showMsg('登録が完了しました。続けてサンプル依頼へお進みください。', 'success');
-    reflectSession();
-  });
 
-  // Login
-  const loginForm = document.querySelector('[data-form="login"]');
-  loginForm?.addEventListener('submit', e => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(loginForm).entries());
-    const user = loadUsers().find(u => u.email === data.email && u.password === data.password);
-    if (!user) {
-      showMsg('メールアドレスまたはパスワードが違います。', 'error');
-      return;
+    // Merge config defaults with admin overrides from localStorage
+    function loadCompanies() {
+      let overrides = {};
+      try {
+        overrides = JSON.parse(localStorage.getItem(STORAGE_EMAILS) || '{}') || {};
+      } catch { overrides = {}; }
+      return cfg.companies.map(c => ({
+        ...c,
+        email: (overrides[c.id] != null ? overrides[c.id] : c.email) || ''
+      }));
     }
-    saveSession({ email: user.email, name: user.name, company: user.company });
-    loginForm.reset();
-    showMsg(`${user.name} さん、ログインしました。`, 'success');
-    reflectSession();
-  });
+    function saveOverrides(map) {
+      localStorage.setItem(STORAGE_EMAILS, JSON.stringify(map));
+    }
+    function clearOverrides() {
+      localStorage.removeItem(STORAGE_EMAILS);
+    }
 
-  // Logout
-  document.querySelector('[data-logout]')?.addEventListener('click', () => {
-    clearSession();
-    showMsg('ログアウトしました。', 'success');
-    reflectSession();
-  });
+    // ----- Render checkbox grid for origins -----
+    const grid = document.querySelector('[data-sample-origins]');
+    function renderOrigins() {
+      if (!grid) return;
+      const companies = loadCompanies();
+      grid.innerHTML = companies.map(c => {
+        const country = `<strong>${c.flagEmoji ? c.flagEmoji + ' ' : ''}<span data-jp>${escHtml(c.country_jp)}</span><span data-en>${escHtml(c.country_en)}</span></strong>`;
+        const sub = c.comingSoon
+          ? `<small><span data-jp>準備中 — 近日公開</span><span data-en>Coming soon</span></small>`
+          : `<small>${escHtml(c.company || '')}</small>`;
+        const disabled = c.comingSoon || !c.email ? 'disabled' : '';
+        const note = c.comingSoon
+          ? ''
+          : (!c.email ? `<span class="sample-pick__warn"><span data-jp>送信先未設定</span><span data-en>Email not set</span></span>` : '');
+        return `<label class="sample-pick${disabled ? ' is-disabled' : ''}" data-id="${c.id}">
+          <input type="checkbox" name="origins" value="${c.id}" ${disabled} />
+          <span class="sample-pick__body">
+            ${country}
+            ${sub}
+            ${note}
+          </span>
+        </label>`;
+      }).join('');
+    }
+    function escHtml(s) {
+      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
 
-  // Sample request
-  const sampleForm = document.querySelector('[data-form="sample"]');
-  sampleForm?.addEventListener('submit', e => {
-    e.preventDefault();
-    const session = loadSession();
-    if (!session) { showMsg('ログインが必要です。', 'error'); return; }
-    const fd = new FormData(sampleForm);
-    const origins = fd.getAll('origins');
-    if (origins.length === 0) { showMsg('依頼するサンプルを1つ以上選択してください。', 'error'); return; }
-    const note = fd.get('note') || '';
-    const reqs = JSON.parse(localStorage.getItem(STORAGE_REQUESTS) || '[]');
-    reqs.push({
-      user: session,
-      origins,
-      note,
-      requestedAt: new Date().toISOString(),
+    // ----- Submit handler: build mailto: link -----
+    const form = document.querySelector('[data-form="sample-request"]');
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const ids = fd.getAll('origins');
+      if (!ids.length) {
+        showMsg(isJP() ? '依頼する加盟各社を1つ以上選択してください。' : 'Please select at least one member.', 'error');
+        return;
+      }
+      const required = ['name', 'company', 'phone', 'email', 'postal', 'address'];
+      for (const k of required) {
+        if (!String(fd.get(k) || '').trim()) {
+          showMsg(isJP() ? '必須項目を全てご記入ください。' : 'Please fill in all required fields.', 'error');
+          return;
+        }
+      }
+      if (!fd.get('agree')) {
+        showMsg(isJP() ? '個人情報の取扱いに同意の上、送信してください。' : 'Please agree to the privacy policy.', 'error');
+        return;
+      }
+      const companies = loadCompanies();
+      const selected = ids.map(id => companies.find(c => c.id === id)).filter(Boolean);
+      const recipients = selected.map(c => c.email).filter(Boolean);
+      if (recipients.length === 0) {
+        showMsg(isJP()
+          ? '選択された加盟各社のメールアドレスが未設定です。サイト管理者へお問い合わせください。'
+          : 'No destination email set for the selected members. Please contact the site admin.', 'error');
+        return;
+      }
+
+      const subject = `[LinkOne] サンプル依頼 / ${fd.get('company')} 様`;
+      const lines = [
+        'LinkOne 加盟各社 御中',
+        '',
+        '下記のとおり、サンプルを依頼させていただきます。',
+        '',
+        '──────────────────────────',
+        `■ ご依頼先: ${selected.map(c => `${c.country_jp} / ${c.company || '(TBD)'}`).join(', ')}`,
+        '──────────────────────────',
+        '',
+        '【ご依頼者様情報】',
+        `氏名      : ${fd.get('name')}`,
+        `会社・屋号: ${fd.get('company')}`,
+        `電話番号  : ${fd.get('phone')}`,
+        `メール    : ${fd.get('email')}`,
+        `郵便番号  : ${fd.get('postal')}`,
+        `住所      : ${fd.get('address')}`,
+        '',
+        '【備考】',
+        String(fd.get('note') || '(なし)'),
+        '',
+        '──────────────────────────',
+        '本メールは LinkOne サイトのサンプル依頼フォームから送信されています。',
+        'LinkOne 事務局 (contact@miraiseeds.com) は BCC にて受信しています。',
+      ];
+      const body = lines.join('\r\n');
+
+      const params = new URLSearchParams();
+      params.set('subject', subject);
+      params.set('body', body);
+      if (cfg.bcc) params.set('bcc', cfg.bcc);
+      // RFC 6068: comma-separated `to` list, percent-encoded.
+      const to = recipients.map(encodeURIComponent).join(',');
+      const href = `mailto:${to}?${params.toString().replace(/\+/g, '%20')}`;
+
+      // Open the user's mail client.
+      window.location.href = href;
+      showMsg(isJP()
+        ? 'メールアプリを起動しました。内容をご確認の上、送信してください。'
+        : 'Your email client has opened. Please review and send.', 'success');
     });
-    localStorage.setItem(STORAGE_REQUESTS, JSON.stringify(reqs));
-    sampleForm.reset();
-    showMsg('サンプル依頼を受け付けました。担当者よりご連絡いたします。', 'success');
-  });
 
-  reflectSession();
+    // ----- Admin panel (?admin=1) -----
+    const adminEl = document.querySelector('[data-sample-admin]');
+    const adminForm = document.querySelector('[data-sample-admin-form]');
+    const isAdmin = new URLSearchParams(location.search).has('admin');
+    function renderAdmin() {
+      if (!adminEl || !adminForm) return;
+      const companies = loadCompanies();
+      adminForm.innerHTML = companies.map(c => `
+        <label class="sample-admin__row">
+          <span class="sample-admin__label">${c.flagEmoji || ''} ${escHtml(c.country_jp)} / ${escHtml(c.company || '(TBD)')}${c.comingSoon ? ' <em>(準備中)</em>' : ''}</span>
+          <input type="email" name="${c.id}" value="${escHtml(c.email || '')}" placeholder="example@example.com" />
+        </label>
+      `).join('');
+    }
+    if (isAdmin && adminEl) {
+      adminEl.removeAttribute('hidden');
+      renderAdmin();
+      adminForm?.addEventListener('input', () => {
+        const fd = new FormData(adminForm);
+        const map = {};
+        for (const c of cfg.companies) {
+          const v = String(fd.get(c.id) || '').trim();
+          if (v) map[c.id] = v;
+        }
+        saveOverrides(map);
+        renderOrigins();
+      });
+      document.querySelector('[data-admin-export]')?.addEventListener('click', () => {
+        const companies = loadCompanies();
+        const out = {
+          bcc: cfg.bcc,
+          companies: companies.map(c => ({
+            id: c.id, country_jp: c.country_jp, country_en: c.country_en,
+            company: c.company, comingSoon: !!c.comingSoon, email: c.email
+          }))
+        };
+        const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'linkone-sample-config.json';
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+      });
+      document.querySelector('[data-admin-reset]')?.addEventListener('click', () => {
+        if (!confirm('編集内容を破棄して初期値(sample-config.js)に戻します。よろしいですか?')) return;
+        clearOverrides();
+        renderAdmin();
+        renderOrigins();
+      });
+    }
+
+    renderOrigins();
+  })();
 })();
