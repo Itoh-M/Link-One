@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Disallow crawling of sensitive paths
+Disallow: /source/
+Disallow: /wordpress/
+Disallow: /.github/
+Disallow: /node_modules/
+
+# Allow search engines to index the main page
+Allow: /index.html
+Allow: /styles.css
+Allow: /script.js
+Allow: /favicon.svg
+Allow: /manifest.json
+
+# Sitemap (if implemented)
+# Sitemap: https://link-one.co.jp/sitemap.xml
