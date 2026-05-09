@@ -433,9 +433,9 @@
       return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     }
 
-    // ----- Submit handler: build mailto: link -----
+    // ----- Submit handler: Send via REST API -----
     const form = document.querySelector('[data-form="sample-request"]');
-    form?.addEventListener('submit', (e) => {
+    form?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const fd = new FormData(form);
       const ids = fd.getAll('origins');
@@ -464,46 +464,50 @@
         return;
       }
 
-      const subject = `[LinkOne] サンプル依頼 / ${fd.get('company')} 様`;
-      const lines = [
-        'LinkOne 加盟各社 御中',
-        '',
-        '下記のとおり、サンプルを依頼させていただきます。',
-        '',
-        '──────────────────────────',
-        `■ ご依頼先: ${selected.map(c => `${c.country_jp} / ${c.company || '(TBD)'}`).join(', ')}`,
-        '──────────────────────────',
-        '',
-        '【ご依頼者様情報】',
-        `氏名      : ${fd.get('name')}`,
-        `会社・屋号: ${fd.get('company')}`,
-        `電話番号  : ${fd.get('phone')}`,
-        `メール    : ${fd.get('email')}`,
-        `郵便番号  : ${fd.get('postal')}`,
-        `住所      : ${fd.get('address')}`,
-        '',
-        '【備考】',
-        String(fd.get('note') || '(なし)'),
-        '',
-        '──────────────────────────',
-        '本メールは LinkOne サイトのサンプル依頼フォームから送信されています。',
-        'LinkOne 事務局 (contact@miraiseeds.com) は BCC にて受信しています。',
-      ];
-      const body = lines.join('\r\n');
+      // Disable submit button while sending
+      const submitBtn = form.querySelector('[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = isJP() ? '送信中...' : 'Sending...';
 
-      const params = new URLSearchParams();
-      params.set('subject', subject);
-      params.set('body', body);
-      if (cfg.bcc) params.set('bcc', cfg.bcc);
-      // RFC 6068: comma-separated `to` list, percent-encoded.
-      const to = recipients.map(encodeURIComponent).join(',');
-      const href = `mailto:${to}?${params.toString().replace(/\+/g, '%20')}`;
+      try {
+        const response = await fetch('/wp-json/linkone/v1/send-sample-request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: fd.get('name'),
+            company: fd.get('company'),
+            phone: fd.get('phone'),
+            email: fd.get('email'),
+            postal: fd.get('postal'),
+            address: fd.get('address'),
+            note: fd.get('note') || '',
+            origins: selected.map(c => `${c.country_jp} / ${c.company || '(TBD)'}`),
+            recipients: recipients
+          })
+        });
 
-      // Open the user's mail client.
-      window.location.href = href;
-      showMsg(isJP()
-        ? 'メールアプリを起動しました。内容をご確認の上、送信してください。'
-        : 'Your email client has opened. Please review and send.', 'success');
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || (isJP() ? 'メール送信に失敗しました。' : 'Failed to send email.'));
+        }
+
+        showMsg(isJP()
+          ? 'サンプル依頼が送信されました。ありがとうございます。'
+          : 'Your sample request has been sent. Thank you!', 'success');
+
+        form.reset();
+        renderOrigins();
+      } catch (err) {
+        console.error('Sample request error:', err);
+        showMsg(isJP()
+          ? `エラー: ${err.message || 'メール送信に失敗しました。'}`
+          : `Error: ${err.message || 'Failed to send email.'}`, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
     });
 
     // ----- Admin panel (?admin=1) -----
@@ -559,5 +563,77 @@
     }
 
     renderOrigins();
+  })();
+
+  // ---------- Partnership Inquiry Form ----------
+  (() => {
+    const form = document.querySelector('[data-form="partnership-inquiry"]');
+    if (!form) return;
+
+    const msgEl = document.querySelector('[data-partnership-msg]');
+    function showMsg(text, type = 'info') {
+      msgEl.textContent = text;
+      msgEl.className = `form-msg is-${type}`;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+
+      const required = ['contact_name', 'company_name', 'origin_focus', 'phone', 'email', 'background'];
+      for (const field of required) {
+        if (!String(fd.get(field) || '').trim()) {
+          showMsg(isJP() ? '必須項目を全てご記入ください。' : 'Please fill in all required fields.', 'error');
+          return;
+        }
+      }
+
+      if (!fd.get('agree_privacy')) {
+        showMsg(isJP() ? '個人情報の取扱いに同意してください。' : 'Please agree to the privacy policy.', 'error');
+        return;
+      }
+
+      const submitBtn = form.querySelector('[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = isJP() ? '送信中...' : 'Sending...';
+
+      try {
+        const response = await fetch('/wp-json/linkone/v1/send-partnership-inquiry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contact_name: fd.get('contact_name'),
+            company_name: fd.get('company_name'),
+            origin_focus: fd.get('origin_focus'),
+            phone: fd.get('phone'),
+            email: fd.get('email'),
+            website: fd.get('website') || '',
+            background: fd.get('background'),
+            inquiry_details: fd.get('inquiry_details') || '',
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || (isJP() ? 'お問い合わせ送信に失敗しました。' : 'Failed to send inquiry.'));
+        }
+
+        showMsg(isJP()
+          ? 'お問い合わせが送信されました。ありがとうございます。'
+          : 'Your inquiry has been sent. Thank you!', 'success');
+
+        form.reset();
+      } catch (err) {
+        console.error('Partnership inquiry error:', err);
+        showMsg(isJP()
+          ? `エラー: ${err.message || 'お問い合わせ送信に失敗しました。'}`
+          : `Error: ${err.message || 'Failed to send inquiry.'}`, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    });
   })();
 })();
