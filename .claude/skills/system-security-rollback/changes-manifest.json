@@ -1,0 +1,112 @@
+{
+  "metadata": {
+    "applied_at": "2026-06-14T11:46:00Z",
+    "os": "Ubuntu 24.04.4 LTS (Noble Numbat)",
+    "kernel": "6.18.5",
+    "description": "セキュリティ強化(ハードニング)による変更の記録。各項目はロールバック可能。"
+  },
+  "changes": [
+    {
+      "id": "sudoers_nopasswd",
+      "title": "NOPASSWD sudo設定の削除",
+      "file": "/etc/sudoers",
+      "before": "claude ALL=(ALL) NOPASSWD: ALL",
+      "after": "(行を削除)",
+      "rollback": "末尾に 'claude ALL=(ALL) NOPASSWD: ALL' を再追加",
+      "risk_if_kept": "なし(削除はセキュリティ上望ましい)",
+      "risk_of_rollback": "高: パスワードなしroot権限が復活する。自動化が壊れた場合のみ戻す。"
+    },
+    {
+      "id": "apt_upgrade",
+      "title": "セキュリティアップデート(99パッケージ)",
+      "file": "(dpkg database)",
+      "before": "99 packages outdated",
+      "after": "4 packages outdated",
+      "rollback": "個別パッケージのダウングレードが必要。一括ロールバック非対応。",
+      "risk_if_kept": "低",
+      "risk_of_rollback": "非推奨: 既知CVEが再導入される。"
+    },
+    {
+      "id": "ufw_firewall",
+      "title": "UFWファイアウォール有効化",
+      "file": "(ufw service)",
+      "before": "UFW未インストール/無効",
+      "after": "active (incoming=deny, outgoing=allow, ssh=allow)",
+      "rollback": "sudo ufw disable",
+      "risk_if_kept": "中: incoming denyで必要なサービスがブロックされる可能性",
+      "risk_of_rollback": "低"
+    },
+    {
+      "id": "sysctl_hardening",
+      "title": "Kernel Security Parameters強化",
+      "file": "/etc/sysctl.d/99-hardening.conf",
+      "before": {
+        "kernel.dmesg_restrict": "0",
+        "kernel.kptr_restrict": "0",
+        "net.ipv4.conf.all.rp_filter": "0",
+        "net.ipv4.conf.default.rp_filter": "(unset)",
+        "kernel.unprivileged_userns_clone": "(default=1)",
+        "kernel.unprivileged_bpf_disabled": "2"
+      },
+      "after": {
+        "kernel.dmesg_restrict": "1",
+        "kernel.kptr_restrict": "2",
+        "net.ipv4.conf.all.rp_filter": "1",
+        "net.ipv4.conf.default.rp_filter": "1",
+        "kernel.unprivileged_userns_clone": "0",
+        "kernel.unprivileged_bpf_disabled": "2"
+      },
+      "rollback": "rm /etc/sysctl.d/99-hardening.conf && sysctl --system",
+      "risk_if_kept": "中: unprivileged_userns_clone=0 はrootless Docker/サンドボックスを壊す可能性",
+      "risk_of_rollback": "低"
+    },
+    {
+      "id": "login_defs",
+      "title": "パスワードポリシー強化",
+      "file": "/etc/login.defs",
+      "before": {
+        "PASS_MAX_DAYS": "99999",
+        "PASS_MIN_DAYS": "0",
+        "PASS_WARN_AGE": "7"
+      },
+      "after": {
+        "PASS_MAX_DAYS": "90",
+        "PASS_MIN_DAYS": "1",
+        "PASS_WARN_AGE": "14"
+      },
+      "rollback": "PASS_MAX_DAYS=99999, PASS_MIN_DAYS=0, PASS_WARN_AGE=7 に戻す",
+      "risk_if_kept": "低",
+      "risk_of_rollback": "低(新規ユーザーにのみ影響)"
+    },
+    {
+      "id": "home_perms",
+      "title": "ホームディレクトリのパーミッション",
+      "file": "/home/user",
+      "before": "0755 (drwxr-xr-x)",
+      "after": "0750 (drwxr-x---)",
+      "rollback": "chmod 755 /home/user",
+      "risk_if_kept": "低",
+      "risk_of_rollback": "低"
+    },
+    {
+      "id": "ppa_removal",
+      "title": "問題のあるPPAリポジトリ削除",
+      "file": "/etc/apt/sources.list.d/",
+      "before": "deadsnakes-ubuntu-ppa-noble.sources, ondrej-ubuntu-php-noble.sources (どちらも403 Forbiddenで失敗)",
+      "after": "削除済み",
+      "rollback": "PPAの再追加(add-apt-repository ppa:deadsnakes/ppa, ppa:ondrej/php)",
+      "risk_if_kept": "低(元々署名エラーで使用不可だった)",
+      "risk_of_rollback": "低"
+    },
+    {
+      "id": "apparmor",
+      "title": "AppArmor有効化",
+      "file": "(apparmor service)",
+      "before": "未構成/無効",
+      "after": "enabled + started",
+      "rollback": "systemctl disable --now apparmor",
+      "risk_if_kept": "低",
+      "risk_of_rollback": "低"
+    }
+  ]
+}
