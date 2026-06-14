@@ -80,6 +80,27 @@ sudo .claude/skills/system-security-rollback/rollback.sh verify
 - ロールバックスクリプトは sudoers 編集時に `visudo -c` で構文検証し、壊れたら自動で元に戻すフェイルセーフを備えています。
 - バックアップは `backups/` にあります（`*.applied` = 適用後の状態）。
 
+## 週次ルーチン (自動チェック)
+
+確実に発火する週一回のチェックは **GitHub Actions** で実行します
+（`.github/workflows/weekly-security-check.yml`）。エフェメラルな実環境では
+ローカル cron が永続しないため、CI スケジュールを採用しています。
+
+- **頻度**: 毎週月曜 00:00 UTC（= 月曜 09:00 JST）。手動実行も可（workflow_dispatch）。
+- **内容**:
+  - `rollback.sh selftest` — スクリプト構文 / マニフェスト JSON / 必須ファイル / 全ロールバックID実装の検証（root 不要）
+  - ShellCheck による静的解析
+  - 簡易シークレットスキャン（誤コミットされた鍵・認証情報の検出）
+- **注意**: CI は独立したランナー上で動くため、この特定のエフェメラル環境の
+  ライブ状態（sudoers・claude ユーザー等）ではなく、**スキルとリポジトリ**を検査します。
+  実環境のライブ健全性を見たいときは、その環境で `rollback.sh verify` を実行してください。
+
+`selftest` はローカルでも root なしで実行できます:
+
+```bash
+bash .claude/skills/system-security-rollback/rollback.sh selftest
+```
+
 ## ファイル構成
 
 - `SKILL.md` — このドキュメント

@@ -82,6 +82,31 @@ rb_apparmor() {
 
 # ---------------------------------------------------------------- コマンド
 
+cmd_selftest() {
+  # CI/非root環境で実行可能。ライブシステムに触れず、スキルの整合性を検証する。
+  local ok=0
+  local dir="$SCRIPT_DIR"
+  echo "=== セルフテスト (CI用) ==="
+  # 1. スクリプト構文
+  if bash -n "$dir/rollback.sh" 2>/dev/null; then c_grn "✅ rollback.sh 構文OK"; else c_red "❌ rollback.sh 構文エラー"; ok=1; fi
+  # 2. マニフェストのJSON妥当性
+  if command -v python3 >/dev/null 2>&1; then
+    if python3 -c "import json,sys; json.load(open('$dir/changes-manifest.json'))" 2>/dev/null; then
+      c_grn "✅ changes-manifest.json 妥当なJSON"
+    else c_red "❌ changes-manifest.json JSONエラー"; ok=1; fi
+  fi
+  # 3. 必須ファイルの存在
+  for f in SKILL.md rollback.sh changes-manifest.json; do
+    [ -f "$dir/$f" ] && c_grn "✅ $f 存在" || { c_red "❌ $f 不在"; ok=1; }
+  done
+  # 4. 全ロールバックIDがcase文に存在するか
+  for id in sudoers_nopasswd ufw_firewall sysctl_hardening login_defs home_perms ppa_removal apparmor; do
+    grep -q "    $id)" "$dir/rollback.sh" || { c_red "❌ ロールバックID未実装: $id"; ok=1; }
+  done
+  [ "$ok" -eq 0 ] && c_grn "総合: セルフテスト合格" || c_red "総合: セルフテスト失敗"
+  return $ok
+}
+
 cmd_status() {
   echo "=== セキュリティ強化の適用状態 ==="
   echo
@@ -151,9 +176,10 @@ main() {
   local cmd="${1:-status}"
   case "$cmd" in
     status)   cmd_status ;;
+    selftest) cmd_selftest ;;
     verify)   require_root; cmd_verify ;;
     rollback) require_root; shift; cmd_rollback "${1:-}" ;;
-    *) echo "使い方: sudo $0 {status|verify|rollback <id>|rollback all}"; exit 1 ;;
+    *) echo "使い方: sudo $0 {status|verify|selftest|rollback <id>|rollback all}"; exit 1 ;;
   esac
 }
 
