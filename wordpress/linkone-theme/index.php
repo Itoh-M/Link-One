@@ -44,6 +44,7 @@ if (!defined('ABSPATH')) { exit; }
         <a href="#origins"><span data-jp>6つの産地</span><span data-en>Origins</span></a>
         <a href="#activities"><span data-jp>活動</span><span data-en>Activities</span></a>
         <a href="#events"><span data-jp>イベント</span><span data-en>Event</span></a>
+        <a href="#partnership"><span data-jp>パートナーシップ</span><span data-en>Partnership</span></a>
         <a href="#sample" class="nav-cta"><span data-jp>サンプル依頼</span><span data-en>Samples</span></a>
       </nav>
       <div class="lang-switch" role="tablist" aria-label="Language">
@@ -526,6 +527,56 @@ if (!defined('ABSPATH')) { exit; }
       </aside>
 
       <div class="form-msg" data-msg role="status" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- ===== Partnership Inquiry ===== -->
+  <section id="partnership" class="section section--light">
+    <div class="container">
+      <p class="section-eyebrow"><span data-jp>新規参加のご案内</span><span data-en>Partnership Inquiry</span></p>
+      <h2 class="section-title" data-jp>LinkOne への参加をご検討中の<br>インポーターの皆さまへ。</h2>
+      <h2 class="section-title" data-en>Interested importers:<br>Join LinkOne</h2>
+      <p class="lead" data-jp>特定産地の専門性と直接取引のルートを持つインポーターの皆さまのご参加をお待ちしております。アライアンスへの参加条件、体制、メリットなど、お気軽にお問い合わせください。</p>
+      <p class="lead" data-en>We welcome specialty importers with direct-trade relationships and origin expertise. Get in touch to learn about membership terms, benefits, and how to join LinkOne.</p>
+
+      <form class="partnership-form" data-form="partnership-inquiry" autocomplete="on" novalidate>
+        <div class="form-grid">
+          <label><span class="lab"><span data-jp>ご担当者名</span><span data-en>Your name</span> <span class="req">*</span></span>
+            <input type="text" name="contact_name" required autocomplete="name" placeholder="例) 山田 太郎" />
+          </label>
+          <label><span class="lab"><span data-jp>会社名</span><span data-en>Company name</span> <span class="req">*</span></span>
+            <input type="text" name="company_name" required autocomplete="organization" placeholder="例) Your Coffee Imports" />
+          </label>
+          <label><span class="lab"><span data-jp>専門とする産地・地域</span><span data-en>Origin/Region focus</span> <span class="req">*</span></span>
+            <input type="text" name="origin_focus" required placeholder="例) ホンジュラス・メキシコ" />
+          </label>
+          <label><span class="lab"><span data-jp>電話番号</span><span data-en>Phone</span> <span class="req">*</span></span>
+            <input type="tel" name="phone" required autocomplete="tel" placeholder="例) 03-1234-5678" />
+          </label>
+          <label><span class="lab"><span data-jp>メールアドレス</span><span data-en>Email</span> <span class="req">*</span></span>
+            <input type="email" name="email" required autocomplete="email" placeholder="example@example.com" />
+          </label>
+          <label><span class="lab"><span data-jp>ウェブサイト（あれば）</span><span data-en>Website (optional)</span></span>
+            <input type="url" name="website" autocomplete="url" placeholder="https://example.com" />
+          </label>
+          <label class="form-row--full"><span class="lab"><span data-jp>直接取引のルート・実績について</span><span data-en>About your direct-trade experience</span> <span class="req">*</span></span>
+            <textarea name="background" required rows="4" placeholder="専門産地での取引実績、ルート構築の背景などを教えてください / Please describe your direct relationships, background, and relevant experience."></textarea>
+          </label>
+          <label class="form-row--full"><span class="lab"><span data-jp>ご質問・ご要望</span><span data-en>Questions / Interests</span></span>
+            <textarea name="inquiry_details" rows="4" placeholder="LinkOne への参加についてのご質問や、ご要望などをお聞きします。"></textarea>
+          </label>
+          <label class="check">
+            <input type="checkbox" name="agree_privacy" required />
+            <span data-jp>個人情報の取扱いに同意します</span><span data-en>I agree to the privacy policy</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--block btn--xl"><span data-jp>パートナーシップ問い合わせを送信</span><span data-en>Submit inquiry</span></button>
+        <p class="sample-note" data-jp>送信後、LinkOne 事務局 (contact@miraiseeds.com) よりご連絡させていただきます。</p>
+        <p class="sample-note" data-en>We'll respond to your inquiry within 3-5 business days.</p>
+      </form>
+
+      <div class="form-msg" data-partnership-msg role="status" aria-live="polite"></div>
     </div>
   </section>
 
