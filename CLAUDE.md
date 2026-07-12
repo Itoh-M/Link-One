@@ -31,16 +31,24 @@ LPは単一の自己完結HTML（CSS/JSすべてインライン）。外部依�
 
 ## ロールバック手順
 
-- 本番公開版（基準点）へ戻す:
+- 本番公開版（基準点）へ戻す — もっとも簡単:
   ```
-  git checkout prod-snapshot-20260712 -- index.html
+  cp brand/original.html index.html
+  ```
+- 基準点ブランチから戻す（同内容。基準点は `prod-snapshot-20260712` ブランチ = コミット `d77cc15`）:
+  ```
+  git fetch origin prod-snapshot-20260712
+  git checkout origin/prod-snapshot-20260712 -- brand/original.html
+  cp brand/original.html index.html
   ```
 - 任意の時点へ戻す:
   ```
   git log --oneline -- index.html      # 履歴から時点を選ぶ
   git checkout <commit> -- index.html
   ```
-- タグ一覧: `git tag -l 'lp-*' 'prod-*'`
+- 注意: この実行環境のgitプロキシはタグのpushを通さないため、基準点は
+  タグではなく**スナップショットブランチ**（`prod-snapshot-*`）で管理する。
+  `prod-snapshot-*` ブランチには絶対にpushしない。
 
 ## 本番反映
 
