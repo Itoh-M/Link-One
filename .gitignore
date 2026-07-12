@@ -9,3 +9,8 @@ Thumbs.db
 *.swo
 .idea/
 .vscode/
+
+# Playwright検証用の一時依存（lp-verifyスキルが必要時にインストール）
+node_modules/
+package.json
+package-lock.json
