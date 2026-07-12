@@ -1,0 +1,36 @@
+{
+  "name": "LinkOne — Specialty Coffee Importers Alliance",
+  "short_name": "LinkOne",
+  "description": "LinkOne(リンクワン)は、特定の国・地域の生豆を専門に扱う輸入商社のアライアンスです。各社が現地で築いた直接取引のルートと専門知識を横につなぎ、自家焙煎事業者の皆さまにトレーサビリティとオリジナリティの確かなロットをお届けします。",
+  "start_url": "https://link-one.co.jp/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0e1722",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "favicon.svg",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ],
+  "categories": ["business"],
+  "lang": "ja",
+  "dir": "ltr"
+}
