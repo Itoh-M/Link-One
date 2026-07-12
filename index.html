@@ -381,6 +381,7 @@ html.js .reveal.in{opacity:1;transform:none}
   letter-spacing:.18em;text-transform:uppercase;color:var(--brand-teal);
 }
 .member-company{font-family:var(--f-jp);font-weight:700;font-size:18px;margin-top:0;color:var(--ink-900);line-height:1.4}
+.company-en{display:block;font-family:var(--f-sans);font-size:12px;font-weight:500;color:var(--ink-300);margin-top:2px}
 .member-desc{font-size:14px;color:var(--ink-500);margin-top:10px;line-height:1.7}
 .member-card.tbd .member-image{
   background:repeating-linear-gradient(45deg,rgba(13,13,13,.02),rgba(13,13,13,.02) 8px,rgba(13,13,13,.05) 8px,rgba(13,13,13,.05) 16px);
@@ -770,7 +771,7 @@ body.country-page-open{overflow:hidden}
       <div class="legend-item"><span class="legend-dot" style="background:#00A99D"></span>台湾</div>
       <div class="legend-item"><span class="legend-dot" style="background:#8CC63F"></span>コスタリカ</div>
       <div class="legend-item"><span class="legend-dot" style="background:#E94B7B"></span>インドネシア</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#9b7dd9;border:1px dashed #9b7dd9;background:transparent"></span>コロンビア <em style="color:var(--ink-300);font-style:normal;margin-left:4px">— 準備中</em></div>
+      <div class="legend-item"><span class="legend-dot" style="background:#9b7dd9"></span>コロンビア</div>
 </section>
 
 <!-- ============================================================
@@ -800,7 +801,7 @@ body.country-page-open{overflow:hidden}
     <div class="about-section reveal" style="margin-top: 80px; border-top: 1px solid var(--ink-100); padding-top: 60px;">
       <div class="about-text">
         <span class="eyebrow">Who is LinkOne?</span>
-        <h3 class="headline">現在は5社で構成し、ブラジル・パナマ・インドネシア・コスタリカ・台湾を擁します。</h3>
+        <h3 class="headline">現在は6社で構成し、ブラジル・パナマ・インドネシア・コスタリカ・台湾・コロンビアを擁します。</h3>
         <div class="about-content">
           <p>
             今後、世界各国の専門商社の参加を予定しており、グローバルなネットワークへと拡大していきます。
@@ -866,7 +867,7 @@ body.country-page-open{overflow:hidden}
         <div class="phi-icon" style="--accent: #8CC63F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.4 4 5.5 4 9s-1.5 6.6-4 9c-2.5-2.4-4-5.5-4-9s1.5-6.6 4-9z"/></svg></div>
         <div class="phi-en">Rich Variety</div>
         <h3 class="phi-title">豊富なバリエーション</h3>
-        <p class="phi-desc">5産地 × 多品種・多精製の幅広いラインナップ。ロースターの皆さまに、唯一無二の味わいの選択肢を提供します。</p>
+        <p class="phi-desc">6産地 × 多品種・多精製の幅広いラインナップ。ロースターの皆さまに、唯一無二の味わいの選択肢を提供します。</p>
       </div>
     </div>
   </div>
@@ -1445,7 +1446,7 @@ const COUNTRY_PAGES = {
   taiwan: `<p>阿里山・雲林など台湾の名産地から、ウォッシュト・ハニー製法の希少な台湾珈琲を直輸入しています。</p>`,
   costarica: `<p>タラス・ウェストバレーの小規模生産者と連携し、カトゥーラ・ビジャサルチのハニー/アナエロビックなど個性豊かなロットを取り扱っています。</p>`,
   indonesia: `<p>スマトラ・スラウェシ・バリなど多様な島々の産地から、ウェットハル製法をはじめとする個性的なロットをお届けしています。</p>`,
-  colombia: `<p>コロンビア産地の加盟企業は現在募集中です。</p>`
+  colombia: `<p>コロンビア・ウイラ県を拠点に、科学と教育を基盤としたスペシャルティコーヒーの生産・輸入を行う専門商社。2007年の創設以来、1,000名以上の地域生産者と協働し、自社研究施設「La Cereza」での微生物・発酵研究から生まれた独自精製「Dynamic Fermentation」で、テロワールを尊重したエキゾチックなロットを生み出しています。2013年より日本への輸入事業を展開しています。</p>`
 };
 
 const MEMBERS = [
@@ -1476,7 +1477,8 @@ const MEMBERS = [
     country: 'Panama',
     countryJa: 'パナマ',
     flag: FLAGS.panama,
-    company: 'Brisa and Tierra',
+    company: 'ブリッサアンドティエラ・ジャパン合同会社',
+    companyEn: 'Brisa & Tierra LLC',
     specialty: 'パナマ専門商社',
     email: 'change-me@brisaandtierra.example',  // ★ 後で編集
     color: '#F5C828',
@@ -1552,16 +1554,22 @@ const MEMBERS = [
   },
   {
     id: 'colombia',
+    url: 'https://colorsofnature.co.jp/',
     country: 'Colombia',
     countryJa: 'コロンビア',
     flag: FLAGS.colombia,
-    company: 'COMING SOON',
-    specialty: 'コロンビア専門商社（加盟予定）',
-    email: '',
+    company: '株式会社COLORS OF NATURE',
+    specialty: 'コロンビア専門商社',
+    email: 'change-me@colorsofnature.example',  // ★ 後で編集
     color: '#9b7dd9',
+    origin: {
+      region: 'Huila（ウイラ県）',
+      farm: 'La Cereza（自社研究施設）／ 提携生産者 1,000名以上',
+      altitude: '—',
+      varietals: 'Wush Wush ほか希少品種（Dynamic Fermentation 精製）'
+    },
     bgClass: 'bg-colombia',
-    map: { x: 85.9, y: 53.7 },
-    tbd: true   // ← まだ確定していない企業
+    map: { x: 85.9, y: 53.7 }
   }
 ];
 
@@ -1591,7 +1599,7 @@ function renderMembers(){
         <div class="member-country">${m.country} · ${m.countryJa}</div>
         <div class="member-company-row">
           ${m.logo ? `<img src="${m.logo}" alt="${m.company}" class="member-logo-sm" />` : ''}
-          <h3 class="member-company">${m.company}</h3>
+          <h3 class="member-company">${m.company}${m.companyEn ? `<span class="company-en">${m.companyEn}</span>` : ''}</h3>
         </div>
         <p class="member-desc">${m.specialty}</p>
         ${m.tbd ? '' : `<span class="member-more">詳しく見る<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>`}
@@ -1908,7 +1916,7 @@ function openCountryPage(id){
       <span class="cp-flag">${m.flag}</span>
       <div class="cp-country">${m.country}</div>
       <div class="cp-country-ja">${m.countryJa}</div>
-      <div class="cp-company">${m.company}</div>
+      <div class="cp-company">${m.company}${m.companyEn ? ` / ${m.companyEn}` : ''}</div>
     </div>
     <div class="cp-body">
       <div class="cp-section">
