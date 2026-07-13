@@ -7,8 +7,8 @@ LinkOne（Green Coffee Importers Alliance）— スペシャルティコーヒ�
 
 | ファイル | 役割 |
 | --- | --- |
-| `index.html` | **編集用の正。** LPの修正はこのファイルだけを変更する |
-| `brand/original.html` | 2026-07-12時点の本番公開版スナップショット。**編集禁止**（ロールバック基準点） |
+| `index.html` | **編集用の正。** LPの修正はこのファイルだけを変更する。現行版は6社リニューアル版（2026-07-13） |
+| `brand/original.html` | 2026-07-12時点の本番公開版スナップショット（リニューアル前の旧デザイン）。**編集禁止** |
 
 LPは単一の自己完結HTML（CSS/JSすべてインライン）。外部依存は Google Fonts、
 本番WPアップロード上の世界地図画像、Instagram埋め込みのみ。
@@ -29,28 +29,44 @@ LPは単一の自己完結HTML（CSS/JSすべてインライン）。外部依�
 4. PRを作成して `main` へマージする
 5. 安定版になったら日付タグを打つ: `git tag lp-YYYYMMDD && git push origin lp-YYYYMMDD`
 
+## スナップショット（ロールバック基準点）
+
+各時点の完成版を**スナップショットブランチ**（`prod-snapshot-*`）で凍結保存している。
+実行環境のgitプロキシはタグのpushを通さないため、タグではなくブランチで管理する。
+`prod-snapshot-*` ブランチには**絶対にpushしない**（不変の基準点）。
+
+| ブランチ | コミット | 内容 |
+| --- | --- | --- |
+| `prod-snapshot-20260713` | `ee615aa` | **現行版**。6社リニューアル（明るいトーン・日本語主体・日本中心マップ・各国個別ページ・コロンビア加盟・ロゴ拡大） |
+| `prod-snapshot-20260712` | `d77cc15` | リニューアル前の旧デザイン（= `brand/original.html`） |
+
 ## ロールバック手順
 
-- 本番公開版（基準点）へ戻す — もっとも簡単:
+- 現行版（2026-07-13）へ戻す:
   ```
-  cp brand/original.html index.html
+  git fetch origin prod-snapshot-20260713
+  git checkout origin/prod-snapshot-20260713 -- index.html
   ```
-- 基準点ブランチから戻す（同内容。基準点は `prod-snapshot-20260712` ブランチ = コミット `d77cc15`）:
+- リニューアル前（旧デザイン）へ戻す:
   ```
-  git fetch origin prod-snapshot-20260712
-  git checkout origin/prod-snapshot-20260712 -- brand/original.html
-  cp brand/original.html index.html
+  cp brand/original.html index.html      # brand/original.html は旧デザインのまま
   ```
 - 任意の時点へ戻す:
   ```
   git log --oneline -- index.html      # 履歴から時点を選ぶ
   git checkout <commit> -- index.html
   ```
-- 注意: この実行環境のgitプロキシはタグのpushを通さないため、基準点は
-  タグではなく**スナップショットブランチ**（`prod-snapshot-*`）で管理する。
-  `prod-snapshot-*` ブランチには絶対にpushしない。
 
-## 本番反映
+## 本番反映（公開）
 
-本番はWordPress。編集内容の本番への反映方法（固定ページ貼り付け／テーマ等）は
-オーナーに確認してから実施すること（2026-07-12時点で未確定）。
+本番は WordPress（https://link-one.co.jp/ ）。`index.html` は単一の自己完結HTML
+（CSS/JSインライン）なので、**固定ページの「カスタムHTML」ブロックに全文貼り付け**れば反映できる。
+
+手順（オーナー作業）:
+1. `index.html` の中身を全文コピー（GitHubの `main` から取得、または引き渡したファイルを使用）
+2. WordPress管理画面 → 該当の固定ページを編集 → カスタムHTMLブロックに貼り付け → 更新
+3. 世界地図画像はインラインSVG化済みのため、旧 `WORLD_MAP.png`（WPメディア）への依存はなし
+
+※ リモート実行環境からは本番WordPressへ直接反映できない（自ホスト・到達不可）ため、
+　上記の貼り付けはオーナーが手動で実施する。反映後、必要に応じて `brand/original.html`
+　を現行版へ更新し、新しい `prod-snapshot-YYYYMMDD` を切ってもよい。
