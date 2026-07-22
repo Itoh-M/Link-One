@@ -29,6 +29,25 @@ LPは単一の自己完結HTML（CSS/JSすべてインライン）。外部依�
 4. PRを作成して `main` へマージする
 5. 安定版になったら日付タグを打つ: `git tag lp-YYYYMMDD && git push origin lp-YYYYMMDD`
 
+## デザイン作業でのスキル活用（必須）
+
+`.claude/skills/` に導入済みのUIスキル（2026-07-22, PR #24）を、**見た目に関わる
+すべてのタスクで標準ワークフローとして使う**。明示的に頼まれなくても適用すること。
+
+| 場面 | 使うスキル |
+| --- | --- |
+| 着手前の調査・方針決め | `ui-ux-pro-max`（配色・フォント・スタイルをローカルDB検索。スタックは html-tailwind ではなく素のHTML/CSSとして読み替える）。大きめの改修は `improve-ui` で現状監査してから |
+| 実装・リデザイン | `impeccable`（craft / polish / critique / colorize / animate 等）。編集後は自動フック（`.claude/settings.json`）がデザイン検査を行うので、指摘はその場で解消してから次へ進む |
+| 仕上げ | `baseline-ui`（余白・階層・タイポグラフィの最終調整）→ `fixing-accessibility`（コントラスト・ARIA・キーボード操作） |
+| アニメーション変更時 | `fixing-motion-performance` |
+| OGP・メタタグ・構造化データ | `fixing-metadata` |
+| バナー・スライド等の販促物 | `banner-design` / `slides` / `design`（ブランド一貫性は `brand`） |
+| 最終検証 | 従来どおり `lp-verify`（デスクトップ1280px／モバイル390pxのスクショ確認） |
+
+注意: LPは単一自己完結HTML（インラインCSS/JS）。Tailwind・React前提の提案は
+素のCSSに読み替えて適用する。スキルの指摘とオーナーの明示指示が矛盾する場合は
+オーナー指示を優先する。
+
 ## スナップショット（ロールバック基準点）
 
 各時点の完成版を**スナップショットブランチ**（`prod-snapshot-*`）で凍結保存している。
