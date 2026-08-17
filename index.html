@@ -12,7 +12,7 @@
      ============================================================ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=Shippori+Mincho:wght@400;500;600;700;800&family=Italiana&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600&family=Shippori+Mincho:wght@400;500;600;700;800&family=Italiana&display=swap" rel="stylesheet">
 
 <style>
 /* タイトル用フォント Italiana を埋め込み(オフライン/プレビューでも表示) */
@@ -50,7 +50,8 @@
   --r-xl: 32px;
   --section-py: clamp(64px, 10vw, 100px);
 
-  --f-display: "Italiana", "Outfit", "Zen Kaku Gothic New", serif;
+  --f-display: "Playfair Display", "Italiana", "Zen Kaku Gothic New", serif;
+  --f-serif: "Playfair Display", "Italiana", serif;
   --f-sans: "Outfit", "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, sans-serif;
   --f-jp: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, sans-serif;
   --f-mincho: "Shippori Mincho", "Zen Old Mincho", "Yu Mincho", serif;
@@ -923,6 +924,83 @@ body.country-page-open{overflow:hidden}
 .origin-more:hover{gap:15px}
 .origin-more svg{width:16px;height:16px}
 </style>
+
+<!-- ============================================================
+     TYPICA-INSPIRED DIRECTION
+     大きなカラフル・セリフ見出し / 黒コンセプト / マーキー / 統計
+     ※内容・コンセプト・ロゴカラーはLINKONEのまま
+     ============================================================ -->
+<style>
+/* JP見出しはゴシックへ(TYPICAは和文ゴシック、英字のみセリフ)。前段の明朝を上書き */
+.section-title.jp,.hero-sub,.origin-name,.origin-lead,.philosophy-card .phi-title,
+.event-title,.member-company,.cp-section h3,.about-section h3.headline{font-family:var(--f-jp)!important}
+.origin-lead{line-height:1.95}
+
+/* ---- 署名: 巨大なカラフル・セリフの英字セクション見出し ---- */
+.section-head{text-align:center}
+.section-head .eyebrow{
+  display:block;font-family:var(--f-serif);font-weight:800;
+  font-size:clamp(44px,8.5vw,96px);line-height:1.0;letter-spacing:.005em;
+  text-transform:none;padding:0;margin:0;
+}
+.section-head .eyebrow::after{display:none}
+.section-head .section-title.jp{
+  font-size:clamp(17px,2.4vw,24px)!important;font-weight:700;
+  letter-spacing:.06em;margin-top:18px;color:var(--ink-700)!important;
+}
+.section-head .section-lead{margin-top:14px}
+.about .eyebrow,.about-section .eyebrow{color:#c8442b}
+.members .eyebrow{color:#00847a}
+.mvv .eyebrow{color:#d63d6e}
+.activities .eyebrow{color:#4e8b2a}
+.requirements .eyebrow{color:#00847a}
+.past-events .eyebrow{color:#c8442b}
+.form-section .eyebrow{color:#d63d6e}
+
+/* ---- カラータグ(Meet the Producers風) ---- */
+.origin-eyebrow{
+  display:inline-block;background:color-mix(in srgb,var(--c,#00A99D) 82%,#1a120c);
+  color:#fff;padding:5px 12px;border-radius:6px;letter-spacing:.14em;
+}
+.origin-name-en{font-family:var(--f-serif);color:color-mix(in srgb,var(--c,#7a7068) 78%,#2a2018);opacity:.95}
+
+/* ---- マーキー(横スクロール帯) ---- */
+.marquee{overflow:hidden;background:var(--ink-900);color:#fff;padding:20px 0;border-block:1px solid rgba(255,255,255,.08)}
+.marquee-track{display:flex;width:max-content;animation:marqueeMove 32s linear infinite;will-change:transform}
+.marquee-track span{
+  font-family:var(--f-serif);font-style:italic;font-weight:600;
+  font-size:clamp(22px,3vw,36px);white-space:nowrap;padding:0 clamp(20px,3vw,44px);opacity:.96;
+}
+.marquee-track .star{color:var(--brand-yellow);font-style:normal}
+@keyframes marqueeMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---- コンセプト(黒) ---- */
+.concept{background:var(--ink-900);color:#fff;padding:clamp(80px,13vw,150px) 0;text-align:center;position:relative;overflow:hidden}
+.concept::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(60% 60% at 18% 8%,rgba(0,169,157,.20),transparent 60%),
+  radial-gradient(60% 60% at 86% 92%,rgba(238,92,67,.18),transparent 60%),
+  radial-gradient(50% 50% at 60% 40%,rgba(245,200,40,.10),transparent 60%)}
+.concept .wrap{position:relative;z-index:1}
+.concept-eyebrow{font-family:var(--f-serif);font-style:italic;font-size:clamp(20px,3vw,32px);color:var(--brand-yellow);margin-bottom:22px}
+.concept-title{font-family:var(--f-jp);font-weight:700;font-size:clamp(25px,4.6vw,50px);line-height:1.55;letter-spacing:.03em;color:#fff}
+.concept-body{font-family:var(--f-jp);font-size:clamp(14px,1.8vw,17px);line-height:2.2;color:rgba(255,255,255,.82);margin-top:30px;max-width:760px;margin-inline:auto}
+
+/* ---- Our Network 統計 ---- */
+.network{background:var(--paper);padding:clamp(64px,9vw,110px) 0;text-align:center}
+.network .net-title{font-family:var(--f-serif);font-weight:800;font-size:clamp(44px,8vw,92px);color:#4e8b2a;line-height:1;margin:0}
+.network .net-sub{font-family:var(--f-jp);font-weight:700;font-size:clamp(15px,2vw,20px);color:var(--ink-700);margin-top:16px;letter-spacing:.06em}
+.net-stats{display:flex;justify-content:center;flex-wrap:wrap;gap:clamp(28px,7vw,90px);margin-top:clamp(36px,6vw,60px)}
+.net-stat .num{display:block;font-family:var(--f-serif);font-weight:800;font-size:clamp(56px,9vw,104px);line-height:.95}
+.net-stat:nth-child(1) .num{color:#c8442b}
+.net-stat:nth-child(2) .num{color:#00847a}
+.net-stat:nth-child(3) .num{color:#d63d6e}
+.net-stat .lbl{display:block;font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--label-ink);margin-top:12px}
+.net-stat .lbl-ja{font-family:var(--f-jp);color:var(--ink-700);letter-spacing:.05em;text-transform:none;margin-top:3px}
+
+/* ---- ナビCTAをビビッドなピルに ---- */
+.nav-cta{background:#c8442b}
+.nav-cta:hover{background:#00847a}
+</style>
 </head>
 <body>
 
@@ -1026,6 +1104,25 @@ body.country-page-open{overflow:hidden}
 <!-- ============================================================
      ABOUT
      ============================================================ -->
+<!-- ============================================================
+     CONCEPT — 黒背景の大きな一文（TYPICA参考）
+     ============================================================ -->
+<section class="concept" id="concept">
+  <div class="wrap">
+    <p class="concept-eyebrow">Our Concept</p>
+    <h2 class="concept-title">競争から、共創へ。<br>産地とロースターが、ひとつになる。</h2>
+    <p class="concept-body">LINKONE（Green Coffee Importers Alliance）は、特定の産地に特化した専門インポーターが集うアライアンス。各社が現地で築いたダイレクトトレードのルートを横につなぎ、確かなトレーサビリティとともに、個性豊かなスペシャルティコーヒー生豆を、日本のロースターへお届けします。</p>
+  </div>
+</section>
+
+<!-- マーキー(横スクロール帯) -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>LINKing&nbsp;Specialty&nbsp;Origins<span class="star">&nbsp;✳&nbsp;</span>Direct&nbsp;Trade<span class="star">&nbsp;✳&nbsp;</span>Full&nbsp;Traceability<span class="star">&nbsp;✳&nbsp;</span>One&nbsp;Alliance<span class="star">&nbsp;✳&nbsp;</span></span>
+    <span>LINKing&nbsp;Specialty&nbsp;Origins<span class="star">&nbsp;✳&nbsp;</span>Direct&nbsp;Trade<span class="star">&nbsp;✳&nbsp;</span>Full&nbsp;Traceability<span class="star">&nbsp;✳&nbsp;</span>One&nbsp;Alliance<span class="star">&nbsp;✳&nbsp;</span></span>
+  </div>
+</div>
+
 <section class="about" id="about">
   <div class="wrap">
     <!-- What is LinkOne -->
@@ -1061,6 +1158,21 @@ body.country-page-open{overflow:hidden}
 <!-- ============================================================
      MEMBERS
      ============================================================ -->
+<!-- ============================================================
+     OUR NETWORK — 統計（TYPICA "Our Community" 参考）
+     ============================================================ -->
+<section class="network" id="network">
+  <div class="wrap">
+    <p class="net-title">Our Network</p>
+    <p class="net-sub">6産地の専門商社が、横につながる。</p>
+    <div class="net-stats">
+      <div class="net-stat"><span class="num">6</span><span class="lbl">Origins</span><span class="lbl lbl-ja">産地</span></div>
+      <div class="net-stat"><span class="num">6</span><span class="lbl">Importers</span><span class="lbl lbl-ja">加盟インポーター</span></div>
+      <div class="net-stat"><span class="num">6</span><span class="lbl">Countries</span><span class="lbl lbl-ja">対応国・地域</span></div>
+    </div>
+  </div>
+</section>
+
 <section class="members" id="members">
   <div class="wrap">
     <div class="section-head center reveal">
