@@ -27,6 +27,11 @@
   --brand-green:  #8CC63F;
   --brand-pink:   #E94B7B;
 
+  /* テキスト用の濃色シェード(AA 4.5:1準拠)。塗り/ドット/ロゴは上の明るいブランド色のまま */
+  --teal-text:    #00786E;
+  --orange-text:  #C13D26;
+  --label-ink:    #6b6258;
+
   --ink-900: #0d0d0d;
   --ink-800: #1a1613;
   --ink-700: #3a322c;
@@ -68,7 +73,7 @@ input,textarea,select{font:inherit;color:inherit}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter)}
 .eyebrow{
   font-family:var(--f-sans);font-size:13px;letter-spacing:.22em;
-  text-transform:uppercase;font-weight:700;color:var(--brand-teal);display:inline-block;
+  text-transform:uppercase;font-weight:700;color:var(--teal-text);display:inline-block;
 }
 .section-head{margin-bottom:40px}
 .section-head.center{text-align:center}
@@ -86,6 +91,15 @@ input,textarea,select{font:inherit;color:inherit}
 /* REVEAL ANIMATION */
 html.js .reveal{opacity:0;transform:translateY(32px);transition:opacity .7s var(--ease), transform .7s var(--ease)}
 html.js .reveal.in{opacity:1;transform:none}
+
+/* 動きの低減を尊重(アクセシビリティ): OSで「視差効果を減らす」設定時はアニメを無効化 */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important;
+  }
+  html.js .reveal{opacity:1!important;transform:none!important}
+}
 
 /* ============================================================
    HEADER — glass on light
@@ -109,7 +123,7 @@ html.js .reveal.in{opacity:1;transform:none}
 }
 .nav{display:flex;gap:32px;align-items:center}
 .nav a{font-size:14px;font-weight:500;color:var(--ink-700);transition:color .2s}
-.nav a:hover{color:var(--brand-teal)}
+.nav a:hover{color:var(--teal-text)}
 .nav-cta{
   background:var(--brand-teal);color:white;padding:11px 22px;border-radius:999px;
   font-size:14px;font-weight:600;transition:transform .2s var(--ease),background .2s;
@@ -149,7 +163,7 @@ html.js .reveal.in{opacity:1;transform:none}
   padding:9px 20px;background:rgba(0,169,157,.08);
   border:1px solid rgba(0,169,157,.3);border-radius:999px;
   font-family:var(--f-sans);font-size:12px;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;color:var(--brand-teal);
+  letter-spacing:.18em;text-transform:uppercase;color:var(--teal-text);
 }
 .hero-eyebrow::before{
   content:"";width:8px;height:8px;border-radius:50%;background:var(--brand-teal);
@@ -168,11 +182,11 @@ html.js .reveal.in{opacity:1;transform:none}
   -webkit-background-clip:text;background-clip:text;color:transparent;
 }
 .hero-title .link-accent{
-  color:var(--brand-orange);font-weight:700;
+  color:var(--orange-text);font-weight:700;
   text-shadow:0 0 40px rgba(238,92,67,.18);
 }
 .hero-title .one-accent{
-  color:var(--brand-teal);font-weight:700;
+  color:var(--teal-text);font-weight:700;
   text-shadow:0 0 40px rgba(0,169,157,.18);
 }
 .hero-sub{
@@ -181,7 +195,7 @@ html.js .reveal.in{opacity:1;transform:none}
 }
 .hero-sub-en{
   font-family:var(--f-sans);font-size:clamp(12px,1.8vw,14px);
-  color:var(--ink-300);margin-top:10px;font-weight:400;line-height:1.7;letter-spacing:.03em;
+  color:var(--label-ink);margin-top:10px;font-weight:400;line-height:1.7;letter-spacing:.03em;
 }
 .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:36px}
 .btn{
@@ -193,9 +207,9 @@ html.js .reveal.in{opacity:1;transform:none}
 .btn-primary{background:var(--brand-teal);color:white;box-shadow:0 8px 24px -8px rgba(0,169,157,.4)}
 .btn-primary:hover{background:var(--brand-orange);transform:translateY(-2px);box-shadow:0 12px 36px -12px rgba(238,92,67,.4)}
 .btn-ghost{background:rgba(255,255,255,.6);color:var(--ink-800);border:1.5px solid rgba(13,13,13,.18)}
-.btn-ghost:hover{background:white;border-color:var(--brand-teal);color:var(--brand-teal)}
+.btn-ghost:hover{background:white;border-color:var(--brand-teal);color:var(--teal-text)}
 .btn-label{display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.3}
-.btn-en{font-family:var(--f-sans);font-size:11px;font-weight:500;opacity:.7;letter-spacing:.06em}
+.btn-en{font-family:var(--f-sans);font-size:12px;font-weight:500;opacity:.7;letter-spacing:.06em}
 
 /* ============================================================
    WORLD MAP — Japan-centered, on light background
@@ -226,7 +240,7 @@ html.js .reveal.in{opacity:1;transform:none}
 @keyframes dotPulse{0%{width:18px;height:18px;opacity:.8}100%{width:72px;height:72px;opacity:0}}
 .dot-label{
   position:absolute;left:50%;top:100%;transform:translate(-50%,8px);
-  font-family:var(--f-jp);font-size:10px;font-weight:700;letter-spacing:.1em;
+  font-family:var(--f-jp);font-size:12px;font-weight:700;letter-spacing:.1em;
   color:var(--ink-700);white-space:nowrap;opacity:0;transition:opacity .25s;
   pointer-events:none;background:rgba(255,255,255,.92);padding:3px 8px;border-radius:4px;
   box-shadow:0 2px 8px rgba(0,0,0,.12);
@@ -258,7 +272,7 @@ html.js .reveal.in{opacity:1;transform:none}
 .japan-flag::after{content:"";width:16px;height:16px;border-radius:50%;background:#bc002d}
 .japan-label{
   position:absolute;left:50%;transform:translateX(-50%);top:calc(50% + 28px);
-  font-family:var(--f-sans);font-size:10px;font-weight:800;letter-spacing:.2em;
+  font-family:var(--f-sans);font-size:12px;font-weight:800;letter-spacing:.2em;
   color:var(--ink-700);white-space:nowrap;
 }
 
@@ -295,7 +309,7 @@ html.js .reveal.in{opacity:1;transform:none}
 .info-row{
   padding:12px 0;border-top:1px solid rgba(0,0,0,.07);
 }
-.info-label{font-family:var(--f-sans);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-300);margin-bottom:4px}
+.info-label{font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--label-ink);margin-bottom:4px}
 .info-value{font-size:14px;color:var(--ink-700);line-height:1.5}
 @media(max-width:820px){
   .origin-info-panel{position:fixed;width:100%;top:auto;bottom:0;left:0;right:0;max-height:60%;border-left:none;border-top:1px solid rgba(0,0,0,.08);border-radius:16px 16px 0 0}
@@ -306,7 +320,7 @@ html.js .reveal.in{opacity:1;transform:none}
    ABOUT — light section
    ============================================================ */
 .about{padding:var(--section-py) 0;background:var(--paper);color:var(--ink-900)}
-.about-section .eyebrow{color:var(--brand-teal)}
+.about-section .eyebrow{color:var(--teal-text)}
 .about-section .section-title{color:var(--ink-900)}
 .about-section .section-lead{color:var(--ink-500)}
 .about-section h3.headline{
@@ -374,25 +388,25 @@ html.js .reveal.in{opacity:1;transform:none}
   box-shadow:0 2px 8px rgba(0,0,0,.06);
 }
 .member-company-row{display:flex;align-items:center;gap:12px;margin-top:10px}
-.member-company-row a:hover .member-company{color:var(--brand-teal);transition:color .2s}
+.member-company-row a:hover .member-company{color:var(--teal-text);transition:color .2s}
 .member-company-row a:hover .member-logo-sm{border-color:var(--brand-teal);transition:border-color .2s}
 .member-body{padding:22px 22px 26px}
 .member-country{
   font-family:var(--f-sans);font-size:12px;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;color:var(--brand-teal);
+  letter-spacing:.18em;text-transform:uppercase;color:var(--teal-text);
 }
 .member-company{font-family:var(--f-jp);font-weight:700;font-size:18px;margin-top:0;color:var(--ink-900);line-height:1.4}
-.company-en{display:block;font-family:var(--f-sans);font-size:12px;font-weight:500;color:var(--ink-300);margin-top:2px}
+.company-en{display:block;font-family:var(--f-sans);font-size:12px;font-weight:500;color:var(--label-ink);margin-top:2px}
 .member-desc{font-size:14px;color:var(--ink-500);margin-top:10px;line-height:1.7}
 .member-card.tbd .member-image{
   background:repeating-linear-gradient(45deg,rgba(13,13,13,.02),rgba(13,13,13,.02) 8px,rgba(13,13,13,.05) 8px,rgba(13,13,13,.05) 16px);
 }
 .member-card.tbd .member-image::before{
   content:"COMING SOON";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:var(--f-sans);font-size:14px;font-weight:700;letter-spacing:.3em;color:var(--ink-300);z-index:2;
+  font-family:var(--f-sans);font-size:14px;font-weight:700;letter-spacing:.3em;color:var(--label-ink);z-index:2;
 }
 .member-card.tbd .member-image::after{display:none}
-.member-card.tbd .member-company{color:var(--ink-300)}
+.member-card.tbd .member-company{color:var(--label-ink)}
 
 /* ============================================================
    MVV — gradient background
@@ -456,7 +470,7 @@ html.js .reveal.in{opacity:1;transform:none}
   padding-left:20px;position:relative;
 }
 .activity li::before{
-  content:"—";position:absolute;left:0;color:var(--brand-teal);font-weight:700;
+  content:"—";position:absolute;left:0;color:var(--teal-text);font-weight:700;
 }
 .activity-num{
   display:inline-flex;width:32px;height:32px;align-items:center;justify-content:center;
@@ -518,7 +532,7 @@ html.js .reveal.in{opacity:1;transform:none}
 }
 .form-tab.active{background:var(--brand-teal);color:white;box-shadow:0 4px 20px rgba(0,169,157,.3)}
 .form-tab:not(.active):hover{color:var(--ink-900);background:rgba(13,13,13,.04)}
-.form-tab .tab-en{display:block;font-family:var(--f-sans);font-size:10px;font-weight:500;opacity:.7;letter-spacing:.04em}
+.form-tab .tab-en{display:block;font-family:var(--f-sans);font-size:12px;font-weight:500;opacity:.7;letter-spacing:.04em}
 .form-panel{display:none}
 .form-panel.active{display:block}
 .form-card{
@@ -528,7 +542,7 @@ html.js .reveal.in{opacity:1;transform:none}
 }
 .field{margin-bottom:22px}
 .field-label{display:block;font-size:14px;font-weight:700;color:var(--ink-900);margin-bottom:8px;letter-spacing:.02em}
-.field-label .req{color:var(--brand-orange);margin-left:4px}
+.field-label .req{color:var(--orange-text);margin-left:4px}
 .field-hint{font-size:13px;color:var(--ink-500);margin-top:6px}
 .field-input,.field-textarea,.field-select{
   width:100%;padding:14px 18px;background:var(--ink-50);border:2px solid transparent;
@@ -584,14 +598,14 @@ html.js .reveal.in{opacity:1;transform:none}
    COUNTRY PAGES — 各国個別ページ(メンバーカードから開く)
    ============================================================ */
 .member-card:not(.tbd){cursor:pointer}
-.member-more{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-family:var(--f-sans);font-size:13px;font-weight:700;color:var(--brand-teal)}
+.member-more{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-family:var(--f-sans);font-size:13px;font-weight:700;color:var(--teal-text)}
 .member-more svg{width:13px;height:13px}
 .country-page{position:fixed;inset:0;z-index:300;background:var(--paper);overflow-y:auto;display:none}
 .country-page.open{display:block;animation:pageIn .3s var(--ease)}
 @keyframes pageIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 .cp-header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;padding:12px var(--gutter);background:rgba(250,249,246,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,0,0,.06)}
 .cp-back{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--ink-700);padding:8px 16px;border-radius:999px;border:1.5px solid rgba(0,0,0,.12);background:white;cursor:pointer;transition:all .2s}
-.cp-back:hover{border-color:var(--brand-teal);color:var(--brand-teal)}
+.cp-back:hover{border-color:var(--brand-teal);color:var(--teal-text)}
 .cp-hero{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:56px var(--gutter) 44px;color:white;overflow:hidden}
 .cp-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.35))}
 .cp-hero>*{position:relative;z-index:1}
@@ -602,12 +616,12 @@ html.js .reveal.in{opacity:1;transform:none}
 .cp-body{max-width:820px;margin:0 auto;padding:8px var(--gutter) 80px}
 .cp-section{margin-top:36px}
 .cp-section h3{font-family:var(--f-jp);font-weight:700;font-size:20px;color:var(--ink-900)}
-.cp-section h3 .en{display:block;font-family:var(--f-sans);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-teal);margin-bottom:6px}
+.cp-section h3 .en{display:block;font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal-text);margin-bottom:6px}
 .cp-section p{font-size:15px;color:var(--ink-500);line-height:1.9;margin-top:12px}
 .cp-facts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
 @media(max-width:560px){.cp-facts{grid-template-columns:1fr}}
 .cp-fact{background:white;border:1px solid rgba(0,0,0,.06);border-radius:var(--r-md);padding:16px 18px}
-.cp-fact .k{font-family:var(--f-sans);font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-300)}
+.cp-fact .k{font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--label-ink)}
 .cp-fact .v{font-size:14px;color:var(--ink-700);margin-top:6px;line-height:1.6}
 .cp-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:44px}
 body.country-page-open{overflow:hidden}
@@ -633,7 +647,7 @@ body.country-page-open{overflow:hidden}
 .footer-list{list-style:none}
 .footer-list li{margin-bottom:12px}
 .footer-list a{transition:color .2s}
-.footer-list a:hover{color:var(--brand-teal)}
+.footer-list a:hover{color:var(--teal-text)}
 .footer-bottom{
   margin-top:48px;padding:24px var(--gutter);
   border-top:1px solid rgba(255,255,255,.06);
@@ -666,17 +680,200 @@ body.country-page-open{overflow:hidden}
   padding:6px 12px;border-radius:999px;
 }
 .event-body{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
-.event-kicker{font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-teal)}
+.event-kicker{font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal-text)}
 .event-title{font-family:var(--f-jp);font-weight:700;font-size:18px;margin-top:6px;color:var(--ink-900);line-height:1.4}
 .event-desc{font-size:14px;color:var(--ink-500);margin-top:10px;line-height:1.7;flex:1}
 .event-link{
   display:inline-flex;align-items:center;gap:8px;margin-top:16px;align-self:flex-start;
-  font-family:var(--f-sans);font-size:13px;font-weight:700;color:var(--brand-teal);
+  font-family:var(--f-sans);font-size:13px;font-weight:700;color:var(--teal-text);
   padding:10px 18px;border:1.5px solid rgba(0,169,157,.35);border-radius:999px;
   transition:all .2s var(--ease);
 }
 .event-link:hover{background:var(--brand-teal);color:white;border-color:var(--brand-teal)}
 .event-link svg{width:14px;height:14px}
+</style>
+
+<!-- ============================================================
+     2026 CARD REDESIGN — origin cards / flags / philosophy /
+     activities / events. 写真は「スロット」化して後日差し替え可能。
+     ============================================================ -->
+<style>
+/* ---------- 共有: コーヒー豆ウォーターマーク ---------- */
+:root{
+  --bean:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'%3E%3Cellipse cx='60' cy='60' rx='30' ry='44' transform='rotate(28 60 60)'/%3E%3Cpath d='M44 26 C 64 46, 50 66, 70 92'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   MEMBER (ORIGIN) CARDS — クールな“産地カード”へ
+   ============================================================ */
+.members-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+@media(max-width:900px){.members-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.members-grid{grid-template-columns:1fr}}
+.member-card{border-radius:22px;border:1px solid rgba(0,0,0,.06);box-shadow:0 6px 26px -12px rgba(24,16,10,.28)}
+.member-card:hover{transform:translateY(-10px);box-shadow:0 40px 70px -30px rgba(24,16,10,.4)}
+.member-image{aspect-ratio:4/3;background:#1a120c;isolation:isolate}
+/* 産地ごとの“深いコーヒー基調＋国カラーの光”バックドロップ（旧muddyグラデを置換） */
+.bg-brazil   {background:radial-gradient(135% 120% at 50% -12%,#3f9d5b 0%,#2a1c12 60%,#170f09 100%)}
+.bg-panama   {background:radial-gradient(135% 120% at 50% -12%,#2f7bc0 0%,#1c1710 60%,#120e09 100%)}
+.bg-taiwan   {background:radial-gradient(135% 120% at 50% -12%,#12a093 0%,#0f1c19 60%,#0a1210 100%)}
+.bg-costarica{background:radial-gradient(135% 120% at 50% -12%,#1f97d6 0%,#101a1f 60%,#0a1013 100%)}
+.bg-indonesia{background:radial-gradient(135% 120% at 50% -12%,#e05575 0%,#1e1013 60%,#140b0d 100%)}
+.bg-colombia {background:radial-gradient(135% 120% at 50% -12%,#8368c8 0%,#181322 60%,#0f0b16 100%)}
+/* 等高線テクスチャ（＝産地・標高の含意）＋ 豆ウォーターマーク */
+.member-image::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    var(--bean) no-repeat -18px 78% / 88px,
+    repeating-radial-gradient(circle at 22% 118%,rgba(255,255,255,.10) 0 1px,transparent 1px 20px),
+    repeating-radial-gradient(circle at 88% -14%,rgba(255,255,255,.08) 0 1px,transparent 1px 26px);
+  opacity:.55;mix-blend-mode:soft-light;
+}
+.member-image::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,transparent 42%,rgba(0,0,0,.6))}
+/* 国旗：クリアなフレーム＋ゆらぎ＋浮遊 */
+.member-flag-big{z-index:2;transform-origin:50% 60%;animation:flagWave 5s ease-in-out infinite}
+.member-flag-big svg{
+  width:122px;height:auto;border-radius:10px;
+  box-shadow:0 16px 34px -10px rgba(0,0,0,.55),0 0 0 5px rgba(255,255,255,.12),0 0 0 1px rgba(255,255,255,.25);
+}
+@keyframes flagWave{
+  0%{transform:translate(-50%,-50%) rotate(0) skewX(0) translateY(0)}
+  20%{transform:translate(-50%,-50%) rotate(1.6deg) skewX(-1.5deg) translateY(-3px)}
+  40%{transform:translate(-50%,-50%) rotate(-1deg) skewX(1deg) translateY(-6px)}
+  60%{transform:translate(-50%,-50%) rotate(1deg) skewX(-.8deg) translateY(-3px)}
+  80%{transform:translate(-50%,-50%) rotate(-.8deg) skewX(.6deg) translateY(-1px)}
+  100%{transform:translate(-50%,-50%) rotate(0) skewX(0) translateY(0)}
+}
+.member-card:hover .member-flag-big{animation-duration:2.6s}
+/* 産地インデックス N°01… */
+.members-grid{counter-reset:origin}
+.member-card{counter-increment:origin}
+.member-image .member-image-tag::after{content:"N°" counter(origin,decimal-leading-zero);margin-left:2px;opacity:.7;font-variant-numeric:tabular-nums}
+.member-image-tag{background:rgba(20,13,9,.55);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(12px) saturate(140%)}
+/* 会社ロゴ：少し大きく＆クリーンに */
+.member-logo-sm{width:66px;height:66px;border-radius:16px;padding:8px}
+.member-company-row{gap:14px;margin-top:14px}
+.member-body{padding:22px 24px 26px}
+
+/* ============================================================
+   PHILOSOPHY 4 CARDS — 写真スロット＋ブランド・ビジュアル
+   （後日: .phi-visual に style="background-image:url(写真)" を付け、
+     class に has-photo を足すだけで実写真に差し替え可能）
+   ============================================================ */
+.philosophy-grid{gap:26px}
+.philosophy-card{padding:0;overflow:hidden;border-radius:22px}
+.philosophy-card::before{display:none}      /* 旧の左アクセントバーは撤去 */
+.phi-visual{position:relative;height:140px;overflow:hidden;background:var(--accent)}
+.philosophy-card:nth-child(1) .phi-visual{background:linear-gradient(135deg,#EE5C43 0%,#F5943f 100%)}
+.philosophy-card:nth-child(2) .phi-visual{background:linear-gradient(135deg,#F5C828 0%,#F59E2b 100%)}
+.philosophy-card:nth-child(3) .phi-visual{background:linear-gradient(135deg,#00A99D 0%,#0b7f8f 100%)}
+.philosophy-card:nth-child(4) .phi-visual{background:linear-gradient(135deg,#8CC63F 0%,#48a05a 100%)}
+.phi-visual::before{  /* 豆ウォーターマーク群 */
+  content:"";position:absolute;inset:0;
+  background:var(--bean) no-repeat 82% 30% / 74px, var(--bean) no-repeat 60% 96% / 46px, var(--bean) no-repeat 96% 88% / 34px;
+  opacity:.28;
+}
+.phi-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.12),transparent 40%,rgba(0,0,0,.14))}
+.phi-visual.has-photo{background-size:cover!important;background-position:center!important}
+.phi-visual.has-photo::before{display:none}
+.philosophy-card>.phi-en,.philosophy-card>.phi-title,.philosophy-card>.phi-desc{margin-left:28px;margin-right:28px}
+.philosophy-card>.phi-desc{margin-bottom:30px}
+.philosophy-card .phi-icon{margin-left:28px;
+  margin-top:-30px;position:relative;z-index:2;width:60px;height:60px;border-radius:16px;
+  background:#fff;color:var(--accent);box-shadow:0 12px 28px -8px rgba(0,0,0,.28),0 0 0 1px rgba(0,0,0,.05);
+}
+.philosophy-card .phi-icon svg{width:28px;height:28px}
+.philosophy-card .phi-en{margin-top:14px}
+.philosophy-card:hover{transform:translateY(-8px)}
+.philosophy-card:hover .phi-visual::before{opacity:.42;transition:opacity .4s}
+
+/* ============================================================
+   ACTIVITIES — 番号入り・ジェムなアイコンチップで“寂しさ”解消
+   ============================================================ */
+.activities-grid{counter-reset:act;gap:24px}
+.activity{counter-increment:act;position:relative;padding:30px 28px 30px;border-top:none;overflow:hidden}
+.activity::after{  /* 大きな連番の透かし */
+  content:counter(act,decimal-leading-zero);position:absolute;top:16px;right:22px;z-index:0;
+  font-family:var(--f-sans);font-weight:800;font-size:44px;line-height:1;letter-spacing:-.02em;
+  color:color-mix(in srgb,var(--actc,#00A99D) 20%,transparent);
+}
+.activity>*{position:relative;z-index:1}
+.activity::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--actc,#00A99D),color-mix(in srgb,var(--actc,#00A99D) 40%,#fff))}
+.activity:nth-child(1){--actc:#EE5C43}.activity:nth-child(2){--actc:#F5C828}
+.activity:nth-child(3){--actc:#00A99D}.activity:nth-child(4){--actc:#8CC63F}
+.activity:nth-child(5){--actc:#E94B7B}.activity:nth-child(6){--actc:#EE5C43}
+.activity:nth-child(7){--actc:#00A99D}.activity:nth-child(8){--actc:#F5C828}
+.activity .act-icon{
+  width:52px;height:52px;border-radius:15px;border:none;color:#fff;
+  background:linear-gradient(135deg,var(--actc,#00A99D),color-mix(in srgb,var(--actc,#00A99D) 55%,#fff));
+  box-shadow:0 12px 26px -10px var(--actc,#00A99D);
+}
+.activity:hover{transform:translateY(-6px);box-shadow:0 24px 50px -22px color-mix(in srgb,var(--actc,#00A99D) 60%,rgba(0,0,0,.4))}
+.activity li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--actc,var(--teal-text));top:.55em;left:2px}
+
+/* ============================================================
+   PAST EVENTS — Instagram実カバー用の画像スロット
+   （後日: .event-cover の style に background-image:url(カバー) を入れ、
+     class に has-cover を足すだけで実カバーに差し替え）
+   ============================================================ */
+.event-visual{aspect-ratio:16/9}
+.event-cover{position:absolute;inset:0;background-size:cover;background-position:center}
+.event-cover.has-cover .ev-ph{display:none}
+.ev-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#fff}
+.ev-ph .ev-ig{width:40px;height:40px;opacity:.95;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))}
+.ev-ph .ev-ph-label{font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.9}
+.event-visual::before{content:"";position:absolute;inset:0;z-index:1;background:
+  var(--bean) no-repeat 90% 20% / 60px, var(--bean) no-repeat 12% 92% / 40px;opacity:.22}
+.event-visual::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(255,255,255,.10),transparent 45%,rgba(0,0,0,.28))}
+.event-visual .event-date-tag{z-index:3}
+.event-visual .event-cover,.event-visual .ev-ph{z-index:2}
+.event-card:hover .event-cover.has-cover{transform:scale(1.05);transition:transform .5s var(--ease)}
+
+/* ============================================================
+   COUNTRY PAGE — 会社ロゴを大きく / 国旗を小さく
+   ============================================================ */
+.cp-logo{
+  width:clamp(104px,20vw,150px);aspect-ratio:1;object-fit:contain;background:#fff;
+  border-radius:24px;padding:16px;box-shadow:0 22px 50px -18px rgba(0,0,0,.5),0 0 0 1px rgba(0,0,0,.05);
+}
+.cp-hero .cp-flag{position:absolute;top:16px;right:16px;z-index:2}
+.cp-hero .cp-flag svg{width:46px;height:auto;border-radius:6px;box-shadow:0 6px 16px rgba(0,0,0,.35),0 0 0 3px rgba(255,255,255,.2)}
+.cp-country{margin-top:20px}
+</style>
+
+<!-- ============================================================
+     MEMBER CARD v3 — 上部=会社ロゴ(白背景)＋会社名(主役) /
+     下部=国旗色の“淡い帯”に 国旗＋国名（国旗は下へ入れ替え）
+     ============================================================ -->
+<style>
+.member-card{background:#fff}
+.member-flag-big{display:none!important}   /* 旧・中央の大国旗は撤去 */
+
+/* 上部: 白背景に 会社ロゴ＋会社名（主役） */
+.member-top{
+  position:relative;background:#fff;padding:34px 24px 26px;min-height:210px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;
+  border-bottom:1px solid rgba(0,0,0,.06);
+}
+.member-logo-lg{
+  width:120px;height:120px;border-radius:20px;background:#fff;padding:6px;
+  display:flex;align-items:center;justify-content:center;
+}
+.member-logo-lg img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.member-logo-none{font-family:var(--f-jp);font-weight:700;font-size:20px;color:var(--ink-700);border:1px dashed rgba(0,0,0,.16)}
+.member-company-lg{font-family:var(--f-jp);font-weight:700;font-size:18px;line-height:1.45;color:var(--ink-900);letter-spacing:.01em}
+.company-en-lg{display:block;font-family:var(--f-sans);font-weight:500;font-size:12px;letter-spacing:.05em;color:var(--label-ink);margin-top:4px}
+.member-origin-no{position:absolute;top:14px;left:16px;font-family:var(--f-sans);font-weight:700;font-size:12px;letter-spacing:.18em;color:var(--ink-300)}
+
+/* 下部: 国旗色の“淡い”背景に 国旗＋国名（＋説明・導線） */
+.member-body{padding:18px 22px 22px;background:color-mix(in srgb,var(--flag-tint,#00A99D) 14%,#fff)}
+.member-country-row{display:flex;align-items:center;gap:12px}
+.member-flag-mini{line-height:0;flex-shrink:0;transform-origin:top center;animation:flagSway 3.8s ease-in-out infinite}
+.member-flag-mini svg{width:46px;height:auto;border-radius:4px;filter:url(#flag-wave) drop-shadow(0 4px 9px rgba(0,0,0,.3))}
+.member-country{font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-text)}
+.member-desc{font-size:14px;color:var(--ink-500);margin-top:12px;line-height:1.7}
+.member-more{margin-top:14px}
+@keyframes flagSway{0%{transform:rotate(-3deg)}50%{transform:rotate(3deg) translateY(1.5px)}100%{transform:rotate(-3deg)}}
+.member-card:hover .member-flag-mini{animation-duration:2s}
 </style>
 </head>
 <body>
@@ -684,6 +881,16 @@ body.country-page-open{overflow:hidden}
 <!-- ============================================================
      HEADER
      ============================================================ -->
+<!-- 国旗のリアルな“はためき”用SVGフィルタ（布のうねり） -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="flag-wave" x="-15%" y="-15%" width="130%" height="130%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.014 0.03" numOctaves="2" seed="4" result="n">
+      <animate attributeName="baseFrequency" dur="7s" values="0.014 0.03;0.022 0.036;0.014 0.03" repeatCount="indefinite"/>
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</defs></svg>
+
 <header class="site-header">
   <a href="#" class="logo" aria-label="LinkOne home">
     <img src="data:image/png;base64,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" alt="LinkOne — Green Coffee Importers Alliance" style="height: 44px; width: auto;">
@@ -821,7 +1028,7 @@ body.country-page-open{overflow:hidden}
     <div class="section-head center reveal">
       <span class="eyebrow">Our Members</span>
       <h2 class="section-title jp">産地に精通した、専門商社たち。</h2>
-      <p class="section-lead">それぞれの産地を深く知る専門インポーターが集まっています。<br><span style="font-family:var(--f-sans);font-size:13px;color:var(--ink-300)">Specialty Importer Partners — dedicated importers with deep expertise in their origin.</span></p>
+      <p class="section-lead">それぞれの産地を深く知る専門インポーターが集まっています。<br><span style="font-family:var(--f-sans);font-size:13px;color:var(--label-ink)">Specialty Importer Partners — dedicated importers with deep expertise in their origin.</span></p>
     </div>
 
     <div class="members-grid" id="members-grid">
@@ -847,24 +1054,28 @@ body.country-page-open{overflow:hidden}
     <!-- 4つのポイント -->
     <div class="philosophy-grid">
       <div class="philosophy-card reveal" style="--accent: #EE5C43">
+        <div class="phi-visual"></div><!-- 写真差し替え: class に has-photo を足し style="background-image:url('写真')" -->
         <div class="phi-icon" style="--accent: #EE5C43"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M3 7h18"/><path d="M7 13l-4 4 4 4"/><path d="M21 17H3"/></svg></div>
         <div class="phi-en">Direct Trade</div>
         <h3 class="phi-title">直接取引</h3>
         <p class="phi-desc">すべて加盟各社が現地と直接取引するロットのみ。中間業者を介さない、生産者との直接的なパートナーシップを実現しています。</p>
       </div>
       <div class="philosophy-card reveal" style="--accent: #F5C828">
+        <div class="phi-visual"></div>
         <div class="phi-icon" style="--accent: #F5C828"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20"/><path d="M12 3l-4 6 4 12 4-12-4-6"/></svg></div>
         <div class="phi-en">Specialty &amp; Rarity</div>
         <h3 class="phi-title">専門性と希少性</h3>
         <p class="phi-desc">特定産地に特化した専門性と、限定ロットの希少性。各社が長年にわたり築いた産地との信頼関係から生まれるラインナップです。</p>
       </div>
       <div class="philosophy-card reveal" style="--accent: #00A99D">
+        <div class="phi-visual"></div>
         <div class="phi-icon" style="--accent: #00A99D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="7"/><path d="M21 21l-5-5"/><path d="M7 10.5h7M10.5 7v7"/></svg></div>
         <div class="phi-en">Full Traceability</div>
         <h3 class="phi-title">完全なトレーサビリティ</h3>
         <p class="phi-desc">農園から焙煎所まで一気通貫で見える流通。生産者の顔が見え、栽培方法や精製工程まで把握できる透明性を提供します。</p>
       </div>
       <div class="philosophy-card reveal" style="--accent: #8CC63F">
+        <div class="phi-visual"></div>
         <div class="phi-icon" style="--accent: #8CC63F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.4 4 5.5 4 9s-1.5 6.6-4 9c-2.5-2.4-4-5.5-4-9s1.5-6.6 4-9z"/></svg></div>
         <div class="phi-en">Rich Variety</div>
         <h3 class="phi-title">豊富なバリエーション</h3>
@@ -1079,18 +1290,18 @@ body.country-page-open{overflow:hidden}
              style="max-width: 280px; border-radius: 12px; display: block; margin: 0 auto;"
         />
         </a>
-        <p style="color:var(--brand-orange);font-family:var(--f-sans);font-size:15px;font-weight:700;letter-spacing:.08em;margin-top:24px;">The Biggest Specialty Coffee Event in Asia</p>
+        <p style="color:var(--orange-text);font-family:var(--f-sans);font-size:15px;font-weight:700;letter-spacing:.08em;margin-top:24px;">The Biggest Specialty Coffee Event in Asia</p>
         <p style="color:var(--ink-700);font-size:14px;margin-top:12px;line-height:1.8;">
           SCAJ ワールド スペシャルティコーヒー カンファレンス アンド エキシビション 2026<br>
-          <span style="font-family:var(--f-sans);font-size:13px;color:var(--ink-300);">SCAJ World Specialty Coffee Conference and Exhibition 2026</span>
+          <span style="font-family:var(--f-sans);font-size:13px;color:var(--label-ink);">SCAJ World Specialty Coffee Conference and Exhibition 2026</span>
         </p>
         <p style="color:var(--ink-700);font-size:15px;margin-top:16px;line-height:1.8;font-weight:600;">
           2026年10月14日（水）– 10月17日（土）<br>
-          <span style="font-family:var(--f-sans);font-size:13px;font-weight:400;color:var(--ink-300);">October 14 – 17, 2026</span>
+          <span style="font-family:var(--f-sans);font-size:13px;font-weight:400;color:var(--label-ink);">October 14 – 17, 2026</span>
         </p>
         <p style="color:var(--ink-700);font-size:15px;margin-top:8px;line-height:1.8;font-weight:600;">
           東京ビッグサイト 南展示棟1–4ホール<br>
-          <span style="font-family:var(--f-sans);font-size:13px;font-weight:400;color:var(--ink-300);">Tokyo Big Sight, South Halls 1–4</span>
+          <span style="font-family:var(--f-sans);font-size:13px;font-weight:400;color:var(--label-ink);">Tokyo Big Sight, South Halls 1–4</span>
         </p>
       </div>
     </div>
@@ -1118,7 +1329,13 @@ body.country-page-open{overflow:hidden}
       <!-- Event 1: SCAJ 2025 -->
       <article class="event-card reveal">
         <div class="event-visual" style="background:linear-gradient(135deg,#EE5C43 0%,#F5C828 100%)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12v5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5v-5z"/><path d="M16 11h2a3 3 0 0 1 0 6h-2"/><path d="M8 3.5c-.8 1 .8 2 0 3M12 3.5c-.8 1 .8 2 0 3"/></svg>
+          <!-- カバー差し替え: class に has-cover を足し style="background-image:url('Instagramカバー')" -->
+          <div class="event-cover">
+            <div class="ev-ph">
+              <svg class="ev-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+              <span class="ev-ph-label">SCAJ 2025 · Reel</span>
+            </div>
+          </div>
           <span class="event-date-tag">SCAJ 2025</span>
         </div>
         <div class="event-body">
@@ -1135,7 +1352,13 @@ body.country-page-open{overflow:hidden}
       <!-- Event 2: UCC Academy Feb 11 -->
       <article class="event-card reveal">
         <div class="event-visual" style="background:linear-gradient(135deg,#00A99D 0%,#8CC63F 100%)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c.5-3.5 2.8-5.5 5.5-5.5s5 2 5.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.8c.6-.4 1.2-.6 1.9-.6 2.1 0 3.9 1.6 4.3 4.3"/></svg>
+          <!-- カバー差し替え: class に has-cover を足し style="background-image:url('Instagramカバー')" -->
+          <div class="event-cover">
+            <div class="ev-ph">
+              <svg class="ev-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+              <span class="ev-ph-label">UCC Academy · Reel</span>
+            </div>
+          </div>
           <span class="event-date-tag">2026.2.11</span>
         </div>
         <div class="event-body">
@@ -1587,26 +1810,28 @@ const JAPAN_COORD = { x: 45.8, y: 29.1 };
 // 1) 加盟企業カードを描画
 function renderMembers(){
   const grid = document.getElementById('members-grid');
-  grid.innerHTML = MEMBERS.map((m, i) => `
-    <article class="member-card ${m.tbd ? 'tbd' : ''} reveal" data-id="${m.id}"
-             ${m.tbd ? '' : `onclick="openCountryPage('${m.id}')" role="button" tabindex="0" aria-label="${m.countryJa}の詳細ページを開く" onkeydown="if(event.key==='Enter')openCountryPage('${m.id}')"`}>
-      <div class="member-image ${m.bgClass}">
-        <span class="member-flag-big" style="animation-delay:${i * -0.7}s; animation-duration:${3.5 + i * 0.3}s">${m.flag}</span>
-        <div class="member-image-tag">
-          <span>${m.country}</span>
-        </div>
+  const TINT = {brazil:'#009c3b', panama:'#0072ce', taiwan:'#e60012', costarica:'#0033a0', indonesia:'#e70011', colombia:'#f6c500'};
+  grid.innerHTML = MEMBERS.map((m, i) => {
+    const no = String(i + 1).padStart(2, '0');
+    const tint = TINT[m.id] || m.color || '#00A99D';
+    return `
+    <article class="member-card ${m.tbd ? 'tbd' : ''} reveal" data-id="${m.id}" style="--flag-tint:${tint}"
+             ${m.tbd ? '' : `onclick="openCountryPage('${m.id}')" role="button" tabindex="0" aria-label="${m.company}（${m.countryJa}）の詳細ページを開く" onkeydown="if(event.key==='Enter')openCountryPage('${m.id}')"`}>
+      <div class="member-top">
+        <span class="member-origin-no">N°${no}</span>
+        ${m.logo ? `<div class="member-logo-lg"><img src="${m.logo}" alt="${m.company} ロゴ" /></div>` : `<div class="member-logo-lg member-logo-none">${m.countryJa}</div>`}
+        <h3 class="member-company-lg">${m.company}${m.companyEn ? `<span class="company-en-lg">${m.companyEn}</span>` : ''}</h3>
       </div>
       <div class="member-body">
-        <div class="member-country">${m.country} · ${m.countryJa}</div>
-        <div class="member-company-row">
-          ${m.logo ? `<img src="${m.logo}" alt="${m.company}" class="member-logo-sm" />` : ''}
-          <h3 class="member-company">${m.company}${m.companyEn ? `<span class="company-en">${m.companyEn}</span>` : ''}</h3>
+        <div class="member-country-row">
+          <span class="member-flag-mini" style="animation-delay:${i * -0.6}s">${m.flag}</span>
+          <span class="member-country">${m.country} · ${m.countryJa}</span>
         </div>
         <p class="member-desc">${m.specialty}</p>
         ${m.tbd ? '' : `<span class="member-more">詳しく見る<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>`}
       </div>
-    </article>
-  `).join('');
+    </article>`;
+  }).join('');
 }
 
 // 2) 国別チェックボックスを描画
@@ -1911,10 +2136,11 @@ function openCountryPage(id){
   page.innerHTML = `
     <div class="cp-header">
       <button class="cp-back" onclick="closeCountryPage()">← 一覧へ戻る</button>
-      <span style="font-family:var(--f-sans);font-weight:700">${m.country}<span style="color:var(--ink-300)"> · </span>${m.countryJa}</span>
+      <span style="font-family:var(--f-sans);font-weight:700">${m.country}<span style="color:var(--label-ink)"> · </span>${m.countryJa}</span>
     </div>
     <div class="cp-hero ${m.bgClass}">
       <span class="cp-flag">${m.flag}</span>
+      ${m.logo ? `<img class="cp-logo" src="${m.logo}" alt="${m.company} ロゴ" />` : ''}
       <div class="cp-country">${m.country}</div>
       <div class="cp-country-ja">${m.countryJa}</div>
       <div class="cp-company">${m.company}${m.companyEn ? ` / ${m.companyEn}` : ''}</div>
