@@ -692,6 +692,153 @@ body.country-page-open{overflow:hidden}
 .event-link:hover{background:var(--brand-teal);color:white;border-color:var(--brand-teal)}
 .event-link svg{width:14px;height:14px}
 </style>
+
+<!-- ============================================================
+     2026 CARD REDESIGN — origin cards / flags / philosophy /
+     activities / events. 写真は「スロット」化して後日差し替え可能。
+     ============================================================ -->
+<style>
+/* ---------- 共有: コーヒー豆ウォーターマーク ---------- */
+:root{
+  --bean:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='4' stroke-linecap='round'%3E%3Cellipse cx='60' cy='60' rx='30' ry='44' transform='rotate(28 60 60)'/%3E%3Cpath d='M44 26 C 64 46, 50 66, 70 92'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   MEMBER (ORIGIN) CARDS — クールな“産地カード”へ
+   ============================================================ */
+.members-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+@media(max-width:900px){.members-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.members-grid{grid-template-columns:1fr}}
+.member-card{border-radius:22px;border:1px solid rgba(0,0,0,.06);box-shadow:0 6px 26px -12px rgba(24,16,10,.28)}
+.member-card:hover{transform:translateY(-10px);box-shadow:0 40px 70px -30px rgba(24,16,10,.4)}
+.member-image{aspect-ratio:4/3;background:#1a120c;isolation:isolate}
+/* 産地ごとの“深いコーヒー基調＋国カラーの光”バックドロップ（旧muddyグラデを置換） */
+.bg-brazil   {background:radial-gradient(135% 120% at 50% -12%,#3f9d5b 0%,#2a1c12 60%,#170f09 100%)}
+.bg-panama   {background:radial-gradient(135% 120% at 50% -12%,#2f7bc0 0%,#1c1710 60%,#120e09 100%)}
+.bg-taiwan   {background:radial-gradient(135% 120% at 50% -12%,#12a093 0%,#0f1c19 60%,#0a1210 100%)}
+.bg-costarica{background:radial-gradient(135% 120% at 50% -12%,#1f97d6 0%,#101a1f 60%,#0a1013 100%)}
+.bg-indonesia{background:radial-gradient(135% 120% at 50% -12%,#e05575 0%,#1e1013 60%,#140b0d 100%)}
+.bg-colombia {background:radial-gradient(135% 120% at 50% -12%,#8368c8 0%,#181322 60%,#0f0b16 100%)}
+/* 等高線テクスチャ（＝産地・標高の含意）＋ 豆ウォーターマーク */
+.member-image::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    var(--bean) no-repeat -18px 78% / 88px,
+    repeating-radial-gradient(circle at 22% 118%,rgba(255,255,255,.10) 0 1px,transparent 1px 20px),
+    repeating-radial-gradient(circle at 88% -14%,rgba(255,255,255,.08) 0 1px,transparent 1px 26px);
+  opacity:.55;mix-blend-mode:soft-light;
+}
+.member-image::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,transparent 42%,rgba(0,0,0,.6))}
+/* 国旗：クリアなフレーム＋ゆらぎ＋浮遊 */
+.member-flag-big{z-index:2;transform-origin:50% 60%;animation:flagWave 5s ease-in-out infinite}
+.member-flag-big svg{
+  width:122px;height:auto;border-radius:10px;
+  box-shadow:0 16px 34px -10px rgba(0,0,0,.55),0 0 0 5px rgba(255,255,255,.12),0 0 0 1px rgba(255,255,255,.25);
+}
+@keyframes flagWave{
+  0%{transform:translate(-50%,-50%) rotate(0) skewX(0) translateY(0)}
+  20%{transform:translate(-50%,-50%) rotate(1.6deg) skewX(-1.5deg) translateY(-3px)}
+  40%{transform:translate(-50%,-50%) rotate(-1deg) skewX(1deg) translateY(-6px)}
+  60%{transform:translate(-50%,-50%) rotate(1deg) skewX(-.8deg) translateY(-3px)}
+  80%{transform:translate(-50%,-50%) rotate(-.8deg) skewX(.6deg) translateY(-1px)}
+  100%{transform:translate(-50%,-50%) rotate(0) skewX(0) translateY(0)}
+}
+.member-card:hover .member-flag-big{animation-duration:2.6s}
+/* 産地インデックス N°01… */
+.members-grid{counter-reset:origin}
+.member-card{counter-increment:origin}
+.member-image .member-image-tag::after{content:"N°" counter(origin,decimal-leading-zero);margin-left:2px;opacity:.7;font-variant-numeric:tabular-nums}
+.member-image-tag{background:rgba(20,13,9,.55);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(12px) saturate(140%)}
+/* 会社ロゴ：少し大きく＆クリーンに */
+.member-logo-sm{width:66px;height:66px;border-radius:16px;padding:8px}
+.member-company-row{gap:14px;margin-top:14px}
+.member-body{padding:22px 24px 26px}
+
+/* ============================================================
+   PHILOSOPHY 4 CARDS — 写真スロット＋ブランド・ビジュアル
+   （後日: .phi-visual に style="background-image:url(写真)" を付け、
+     class に has-photo を足すだけで実写真に差し替え可能）
+   ============================================================ */
+.philosophy-grid{gap:26px}
+.philosophy-card{padding:0;overflow:hidden;border-radius:22px}
+.philosophy-card::before{display:none}      /* 旧の左アクセントバーは撤去 */
+.phi-visual{position:relative;height:140px;overflow:hidden;background:var(--accent)}
+.philosophy-card:nth-child(1) .phi-visual{background:linear-gradient(135deg,#EE5C43 0%,#F5943f 100%)}
+.philosophy-card:nth-child(2) .phi-visual{background:linear-gradient(135deg,#F5C828 0%,#F59E2b 100%)}
+.philosophy-card:nth-child(3) .phi-visual{background:linear-gradient(135deg,#00A99D 0%,#0b7f8f 100%)}
+.philosophy-card:nth-child(4) .phi-visual{background:linear-gradient(135deg,#8CC63F 0%,#48a05a 100%)}
+.phi-visual::before{  /* 豆ウォーターマーク群 */
+  content:"";position:absolute;inset:0;
+  background:var(--bean) no-repeat 82% 30% / 74px, var(--bean) no-repeat 60% 96% / 46px, var(--bean) no-repeat 96% 88% / 34px;
+  opacity:.28;
+}
+.phi-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.12),transparent 40%,rgba(0,0,0,.14))}
+.phi-visual.has-photo{background-size:cover!important;background-position:center!important}
+.phi-visual.has-photo::before{display:none}
+.philosophy-card>.phi-en,.philosophy-card>.phi-title,.philosophy-card>.phi-desc{margin-left:28px;margin-right:28px}
+.philosophy-card>.phi-desc{margin-bottom:30px}
+.philosophy-card .phi-icon{margin-left:28px;
+  margin-top:-30px;position:relative;z-index:2;width:60px;height:60px;border-radius:16px;
+  background:#fff;color:var(--accent);box-shadow:0 12px 28px -8px rgba(0,0,0,.28),0 0 0 1px rgba(0,0,0,.05);
+}
+.philosophy-card .phi-icon svg{width:28px;height:28px}
+.philosophy-card .phi-en{margin-top:14px}
+.philosophy-card:hover{transform:translateY(-8px)}
+.philosophy-card:hover .phi-visual::before{opacity:.42;transition:opacity .4s}
+
+/* ============================================================
+   ACTIVITIES — 番号入り・ジェムなアイコンチップで“寂しさ”解消
+   ============================================================ */
+.activities-grid{counter-reset:act;gap:24px}
+.activity{counter-increment:act;position:relative;padding:30px 28px 30px;border-top:none;overflow:hidden}
+.activity::after{  /* 大きな連番の透かし */
+  content:counter(act,decimal-leading-zero);position:absolute;top:16px;right:22px;z-index:0;
+  font-family:var(--f-sans);font-weight:800;font-size:44px;line-height:1;letter-spacing:-.02em;
+  color:color-mix(in srgb,var(--actc,#00A99D) 20%,transparent);
+}
+.activity>*{position:relative;z-index:1}
+.activity::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--actc,#00A99D),color-mix(in srgb,var(--actc,#00A99D) 40%,#fff))}
+.activity:nth-child(1){--actc:#EE5C43}.activity:nth-child(2){--actc:#F5C828}
+.activity:nth-child(3){--actc:#00A99D}.activity:nth-child(4){--actc:#8CC63F}
+.activity:nth-child(5){--actc:#E94B7B}.activity:nth-child(6){--actc:#EE5C43}
+.activity:nth-child(7){--actc:#00A99D}.activity:nth-child(8){--actc:#F5C828}
+.activity .act-icon{
+  width:52px;height:52px;border-radius:15px;border:none;color:#fff;
+  background:linear-gradient(135deg,var(--actc,#00A99D),color-mix(in srgb,var(--actc,#00A99D) 55%,#fff));
+  box-shadow:0 12px 26px -10px var(--actc,#00A99D);
+}
+.activity:hover{transform:translateY(-6px);box-shadow:0 24px 50px -22px color-mix(in srgb,var(--actc,#00A99D) 60%,rgba(0,0,0,.4))}
+.activity li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--actc,var(--teal-text));top:.55em;left:2px}
+
+/* ============================================================
+   PAST EVENTS — Instagram実カバー用の画像スロット
+   （後日: .event-cover の style に background-image:url(カバー) を入れ、
+     class に has-cover を足すだけで実カバーに差し替え）
+   ============================================================ */
+.event-visual{aspect-ratio:16/9}
+.event-cover{position:absolute;inset:0;background-size:cover;background-position:center}
+.event-cover.has-cover .ev-ph{display:none}
+.ev-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#fff}
+.ev-ph .ev-ig{width:40px;height:40px;opacity:.95;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))}
+.ev-ph .ev-ph-label{font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.9}
+.event-visual::before{content:"";position:absolute;inset:0;z-index:1;background:
+  var(--bean) no-repeat 90% 20% / 60px, var(--bean) no-repeat 12% 92% / 40px;opacity:.22}
+.event-visual::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(255,255,255,.10),transparent 45%,rgba(0,0,0,.28))}
+.event-visual .event-date-tag{z-index:3}
+.event-visual .event-cover,.event-visual .ev-ph{z-index:2}
+.event-card:hover .event-cover.has-cover{transform:scale(1.05);transition:transform .5s var(--ease)}
+
+/* ============================================================
+   COUNTRY PAGE — 会社ロゴを大きく / 国旗を小さく
+   ============================================================ */
+.cp-logo{
+  width:clamp(104px,20vw,150px);aspect-ratio:1;object-fit:contain;background:#fff;
+  border-radius:24px;padding:16px;box-shadow:0 22px 50px -18px rgba(0,0,0,.5),0 0 0 1px rgba(0,0,0,.05);
+}
+.cp-hero .cp-flag{position:absolute;top:16px;right:16px;z-index:2}
+.cp-hero .cp-flag svg{width:46px;height:auto;border-radius:6px;box-shadow:0 6px 16px rgba(0,0,0,.35),0 0 0 3px rgba(255,255,255,.2)}
+.cp-country{margin-top:20px}
+</style>
 </head>
 <body>
 
@@ -861,24 +1008,28 @@ body.country-page-open{overflow:hidden}
     <!-- 4つのポイント -->
     <div class="philosophy-grid">
       <div class="philosophy-card reveal" style="--accent: #EE5C43">
+        <div class="phi-visual"></div><!-- 写真差し替え: class に has-photo を足し style="background-image:url('写真')" -->
         <div class="phi-icon" style="--accent: #EE5C43"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M3 7h18"/><path d="M7 13l-4 4 4 4"/><path d="M21 17H3"/></svg></div>
         <div class="phi-en">Direct Trade</div>
         <h3 class="phi-title">直接取引</h3>
         <p class="phi-desc">すべて加盟各社が現地と直接取引するロットのみ。中間業者を介さない、生産者との直接的なパートナーシップを実現しています。</p>
       </div>
       <div class="philosophy-card reveal" style="--accent: #F5C828">
+        <div class="phi-visual"></div>
         <div class="phi-icon" style="--accent: #F5C828"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20"/><path d="M12 3l-4 6 4 12 4-12-4-6"/></svg></div>
         <div class="phi-en">Specialty &amp; Rarity</div>
         <h3 class="phi-title">専門性と希少性</h3>
         <p class="phi-desc">特定産地に特化した専門性と、限定ロットの希少性。各社が長年にわたり築いた産地との信頼関係から生まれるラインナップです。</p>
       </div>
       <div class="philosophy-card reveal" style="--accent: #00A99D">
+        <div class="phi-visual"></div>
         <div class="phi-icon" style="--accent: #00A99D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="7"/><path d="M21 21l-5-5"/><path d="M7 10.5h7M10.5 7v7"/></svg></div>
         <div class="phi-en">Full Traceability</div>
         <h3 class="phi-title">完全なトレーサビリティ</h3>
         <p class="phi-desc">農園から焙煎所まで一気通貫で見える流通。生産者の顔が見え、栽培方法や精製工程まで把握できる透明性を提供します。</p>
       </div>
       <div class="philosophy-card reveal" style="--accent: #8CC63F">
+        <div class="phi-visual"></div>
         <div class="phi-icon" style="--accent: #8CC63F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.4 4 5.5 4 9s-1.5 6.6-4 9c-2.5-2.4-4-5.5-4-9s1.5-6.6 4-9z"/></svg></div>
         <div class="phi-en">Rich Variety</div>
         <h3 class="phi-title">豊富なバリエーション</h3>
@@ -1132,7 +1283,13 @@ body.country-page-open{overflow:hidden}
       <!-- Event 1: SCAJ 2025 -->
       <article class="event-card reveal">
         <div class="event-visual" style="background:linear-gradient(135deg,#EE5C43 0%,#F5C828 100%)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12v5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5v-5z"/><path d="M16 11h2a3 3 0 0 1 0 6h-2"/><path d="M8 3.5c-.8 1 .8 2 0 3M12 3.5c-.8 1 .8 2 0 3"/></svg>
+          <!-- カバー差し替え: class に has-cover を足し style="background-image:url('Instagramカバー')" -->
+          <div class="event-cover">
+            <div class="ev-ph">
+              <svg class="ev-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+              <span class="ev-ph-label">SCAJ 2025 · Reel</span>
+            </div>
+          </div>
           <span class="event-date-tag">SCAJ 2025</span>
         </div>
         <div class="event-body">
@@ -1149,7 +1306,13 @@ body.country-page-open{overflow:hidden}
       <!-- Event 2: UCC Academy Feb 11 -->
       <article class="event-card reveal">
         <div class="event-visual" style="background:linear-gradient(135deg,#00A99D 0%,#8CC63F 100%)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 20c.5-3.5 2.8-5.5 5.5-5.5s5 2 5.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 14.8c.6-.4 1.2-.6 1.9-.6 2.1 0 3.9 1.6 4.3 4.3"/></svg>
+          <!-- カバー差し替え: class に has-cover を足し style="background-image:url('Instagramカバー')" -->
+          <div class="event-cover">
+            <div class="ev-ph">
+              <svg class="ev-ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+              <span class="ev-ph-label">UCC Academy · Reel</span>
+            </div>
+          </div>
           <span class="event-date-tag">2026.2.11</span>
         </div>
         <div class="event-body">
@@ -1929,6 +2092,7 @@ function openCountryPage(id){
     </div>
     <div class="cp-hero ${m.bgClass}">
       <span class="cp-flag">${m.flag}</span>
+      ${m.logo ? `<img class="cp-logo" src="${m.logo}" alt="${m.company} ロゴ" />` : ''}
       <div class="cp-country">${m.country}</div>
       <div class="cp-country-ja">${m.countryJa}</div>
       <div class="cp-company">${m.company}${m.companyEn ? ` / ${m.companyEn}` : ''}</div>
