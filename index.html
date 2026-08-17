@@ -12,7 +12,7 @@
      ============================================================ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=Italiana&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=Shippori+Mincho:wght@400;500;600;700;800&family=Italiana&display=swap" rel="stylesheet">
 
 <style>
 /* タイトル用フォント Italiana を埋め込み(オフライン/プレビューでも表示) */
@@ -53,6 +53,7 @@
   --f-display: "Italiana", "Outfit", "Zen Kaku Gothic New", serif;
   --f-sans: "Outfit", "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, sans-serif;
   --f-jp: "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, sans-serif;
+  --f-mincho: "Shippori Mincho", "Zen Old Mincho", "Yu Mincho", serif;
   --ease: cubic-bezier(.2,.7,.2,1);
 }
 
@@ -839,6 +840,89 @@ body.country-page-open{overflow:hidden}
 .cp-hero .cp-flag svg{width:46px;height:auto;border-radius:6px;box-shadow:0 6px 16px rgba(0,0,0,.35),0 0 0 3px rgba(255,255,255,.2)}
 .cp-country{margin-top:20px}
 </style>
+
+<!-- ============================================================
+     EDITORIAL DIRECTION (BOTANIST参考: 明朝主体・余白・上下交互特集)
+     ※内容/コンセプト/ロゴカラーはLINKONEのまま
+     ============================================================ -->
+<style>
+/* ---- 明朝主体のエディトリアル・タイポ ---- */
+.section-title.jp{font-family:var(--f-mincho);font-weight:700;letter-spacing:.045em;line-height:1.4}
+.hero-sub{font-family:var(--f-mincho);font-weight:500;letter-spacing:.06em;line-height:1.95}
+.about-section h3.headline{font-family:var(--f-mincho);font-weight:600;letter-spacing:.04em;line-height:1.7}
+.philosophy-card .phi-title{font-family:var(--f-mincho);letter-spacing:.03em}
+.event-title{font-family:var(--f-mincho);letter-spacing:.03em}
+.member-company{font-family:var(--f-mincho)}
+.cp-section h3{font-family:var(--f-mincho);letter-spacing:.03em}
+.section-lead{letter-spacing:.03em}
+
+/* ---- 見出しブロックのエディトリアル化(余白・細い罫) ---- */
+.section-head{margin-bottom:clamp(40px,6vw,64px)}
+.section-head .eyebrow{color:var(--teal-text)}
+.section-head.center .eyebrow{position:relative;padding-bottom:16px}
+.section-head.center .eyebrow::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:34px;height:1px;background:currentColor;opacity:.55}
+.section-title{letter-spacing:.02em}
+
+/* ---- Hero: 余白を広げ、静かなエディトリアルに ---- */
+.hero-eyebrow{letter-spacing:.24em}
+.hero-title{letter-spacing:.005em}
+.hero-sub{margin-top:30px}
+
+/* ============================================================
+   ORIGINS FEATURE — 6産地を“素材”のように上下交互で特集
+   ============================================================ */
+.origins-feature{display:flex;flex-direction:column;gap:clamp(64px,10vw,132px);margin-top:clamp(48px,7vw,84px)}
+.origin-row{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,76px);align-items:center}
+.origin-row:nth-child(even) .origin-visual{order:2}
+@media(max-width:880px){
+  .origin-row{grid-template-columns:1fr;gap:28px}
+  .origin-row:nth-child(even) .origin-visual{order:0}
+}
+.origin-visual{
+  position:relative;aspect-ratio:4/3;border-radius:26px;overflow:hidden;isolation:isolate;background:#1a120c;
+  box-shadow:0 34px 70px -34px rgba(24,16,10,.55);
+}
+.origin-visual::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.55;mix-blend-mode:soft-light;
+  background:
+    var(--bean) no-repeat -20px 82% / 100px,
+    var(--bean) no-repeat 92% 12% / 64px,
+    repeating-radial-gradient(circle at 20% 118%,rgba(255,255,255,.10) 0 1px,transparent 1px 22px);
+}
+.origin-visual::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.45))}
+.origin-index{
+  position:absolute;top:18px;left:24px;z-index:2;
+  font-family:var(--f-display);font-size:clamp(44px,6vw,80px);line-height:1;
+  color:rgba(255,255,255,.92);text-shadow:0 4px 20px rgba(0,0,0,.35);
+}
+.origin-flag{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;line-height:1;
+  transform-origin:50% 60%;animation:flagWave 5s ease-in-out infinite;
+}
+.origin-flag svg{
+  width:clamp(128px,20vw,188px);height:auto;border-radius:12px;
+  box-shadow:0 18px 40px -12px rgba(0,0,0,.55),0 0 0 5px rgba(255,255,255,.12),0 0 0 1px rgba(255,255,255,.25);
+}
+.origin-row:hover .origin-flag{animation-duration:2.6s}
+.origin-eyebrow{font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--teal-text)}
+.origin-name{font-family:var(--f-mincho);font-weight:700;font-size:clamp(30px,4.4vw,46px);line-height:1.25;margin-top:14px;color:var(--ink-900);letter-spacing:.03em}
+.origin-name-en{display:block;font-family:var(--f-display);font-size:.46em;font-weight:400;letter-spacing:.08em;color:var(--ink-500);margin-top:6px}
+.origin-importer{display:flex;align-items:center;gap:14px;margin-top:20px}
+.origin-importer img{width:56px;height:56px;object-fit:contain;border-radius:14px;background:#fff;padding:7px;border:1px solid rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06);flex-shrink:0}
+.origin-importer .oi-name{font-family:var(--f-jp);font-weight:700;font-size:15px;color:var(--ink-800);line-height:1.5}
+.origin-lead{font-family:var(--f-mincho);font-size:clamp(15px,1.6vw,17px);line-height:2.05;color:var(--ink-700);margin-top:20px;letter-spacing:.03em}
+.origin-facts{display:grid;grid-template-columns:1fr 1fr;gap:16px 28px;margin-top:24px;border-top:1px solid var(--ink-100);padding-top:22px}
+@media(max-width:520px){.origin-facts{grid-template-columns:1fr}}
+.origin-facts .k{font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--label-ink)}
+.origin-facts .v{font-size:14px;color:var(--ink-700);margin-top:4px;line-height:1.55}
+.origin-more{
+  display:inline-flex;align-items:center;gap:9px;margin-top:28px;cursor:pointer;
+  font-family:var(--f-sans);font-weight:700;font-size:14px;letter-spacing:.02em;color:var(--teal-text);
+  border-bottom:1px solid currentColor;padding-bottom:4px;transition:gap .2s var(--ease)
+}
+.origin-more:hover{gap:15px}
+.origin-more svg{width:16px;height:16px}
+</style>
 </head>
 <body>
 
@@ -982,11 +1066,11 @@ body.country-page-open{overflow:hidden}
     <div class="section-head center reveal">
       <span class="eyebrow">Our Members</span>
       <h2 class="section-title jp">産地に精通した、専門商社たち。</h2>
-      <p class="section-lead">それぞれの産地を深く知る専門インポーターが集まっています。<br><span style="font-family:var(--f-sans);font-size:13px;color:var(--label-ink)">Specialty Importer Partners — dedicated importers with deep expertise in their origin.</span></p>
+      <p class="section-lead">ひとつの産地を深く知る専門インポーターが、それぞれの物語を紡ぐ。<br><span style="font-family:var(--f-sans);font-size:13px;color:var(--label-ink)">Six origins, six specialists — dedicated importers with deep expertise in their land.</span></p>
     </div>
 
-    <div class="members-grid" id="members-grid">
-      <!-- Cards generated by JS from MEMBERS config -->
+    <div class="origins-feature" id="origins-feature">
+      <!-- Editorial origin features generated by JS from MEMBERS config -->
     </div>
   </div>
 </section>
@@ -1763,27 +1847,37 @@ const JAPAN_COORD = { x: 45.8, y: 29.1 };
 
 // 1) 加盟企業カードを描画
 function renderMembers(){
-  const grid = document.getElementById('members-grid');
-  grid.innerHTML = MEMBERS.map((m, i) => `
-    <article class="member-card ${m.tbd ? 'tbd' : ''} reveal" data-id="${m.id}"
-             ${m.tbd ? '' : `onclick="openCountryPage('${m.id}')" role="button" tabindex="0" aria-label="${m.countryJa}の詳細ページを開く" onkeydown="if(event.key==='Enter')openCountryPage('${m.id}')"`}>
-      <div class="member-image ${m.bgClass}">
-        <span class="member-flag-big" style="animation-delay:${i * -0.7}s; animation-duration:${3.5 + i * 0.3}s">${m.flag}</span>
-        <div class="member-image-tag">
-          <span>${m.country}</span>
-        </div>
+  const grid = document.getElementById('origins-feature');
+  grid.innerHTML = MEMBERS.map((m, i) => {
+    const no = String(i + 1).padStart(2, '0');
+    const o = m.origin || {};
+    const fact = (k, v) => v ? `<div class="of"><div class="k">${k}</div><div class="v">${v}</div></div>` : '';
+    const facts = m.tbd ? '' : `
+        <div class="origin-facts">
+          ${fact('地域 / Region', o.region)}
+          ${fact('農園・生産者 / Farm', o.farm)}
+          ${fact('標高 / Altitude', o.altitude)}
+          ${fact('品種 / Varietals', o.varietals)}
+        </div>`;
+    return `
+    <article class="origin-row reveal" data-id="${m.id}" style="--c:${m.color}">
+      <div class="origin-visual ${m.bgClass}">
+        <span class="origin-index">${no}</span>
+        <span class="origin-flag" style="animation-delay:${i * -0.7}s; animation-duration:${4.6 + i * 0.3}s">${m.flag}</span>
       </div>
-      <div class="member-body">
-        <div class="member-country">${m.country} · ${m.countryJa}</div>
-        <div class="member-company-row">
-          ${m.logo ? `<img src="${m.logo}" alt="${m.company}" class="member-logo-sm" />` : ''}
-          <h3 class="member-company">${m.company}${m.companyEn ? `<span class="company-en">${m.companyEn}</span>` : ''}</h3>
+      <div class="origin-text">
+        <div class="origin-eyebrow">Origin ${no} · ${m.country}</div>
+        <h3 class="origin-name">${m.countryJa}<span class="origin-name-en">${m.country}</span></h3>
+        <div class="origin-importer">
+          ${m.logo ? `<img src="${m.logo}" alt="${m.company} ロゴ" />` : ''}
+          <div class="oi-name">${m.company}${m.companyEn ? ` <span style="font-weight:400;color:var(--label-ink)">/ ${m.companyEn}</span>` : ''}</div>
         </div>
-        <p class="member-desc">${m.specialty}</p>
-        ${m.tbd ? '' : `<span class="member-more">詳しく見る<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>`}
+        <p class="origin-lead">${m.specialty}</p>
+        ${facts}
+        ${m.tbd ? '' : `<span class="origin-more" role="button" tabindex="0" aria-label="${m.countryJa}の詳細ページを開く" onclick="openCountryPage('${m.id}')" onkeydown="if(event.key==='Enter')openCountryPage('${m.id}')">この産地を見る<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>`}
       </div>
-    </article>
-  `).join('');
+    </article>`;
+  }).join('');
 }
 
 // 2) 国別チェックボックスを描画
