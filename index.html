@@ -841,59 +841,39 @@ body.country-page-open{overflow:hidden}
 </style>
 
 <!-- ============================================================
-     MEMBER CARD v2 — 会社名を主役に / 国旗は小バッジ＋リアルなはためき
+     MEMBER CARD v3 — 上部=会社ロゴ(白背景)＋会社名(主役) /
+     下部=国旗色の“淡い帯”に 国旗＋国名（国旗は下へ入れ替え）
      ============================================================ -->
 <style>
-/* 会社ロゴ＋会社名をカード上部の主役に */
-.member-image .member-hero{
-  position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:16px;padding:28px 22px 24px;text-align:center;
+.member-card{background:#fff}
+.member-flag-big{display:none!important}   /* 旧・中央の大国旗は撤去 */
+
+/* 上部: 白背景に 会社ロゴ＋会社名（主役） */
+.member-top{
+  position:relative;background:#fff;padding:34px 24px 26px;min-height:210px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;
+  border-bottom:1px solid rgba(0,0,0,.06);
 }
 .member-logo-lg{
-  width:104px;height:104px;border-radius:22px;background:#fff;padding:14px;
+  width:120px;height:120px;border-radius:20px;background:#fff;padding:6px;
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 16px 38px -14px rgba(0,0,0,.55),0 0 0 1px rgba(0,0,0,.05);
 }
 .member-logo-lg img{max-width:100%;max-height:100%;object-fit:contain;display:block}
-.member-company-lg{
-  font-family:var(--f-jp);font-weight:700;font-size:19px;line-height:1.45;color:#fff;
-  letter-spacing:.01em;text-shadow:0 2px 14px rgba(0,0,0,.6),0 1px 3px rgba(0,0,0,.55);
-}
-.company-en-lg{
-  display:block;font-family:var(--f-sans);font-weight:500;font-size:12px;letter-spacing:.06em;
-  color:rgba(255,255,255,.86);margin-top:5px;text-shadow:0 1px 6px rgba(0,0,0,.5);
-}
-.member-origin-no{
-  position:absolute;top:14px;left:16px;z-index:3;font-family:var(--f-sans);
-  font-weight:700;font-size:12px;letter-spacing:.18em;color:rgba(255,255,255,.9);
-  text-shadow:0 1px 6px rgba(0,0,0,.55);
-}
-/* 中央の光をやや強め、会社名の可読性を確保 */
-.member-image::before{
-  content:"";position:absolute;inset:0;z-index:1;
-  background:radial-gradient(90% 70% at 50% 48%,rgba(0,0,0,.28),transparent 72%);
-}
+.member-logo-none{font-family:var(--f-jp);font-weight:700;font-size:20px;color:var(--ink-700);border:1px dashed rgba(0,0,0,.16)}
+.member-company-lg{font-family:var(--f-jp);font-weight:700;font-size:18px;line-height:1.45;color:var(--ink-900);letter-spacing:.01em}
+.company-en-lg{display:block;font-family:var(--f-sans);font-weight:500;font-size:12px;letter-spacing:.05em;color:var(--label-ink);margin-top:4px}
+.member-origin-no{position:absolute;top:14px;left:16px;font-family:var(--f-sans);font-weight:700;font-size:12px;letter-spacing:.18em;color:var(--ink-300)}
 
-/* 国旗＝小さなバッジ + リアルなはためき（feDisplacement のうねり＋風のスウェイ） */
-.member-flag-big{display:none!important}   /* 旧・中央の大国旗は撤去 */
-.member-flag-badge{
-  position:absolute;top:12px;right:14px;z-index:3;line-height:0;
-  transform-origin:top center;animation:flagSway 3.8s ease-in-out infinite;
-}
-.member-flag-badge svg{
-  width:66px;height:auto;border-radius:5px;
-  filter:url(#flag-wave) drop-shadow(0 7px 14px rgba(0,0,0,.5));
-}
-@keyframes flagSway{
-  0%{transform:rotate(-3deg) translateY(0)}
-  50%{transform:rotate(3deg) translateY(1.5px)}
-  100%{transform:rotate(-3deg) translateY(0)}
-}
-.member-card:hover .member-flag-badge{animation-duration:2s}
-
-/* body: 国名ラベル→説明→リンク（会社名は上に移動済み） */
-.member-body{padding:20px 22px 24px}
-.member-country{margin-bottom:8px}
+/* 下部: 国旗色の“淡い”背景に 国旗＋国名（＋説明・導線） */
+.member-body{padding:18px 22px 22px;background:color-mix(in srgb,var(--flag-tint,#00A99D) 14%,#fff)}
+.member-country-row{display:flex;align-items:center;gap:12px}
+.member-flag-mini{line-height:0;flex-shrink:0;transform-origin:top center;animation:flagSway 3.8s ease-in-out infinite}
+.member-flag-mini svg{width:46px;height:auto;border-radius:4px;filter:url(#flag-wave) drop-shadow(0 4px 9px rgba(0,0,0,.3))}
+.member-country{font-family:var(--f-sans);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-text)}
+.member-desc{font-size:14px;color:var(--ink-500);margin-top:12px;line-height:1.7}
+.member-more{margin-top:14px}
+@keyframes flagSway{0%{transform:rotate(-3deg)}50%{transform:rotate(3deg) translateY(1.5px)}100%{transform:rotate(-3deg)}}
+.member-card:hover .member-flag-mini{animation-duration:2s}
 </style>
 </head>
 <body>
@@ -1830,21 +1810,23 @@ const JAPAN_COORD = { x: 45.8, y: 29.1 };
 // 1) 加盟企業カードを描画
 function renderMembers(){
   const grid = document.getElementById('members-grid');
+  const TINT = {brazil:'#009c3b', panama:'#0072ce', taiwan:'#e60012', costarica:'#0033a0', indonesia:'#e70011', colombia:'#f6c500'};
   grid.innerHTML = MEMBERS.map((m, i) => {
     const no = String(i + 1).padStart(2, '0');
+    const tint = TINT[m.id] || m.color || '#00A99D';
     return `
-    <article class="member-card ${m.tbd ? 'tbd' : ''} reveal" data-id="${m.id}"
+    <article class="member-card ${m.tbd ? 'tbd' : ''} reveal" data-id="${m.id}" style="--flag-tint:${tint}"
              ${m.tbd ? '' : `onclick="openCountryPage('${m.id}')" role="button" tabindex="0" aria-label="${m.company}（${m.countryJa}）の詳細ページを開く" onkeydown="if(event.key==='Enter')openCountryPage('${m.id}')"`}>
-      <div class="member-image ${m.bgClass}">
+      <div class="member-top">
         <span class="member-origin-no">N°${no}</span>
-        <span class="member-flag-badge" style="animation-delay:${i * -0.6}s">${m.flag}</span>
-        <div class="member-hero">
-          ${m.logo ? `<div class="member-logo-lg"><img src="${m.logo}" alt="${m.company} ロゴ" /></div>` : ''}
-          <h3 class="member-company-lg">${m.company}${m.companyEn ? `<span class="company-en-lg">${m.companyEn}</span>` : ''}</h3>
-        </div>
+        ${m.logo ? `<div class="member-logo-lg"><img src="${m.logo}" alt="${m.company} ロゴ" /></div>` : `<div class="member-logo-lg member-logo-none">${m.countryJa}</div>`}
+        <h3 class="member-company-lg">${m.company}${m.companyEn ? `<span class="company-en-lg">${m.companyEn}</span>` : ''}</h3>
       </div>
       <div class="member-body">
-        <div class="member-country">${m.country} · ${m.countryJa}</div>
+        <div class="member-country-row">
+          <span class="member-flag-mini" style="animation-delay:${i * -0.6}s">${m.flag}</span>
+          <span class="member-country">${m.country} · ${m.countryJa}</span>
+        </div>
         <p class="member-desc">${m.specialty}</p>
         ${m.tbd ? '' : `<span class="member-more">詳しく見る<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>`}
       </div>
